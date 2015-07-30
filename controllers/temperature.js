@@ -18,13 +18,18 @@ module.exports = {
             },
             temperatures: {
                 //hourly[/*zero based hour*/][/*00,15,30,45*/]
-                hourly[req.body.hour][req.body.minute]: req.body.temperature
+                //hourly[req.body.hour][req.body.minute]: req.body.temperature
+                // hourly: {
+                //     req.body.hour: {
+                //         req.body.minute: req.body.temperature
+                //     }
+                // }
             }
         };
     },
     deviceHistory: function( req, res ){
         var deviceid = decodeURIComponent( req.params.id );
-        Temp.find( { device.id: deviceid }).exec( function( err, temps ){
+        Temp.find( { device: { id: deviceid } } ).exec( function( err, temps ){
             res.json( Response.code( err, temps ), Response.data( err, temps ) );
         });
     },

@@ -16,7 +16,7 @@ var LocationSchema = new Schema({
 	name: { type: String, default: '' },
 	billing: {
 		balance: { type: Number, default: 0 },
-		payments: { type: Array, default [
+		payments: { type: Array, default: [
 			{
 				amount: { type: Number, default: 0 },
 				date: {type: String, default: '' }
@@ -33,7 +33,7 @@ var LocationSchema = new Schema({
 		company: { type: String, default: '' },
 		address1: { type: String, default: '' },
 		address2: { type: String, default: '' },
-		city; { type: String, default: '' },
+		city: { type: String, default: '' },
 		state: { type: String, default: '' },
 		zip: { type: String, default: '' },
 		coords: { type: Array, default: [], index: '2dsphere' }

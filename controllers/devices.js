@@ -21,5 +21,10 @@ module.exports = {
         Device.find( { _id: id } ).exec( function( err, device ){
             res.json( Response.code( err, device ), Response.data( err, device ) );
         });
+    },
+    getAllDevices: function( req, res ){
+        Device.find( function( err, devices ){
+            res.json( Response.code( err, devices ), Response.data( err, devices ) );
+        });
     }
 };

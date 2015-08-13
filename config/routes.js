@@ -18,25 +18,30 @@ module.exports = function(app) {
   //app.get( '/api/:account/:status', site.status );
 
   //api devices
-  app.post( '/api/newdevice', devices.addDevice );
+  app.post( '/api/device/new', devices.addDevice );
   app.get( '/api/device/id/:id', devices.getDeviceById );
   app.get( '/api/device/all', devices.getAllDevices );
 
   //api users
-  app.post( '/api/newuser', users.addUser );
+  app.post( '/api/users/new', users.addUser );
   app.get( '/api/users/id/:id', users.getUserById );
   app.get( '/api/users/username/:username', users.getUserByUsername );
+  app.get( '/api/users/all', users.getAllUsers );
 
   //api accounts
-  app.post( '/api/newaccount', accounts.addAccount );
+  app.post( '/api/account/new', accounts.addAccount );
   app.get( '/api/account/id/:id', accounts.getAccountById );
+  app.get( '/api/account/all', accounts.getAllAccounts );
 
   //api locations
-  app.post( '/api/newlocation', locations.addLocation );
+  app.post( '/api/location/new', locations.addLocation );
   app.get( '/api/location/id/:id', locations.getLocationById );
+  //app.get( '/api/location/account/:id', locations.getLocationsByAccount );
+  //app.get( '/api/location/radius/:lat/:long/:miles', locations.getLocationsRadiusFromCoords );
 
   //api temperatures
-  app.post( '/api/temperature', temperature.post  );
+  app.post( '/api/temperature/new', temperature.post  );
   app.get( '/api/temperature/device/:id', temperature.deviceHistory );
+  app.delete( '/api/temperature/tempid', temperature.deleteByTempId );
 
 };

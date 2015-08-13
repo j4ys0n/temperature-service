@@ -16,7 +16,7 @@ var UserSchema = new Schema({
 	first_name: { type: String, default: '' },
 	last_name: { type: String, default: '' },
 	email: { type: String, default: '' },
-	phone: { type: Number, default: 0 },
+	phone: { type: String, default: '' },
 	notification_scheme: { type: Array, default: ['phone'] },
 	password: { type: String, default: '' },
 	account_id: { type: String, default: '' },

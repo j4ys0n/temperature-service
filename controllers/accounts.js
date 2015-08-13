@@ -18,5 +18,10 @@ module.exports = {
         Account.find( { _id: id } ).exec( function( err, account ){
             res.json( Response.code( err, account ), Response.data( err, account ) );
         });
+    },
+    getAllAccounts: function( req, res ){
+        Account.find( function( err, accounts ){
+            res.json( Response.code( err, accounts ), Response.data( err, accounts ) );
+        });
     }
 };

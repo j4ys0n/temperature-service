@@ -13,8 +13,8 @@ var urlify = require( 'urlify' ).create({
  */
 var TemperatureSchema = new Schema({
     metadata: {
-        date: { type: String, default: Date.now },
-        last_updated: { type: String, default: Date.now }
+        date: { type: String, default: Date() },
+        last_updated: { type: String, default: Date() }
     },
     device: {
         id: { type: String, default: '' },
@@ -29,148 +29,148 @@ var TemperatureSchema = new Schema({
         low: { type: Number, default: 0 },
         hourly: {
             "00": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "01": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "02": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "03": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "04": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "05": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "06": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "07": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "08": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "09": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "10": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "11": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "12": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "13": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "14": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "15": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "16": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "17": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "18": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "19": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "20": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "21": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "22": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             },
             "23": {
-                "00": { type: Number, default: 0 },
-                "15": { type: Number, default: 0 },
-                "30": { type: Number, default: 0 },
-                "45": { type: Number, default: 0 }
+                "0": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "1": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "2": { value: { type: Number, default: 0 }, time: { type: String, default: '' } },
+                "3": { value: { type: Number, default: 0 }, time: { type: String, default: '' } }
             }
         }
 

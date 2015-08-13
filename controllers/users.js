@@ -31,5 +31,10 @@ module.exports = {
         User.find( { user_name: username } ).exec( function( err, user ){
             res.json( Response.code( err, user ), Response.data( err, user ) );
         });
+    },
+    getAllUsers: function( req, res ){
+        User.find( function( err, users ){
+            res.json( Response.code( err, users ), Response.data( err, users ) );
+        });
     }
 };

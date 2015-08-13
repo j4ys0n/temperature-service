@@ -1,39 +1,70 @@
 var mongoose = require( 'mongoose' );
 var Temp = mongoose.model( 'Temperature' );
 var Response = require( __dirname + '/../lib/Response' );
-var Dispatcher = require( __dirname + '/../lib/Dispatcher' );
 
 module.exports = {
     default: function( req, res ){
         res.render( 'index', { data: { page: 'default' } } );
     },
     post: function( req, res ){
-        var temperaturedata = {
-            device: {
-                id: req.body.device.id,
-                battery: req.body.device.battery
-            },
-            account: {
-                id: req.body.account.id
-            },
-            temperatures: {
-                //hourly[/*zero based hour*/][/*00,15,30,45*/]
-                //hourly[req.body.hour][req.body.minute]: req.body.temperature
-                // hourly: {
-                //     req.body.hour: {
-                //         req.body.minute: req.body.temperature
-                //     }
-                // }
+        var start = new Date(),
+            temperaturedata;
+
+        start.setHours(0,0,0,0);
+
+        Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
+            if(temps != undefined) {
+                if(temps.length === 0){
+                    console.log('no documents today, create one');
+                    temperaturedata = {
+                        device: {
+                            id: req.body.device.id,
+                            battery: req.body.device.battery
+                        },
+                        account: {
+                            id: req.body.account.id
+                        }
+                    };
+                    temperaturedata.temperatures = {};
+                    temperaturedata.temperatures['hourly'] = {};
+                    temperaturedata.temperatures['hourly'][req.body.hour] = {};
+                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval] = {};
+                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
+                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
+                    var temperature = new Temp(temperaturedata);
+                    temperature.save();
+                    //res.send(temperaturedata);
+                    res.json(Response.code(err, temperaturedata), Response.data(err, temperaturedata));
+                }else{
+                    console.log('document found');
+                    temperaturedata = temps[0];
+                    temperaturedata.device.battery = req.body.device.battery;
+                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
+                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
+
+                    Temp.update({ '_id': temperaturedata._id }, { '$set': temperaturedata }, function(error, doc){
+                        console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
+                    });
+                    res.send(temperaturedata);
+                }
+            }else{
+                res.send('0');
             }
-        };
+        });
     },
     deviceHistory: function( req, res ){
         var deviceid = decodeURIComponent( req.params.id );
-        Temp.find( { device: { id: deviceid } } ).exec( function( err, temps ){
+        Temp.find( { "device.id": deviceid } ).exec( function( err, temps ){
             res.json( Response.code( err, temps ), Response.data( err, temps ) );
         });
     },
     deviceStatus: function( req, res ){
         //return last update from device. determine if in acceptable response time
     },
+    deleteByTempId: function( req, res ){
+        var tempid = req.body.id;
+        Temp.findOneAndRemove( { _id: tempid }, function( err, temp ){
+            res.json( Response.code( err, temp ), Response.data( err, temp ) );
+        });
+    }
 };

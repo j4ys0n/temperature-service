@@ -9,7 +9,6 @@ module.exports = {
         var devicedata = {
                 battery: 0,
 				name: req.body.name,
-				uname: req.body.uname,
 				version: req.body.version
             };
         var device = new Device(devicedata);

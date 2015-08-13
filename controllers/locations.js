@@ -85,8 +85,8 @@ module.exports = {
 
     /* -------- deletes -------- */
     deleteLocationById: function( req, res ){
-        Location.findOneAndRemove( { _id: req.body.id }, function( err, location ){
-            res.json( Response.code( err, location ), Response.data( err, location ) );
+        Location.findOneAndRemove( { _id: req.body.id }, function( err, user ){
+            res.json( Response.code( err, user ), Response.data( err, user ) );
         });
     }
 };

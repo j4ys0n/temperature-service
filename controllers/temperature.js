@@ -6,6 +6,8 @@ module.exports = {
     default: function( req, res ){
         res.render( 'index', { data: { page: 'default' } } );
     },
+
+    /* -------- inserts/updates -------- */
     post: function( req, res ){
         var start = new Date(),
             temperaturedata;
@@ -41,7 +43,7 @@ module.exports = {
                     temperaturedata.device.battery = req.body.device.battery;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
-
+                    //also update metadata.last_updated
                     Temp.update({ '_id': temperaturedata._id }, { '$set': temperaturedata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
                     });
@@ -52,6 +54,8 @@ module.exports = {
             }
         });
     },
+
+    /* -------- gets -------- */
     deviceHistory: function( req, res ){
         var deviceid = decodeURIComponent( req.params.id );
         Temp.find( { "device.id": deviceid } ).exec( function( err, temps ){
@@ -61,6 +65,8 @@ module.exports = {
     deviceStatus: function( req, res ){
         //return last update from device. determine if in acceptable response time
     },
+
+    /* -------- deletes -------- */
     deleteByTempId: function( req, res ){
         var tempid = req.body.id;
         Temp.findOneAndRemove( { _id: tempid }, function( err, temp ){

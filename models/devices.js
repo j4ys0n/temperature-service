@@ -17,7 +17,7 @@ var DeviceSchema = new Schema({
 	uname: {type: String, default: '' },
     version: { type: Number, default: 0 },
 	metadata: {
-		created: { type: String, default: Date.now },
+		created: { type: String, default: Date() },
 		last_updated: { type: String, default: '' }
 	}
 });

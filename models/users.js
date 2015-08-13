@@ -21,8 +21,8 @@ var UserSchema = new Schema({
 	password: { type: String, default: '' },
 	account_id: { type: String, default: '' },
 	metadata: {
-		created: { type: String, default: Date.now },
-		last_updated: { type: String, default: Date.now }
+		created: { type: String, default: Date() },
+		last_updated: { type: String, default: Date() }
 	}
 });
 

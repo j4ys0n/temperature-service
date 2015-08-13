@@ -13,6 +13,7 @@ var urlify = require( 'urlify' ).create({
  */
 var LocationSchema = new Schema({
 	primary_user: { type: String, default: '' },
+    account_id: { type: String, default: '' },
 	name: { type: String, default: '' },
 	billing: {
 		balance: { type: Number, default: 0 },
@@ -26,7 +27,7 @@ var LocationSchema = new Schema({
 	users: { type: Array, default: [] },
 	devices: { type: Array, default: [] },
 	metadata: {
-		created: { type: String, default: Date.now },
+		created: { type: String, default: Date() },
 		last_updated: { type: String, default: '' }
 	},
 	address: {

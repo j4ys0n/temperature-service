@@ -27,17 +27,24 @@ module.exports = function(app) {
   app.get( '/api/users/id/:id', users.getUserById );
   app.get( '/api/users/username/:username', users.getUserByUsername );
   app.get( '/api/users/all', users.getAllUsers );
+  app.delete( '/api/users/delete/id', users.deleteById );
 
   //api accounts
   app.post( '/api/account/new', accounts.addAccount );
   app.get( '/api/account/id/:id', accounts.getAccountById );
   app.get( '/api/account/all', accounts.getAllAccounts );
+  app.post( '/api/account/update/primaryuser', accounts.updatePrimaryUser );
+  app.delete( '/api/account/delete/id', accounts.deleteById );
 
   //api locations
-  app.post( '/api/location/new', locations.addLocation );
-  app.get( '/api/location/id/:id', locations.getLocationById );
+  app.post( '/api/locations/new', locations.addLocation );
+  app.get( '/api/locations/id/:id', locations.getLocationById );
+  app.get( '/api/locations/all', locations.getAllLocations );
   //app.get( '/api/location/account/:id', locations.getLocationsByAccount );
   //app.get( '/api/location/radius/:lat/:long/:miles', locations.getLocationsRadiusFromCoords );
+  app.post( '/api/locations/update/primaryuser', locations.updatePrimaryUser );
+  app.post( '/api/locations/update/account', locations.updateAccount );
+  app.delete( '/api/locations/delete/id', locations.deleteLocationById );
 
   //api temperatures
   app.post( '/api/temperature/new', temperature.post  );

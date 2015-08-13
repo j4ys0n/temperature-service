@@ -17,7 +17,7 @@ var AccountSchema = new Schema({
 	locations: { type: Array, default: [] },
 	users: { type: Array, default: [] },
 	metadata: {
-		created: { type: String, default: Date.now },
+		created: { type: String, default: Date() },
 		last_updated: { type: String, default: '' }
 	}
 });

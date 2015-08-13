@@ -39,6 +39,68 @@ module.exports = {
             }
         });
     },
+    addUser: function( req, res ){
+        Account.findOne( { _id: req.body.accountid } ).exec( function( err, account ){
+            var users = account.users || [],
+                userid = req.body.userid,
+                added = false;
+            if(users.indexOf(userid) === -1 && userid !== null){
+                users.push(userid);
+                added = true;
+            }
+            if(added){
+                Account.update( { _id: req.body.accountid }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.locationid + ' status: ' + status);
+                    if(status === 1){
+                        res.send('updated');
+                    }else{
+                        res.send('error:'+ error);
+                    }
+                });
+            }else{
+                res.send('user already connected to account');
+            }
+		});
+    },
+    removeUser: function( req, res ){
+
+    },
+    addLocation: function( req, res ){
+        Account.findOne( { _id: req.body.accountid } ).exec( function( err, account ){
+            var locations = account.locations || [],
+                locationid = req.body.locationid,
+                added = false;
+            if(locations.indexOf(locationid) === -1 && locationid !== null){
+                locations.push(locationid);
+                added = true;
+            }
+            if(added){
+                Account.update( { _id: req.body.accountid }, { '$set': { 'locations': locations, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.locationid + ' status: ' + status);
+                    if(status === 1){
+                        res.send('updated');
+                    }else{
+                        res.send('error:'+ error);
+                    }
+                });
+            }else{
+                res.send('location already connected to account');
+            }
+		});
+    },
+    removeLocation: function( req, res ){
+
+    },
+    updateName: function( req, res ){
+        Account.update( { _id: req.body.accountid }, { '$set': { 'name': req.body.name, 'metadata.last_updated': new Date() } }, function(error, status){
+            console.log('account updated: ' + req.body.accountid + ' status: ' + status);
+            if(status === 1){
+                res.send('updated');
+            }else{
+                res.send('error:'+ error);
+            }
+        });
+    },
 
     /* -------- deletes -------- */
     deleteById: function( req, res ){

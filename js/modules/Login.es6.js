@@ -8,6 +8,7 @@ class Login {
 	}
 
 	init(){
-		
+
 	}
 }
+export default Login;

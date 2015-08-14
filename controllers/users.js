@@ -4,6 +4,26 @@ var Response = require( __dirname + '/../lib/Response' );
 var Dispatcher = require( __dirname + '/../lib/Dispatcher' );
 
 module.exports = {
+    /**
+        -------- views --------
+    **/
+
+    renderUsersPage: function( req, res ){
+        User.find().exec( function( err, users ){
+            res.render( 'index', { data: { page: 'users', users: users } } );
+        });
+    },
+    renderUserDetails: function( req, res ){
+        var id = decodeURIComponent( req.params.id );
+        User.findOne( { _id: id } ).exec( function( err, user ){
+            res.render( 'index', { data: { page: 'user-detail', user: user } } );
+        });
+    },
+
+    /**
+        -------- API --------
+    **/
+
     /* -------- inserts -------- */
     addUser: function( req, res ){
         //add auth check
@@ -35,6 +55,18 @@ module.exports = {
             res.json( Response.code( err, user ), Response.data( err, user ) );
         });
     },
+    getUsersByAccount: function (req, res ){
+        var accountid = decodeURIComponent( req.params.accountid );
+        User.find( { account_id: accountid } ).exec( function( err, users ){
+            res.json( Response.code( err, users ), Response.data( err, users ) );
+        });
+    },
+    getUsersByLocation: function (req, res ){
+        var locationid = decodeURIComponent( req.params.locationid );
+        User.find( { location_id: locationid } ).exec( function( err, users ){
+            res.json( Response.code( err, users ), Response.data( err, users ) );
+        });
+    },
     getAllUsers: function( req, res ){
         User.find( function( err, users ){
             res.json( Response.code( err, users ), Response.data( err, users ) );
@@ -43,8 +75,14 @@ module.exports = {
 
     /* -------- updates -------- */
     updateUserAccount: function( req, res ){
-        //User.update()
-        //make sure you include last_updated
+        User.update( { _id: req.body.id }, { '$set': { 'account_id': req.body.accountid, 'metadata.last_updated': new Date() } }, function(error, status){
+            console.log('account updated: ' + req.body.id + ' status: ' + status);
+            if(status === 1){
+                res.send('updated');
+            }else{
+                res.send('error:'+ error);
+            }
+        });
     },
 
     /* -------- deletes -------- */

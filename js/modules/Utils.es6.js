@@ -15,7 +15,7 @@ class Utils {
                     if(req.status === 200){
                         resolve(req.response);
 						if(callback !== null){
-							callback('success', req.response);
+							callback(req.response);
 						}
                     }else{
                         reject(Error(req.statusText));

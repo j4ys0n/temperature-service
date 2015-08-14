@@ -1,0 +1,41 @@
+<h2>Location Details</h2>
+<div class="location-details" data-module="LocationDetails" data-id="<%= data.location._id %>">
+	<form>
+		<div>
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name" value="<%= data.location.name %>" />
+		</div>
+		<div>
+			<label for="company">Company:</label>
+			<input type="text" id="company" name="address.company" value="<%= data.location.address.company %>" />
+		</div>
+		<div>
+			<label for="address1">Address 1:</label>
+			<input type="text" id="address1" name="address.address1" value="<%= data.location.address.address1 %>" />
+		</div>
+		<div>
+			<label for="address2">Address 2:</label>
+			<input type="text" id="address2" name="address.address2" value="<%= data.location.address.address2 %>" />
+		</div>
+		<div>
+			<label for="city">City:</label>
+			<input type="text" id="city" name="address.city" value="<%= data.location.address.city %>" />
+		</div>
+		<div>
+			<label for="state">State:</label>
+			<input type="text" id="state" name="address.state" value="<%= data.location.address.state %>" />
+		</div>
+		<div>
+			<label for="zip">Zip:</label>
+			<input type="text" id="zip" name="address.zip" value="<%= data.location.address.zip %>" />
+		</div>
+		<div>
+			<label for="users-list">Users:</label>
+			<span id="users-list" class="link-list" data-ids="<%= data.location.users %>"></span>
+		</div>
+		<div>
+			<label for="devices-list">Devices:</label>
+			<span id="devices-list" class="link-list" data-ids="<%= data.location.devices %>"></span>
+		</div>
+	</form>
+</div>

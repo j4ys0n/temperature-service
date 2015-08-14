@@ -4,6 +4,25 @@ var Response = require( __dirname + '/../lib/Response' );
 var Dispatcher = require( __dirname + '/../lib/Dispatcher' );
 
 module.exports = {
+    /**
+        -------- views --------
+    **/
+
+    renderLocationsPage: function( req, res ){
+        Location.find().exec( function( err, locations ){
+            res.render( 'index', { data: { page: 'locations', locations: locations } } );
+        });
+    },
+    renderLocationDetails: function( req, res ){
+        Location.findOne().exec( function( err, location ){
+            res.render( 'index', { data: { page: 'location-detail', location: location } } );
+        });
+    },
+
+    /**
+        -------- API --------
+    **/
+
     /* -------- inserts -------- */
     addLocation: function( req, res ){
         //add auth check

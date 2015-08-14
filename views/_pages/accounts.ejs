@@ -1,0 +1,10 @@
+<h2>Accounts</h2>
+<div class="accounts">
+	<ul>
+		<% for ( var i= 0; i < data.accounts.length; i++ ) { %>
+			<li>
+				<a href="/accounts/view/<%= data.accounts[i]._id %>"><%= data.accounts[i].name %></a>
+			</li>
+		<% } %>
+	</ul>
+</div>

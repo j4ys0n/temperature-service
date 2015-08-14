@@ -90,8 +90,8 @@ gulp.task('sass', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch(['./js/*.es6.js'], ['lint','transpile']);
-	gulp.watch(['./sass/*.scss'], ['sass']);
+	gulp.watch(['./js/**/*.es6.js'], ['lint','transpile']);
+	gulp.watch(['./sass/**/*.scss'], ['sass']);
 });
 
 gulp.task('default', ['transpile', 'sass', 'watch']);

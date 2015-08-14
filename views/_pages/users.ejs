@@ -1,0 +1,10 @@
+<h2>Users</h2>
+<div class="users">
+	<ul>
+		<% for ( var i= 0; i < data.users.length; i++ ) { %>
+			<li>
+				<a href="/users/view/<%= data.users[i]._id %>"><%= data.users[i].user_name + ' (' + data.users[i].first_name + ' ' + data.users[i].last_name + ')' %></a>
+			</li>
+		<% } %>
+	</ul>
+</div>

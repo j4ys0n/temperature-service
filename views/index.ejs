@@ -10,6 +10,22 @@
 				<section class="col lg-twelve-col med-nine-col">
 					<% if (data.page == 'default') { %>
 						<%- include _pages/default.ejs %>
+					<% } else if (data.page == 'accounts') { %>
+						<%- include _pages/accounts.ejs %>
+					<% } else if (data.page == 'account-detail') { %>
+						<%- include _pages/account-detail.ejs %>
+					<% } else if (data.page == 'locations') { %>
+						<%- include _pages/locations.ejs %>
+					<% } else if (data.page == 'location-detail') { %>
+						<%- include _pages/location-detail.ejs %>
+					<% } else if (data.page == 'devices') { %>
+						<%- include _pages/devices.ejs %>
+					<% } else if (data.page == 'device-detail') { %>
+						<%- include _pages/device-detail.ejs %>
+					<% } else if (data.page == 'users') { %>
+						<%- include _pages/users.ejs %>
+					<% } else if (data.page == 'user-detail') { %>
+						<%- include _pages/user-detail.ejs %>
 					<% } %>
 				</section>
 			</div>

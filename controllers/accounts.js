@@ -4,6 +4,26 @@ var Response = require( __dirname + '/../lib/Response' );
 var Dispatcher = require( __dirname + '/../lib/Dispatcher' );
 
 module.exports = {
+    /**
+        -------- views --------
+    **/
+
+    renderAccountPage: function( req, res ){
+        Account.find().exec( function( err, accounts ){
+            res.render( 'index', { data: { page: 'accounts', accounts: accounts } } );
+        });
+    },
+    renderAccountDetails: function( req, res ){
+        var id = decodeURIComponent( req.params.id );
+        Account.findOne( { _id: id } ).exec( function( err, account ){
+            res.render( 'index', { data: { page: 'account-detail', account: account } } );
+        });
+    },
+
+    /**
+        -------- API --------
+    **/
+
     /* -------- inserts -------- */
     addAccount: function( req, res ){
         //add auth check

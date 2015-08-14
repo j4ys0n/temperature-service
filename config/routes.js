@@ -12,6 +12,18 @@ var temperature = require( __dirname + '/../controllers/temperature' );
 module.exports = function(app) {
   //front-end application
   //app.get( '/', site.default );
+  //accounts
+  app.get( '/accounts', accounts.renderAccountPage );
+  app.get( '/accounts/view/:id', accounts.renderAccountDetails );
+  //locations
+  app.get( '/locations', locations.renderLocationsPage );
+  app.get( '/locations/view/:id', locations.renderLocationDetails );
+  //devices
+  app.get( '/devices', devices.renderDevicesPage );
+  app.get( '/devices/view/:id', devices.renderDeviceDetails );
+  //users
+  app.get( '/users', users.renderUsersPage );
+  app.get( '/users/view/:id', users.renderUserDetails );
 
   //api
   //app.post( '/api/:account/:post', site.post );
@@ -31,7 +43,10 @@ module.exports = function(app) {
   app.post( '/api/users/new', users.addUser );
   app.get( '/api/users/id/:id', users.getUserById );
   app.get( '/api/users/username/:username', users.getUserByUsername );
+  app.get( '/api/users/account/:accountid', users.getUsersByAccount );
+  app.get( '/api/users/location/:locationid', users.getUsersByLocation );
   app.get( '/api/users/all', users.getAllUsers );
+  app.post( '/api/users/update/account', users.updateUserAccount );
   app.delete( '/api/users/delete/id', users.deleteById );
 
   //api accounts

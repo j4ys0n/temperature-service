@@ -4,6 +4,26 @@ var Response = require( __dirname + '/../lib/Response' );
 var Dispatcher = require( __dirname + '/../lib/Dispatcher' );
 
 module.exports = {
+    /**
+        -------- views --------
+    **/
+
+    renderDevicesPage: function( req, res ){
+        Device.find().exec( function( err, devices ){
+            res.render( 'index', { data: { page: 'devices', devices: devices } } );
+        });
+    },
+    renderDeviceDetails: function( req, res ){
+        var id = decodeURIComponent( req.params.id );
+        Device.findOne( { _id: id } ).exec( function( err, device ){
+            res.render( 'index', { data: { page: 'device-detail', device: device } } );
+        });
+    },
+
+    /**
+        -------- API --------
+    **/
+
     /* -------- inserts -------- */
     addDevice: function( req, res ){
         //add auth check
@@ -20,7 +40,7 @@ module.exports = {
     /* -------- gets -------- */
     getDeviceById: function( req, res ){
         var id = decodeURIComponent( req.params.id );
-        Device.find( { _id: id } ).exec( function( err, device ){
+        Device.findOne( { _id: id } ).exec( function( err, device ){
             res.json( Response.code( err, device ), Response.data( err, device ) );
         });
     },

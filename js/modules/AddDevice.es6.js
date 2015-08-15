@@ -22,7 +22,7 @@ class AddDevice {
 		};
 
 		let responseHandler = function(res) {
-			console.log(res);
+			utils.debugConsole(res);
 		}
 
 		let addDevice = function(e) {
@@ -38,7 +38,7 @@ class AddDevice {
 		};
 
 		let keyHandler = function(e) {
-			console.log(e.which);
+			utils.debugConsole(e.which);
 		};
 
 		let addEventListeners = function() {

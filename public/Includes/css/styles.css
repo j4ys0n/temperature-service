@@ -194,6 +194,13 @@ html, body {
       /* line 106, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .small-no-gutter {
         margin-right: 0; } }
+  /* line 111, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  .wrapper .console {
+    margin-top: 50px; }
+  /* line 115, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  .wrapper #console {
+    height: 500px;
+    width: 100%; }
 
 /* line 3, /Users/jjacobs/Documents/projects/temperature-service/sass/_modules.scss */
 .module {

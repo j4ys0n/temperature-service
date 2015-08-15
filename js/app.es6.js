@@ -6,13 +6,15 @@ import AccountDetails from './modules/AccountDetails.es6';
 import LocationDetails from './modules/LocationDetails.es6';
 import DeviceDetails from './modules/DeviceDetails.es6';
 import AddDevice from './modules/AddDevice.es6';
+import AddAccount from './modules/AddAccount.es6';
 
 let app = new Main($, [
 	Login,
 	AccountDetails,
 	LocationDetails,
 	DeviceDetails,
-	AddDevice
+	AddDevice,
+	AddAccount
 ], $('[data-module]'), Utils);
 
 app.init();

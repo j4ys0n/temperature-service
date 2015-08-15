@@ -519,7 +519,7 @@ class DeviceDetails {
 
 		let deviceRequestHandler = function( res ){
 			var device = JSON.parse(res).data;
-			console.log(device);
+			utils.debugConsole(device);
 		};
 
 		let temperatureRequestHandler = function( res ){
@@ -529,11 +529,11 @@ class DeviceDetails {
 		};
 
 		let deleteResponseHandler = function (res) {
-			console.log(res);
+			utils.debugConsole(res);
 		};
 
 		let deleteBtnHandler = function(e) {
-			console.log('delete');
+			utils.debugConsole('delete');
 			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
 		};
 

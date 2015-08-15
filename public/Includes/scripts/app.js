@@ -35,11 +35,15 @@ var _modulesAddDeviceEs6 = require('./modules/AddDevice.es6');
 
 var _modulesAddDeviceEs62 = _interopRequireDefault(_modulesAddDeviceEs6);
 
-var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modulesLoginEs62['default'], _modulesAccountDetailsEs62['default'], _modulesLocationDetailsEs62['default'], _modulesDeviceDetailsEs62['default'], _modulesAddDeviceEs62['default']], _libJquery1112Min2['default']('[data-module]'), _modulesUtilsEs62['default']);
+var _modulesAddAccountEs6 = require('./modules/AddAccount.es6');
+
+var _modulesAddAccountEs62 = _interopRequireDefault(_modulesAddAccountEs6);
+
+var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modulesLoginEs62['default'], _modulesAccountDetailsEs62['default'], _modulesLocationDetailsEs62['default'], _modulesDeviceDetailsEs62['default'], _modulesAddDeviceEs62['default'], _modulesAddAccountEs62['default']], _libJquery1112Min2['default']('[data-module]'), _modulesUtilsEs62['default']);
 
 app.init();
 
-},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddDevice.es6":5,"./modules/DeviceDetails.es6":6,"./modules/LocationDetails.es6":7,"./modules/Login.es6":8,"./modules/Main.es6":9,"./modules/Utils.es6":10}],2:[function(require,module,exports){
+},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/DeviceDetails.es6":7,"./modules/LocationDetails.es6":8,"./modules/Login.es6":9,"./modules/Main.es6":10,"./modules/Utils.es6":11}],2:[function(require,module,exports){
 /*! jQuery v1.11.2 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
 "use strict";
 
@@ -2225,22 +2229,25 @@ var AccountDetails = (function () {
 			getLocationsURL: '/api/locations/account/',
 			viewLocationURL: '/locations/view/',
 			getUsersURL: '/api/users/account/',
-			viewUserURL: '/users/view/'
+			viewUserURL: '/users/view/',
+			deleteUrl: '/api/account/delete/id'
 		};
 
 		var selectors = {
 			wrapper: '.account-details',
 			locationsList: '#locations-list',
-			usersList: '#users-list'
+			usersList: '#users-list',
+			deleteBtn: '.delete-account'
 		};
 
 		var objects = {
 			wrapper: $(selectors.wrapper),
 			locationsList: $(selectors.locationsList),
-			usersList: $(selectors.usersList)
+			usersList: $(selectors.usersList),
+			deleteBtn: $(selectors.deleteBtn)
 		};
 
-		var accountID = '';
+		var id = '';
 
 		var addLink = function addLink(text, url, $target) {
 			var $link = $(document.createElement('a'));
@@ -2267,10 +2274,26 @@ var AccountDetails = (function () {
 			}
 		};
 
+		var deleteResponseHandler = function deleteResponseHandler(res) {
+			utils.debugConsole(res);
+		};
+
+		var deleteBtnHandler = function deleteBtnHandler(e) {
+			utils.debugConsole('delete');
+			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
+		};
+
+		var addEventListeners = function addEventListeners(e) {
+			objects.deleteBtn.on('click', deleteBtnHandler);
+		};
+
 		this.firstRun = function () {
-			accountID = objects.wrapper.data('id');
-			utils.loadUrl(constants.getLocationsURL + accountID, 'GET', null, false, locationsRequestHandler);
-			utils.loadUrl(constants.getUsersURL + accountID, 'GET', null, false, usersRequestHandler);
+			id = objects.wrapper.data('id');
+
+			addEventListeners();
+
+			utils.loadUrl(constants.getLocationsURL + id, 'GET', null, false, locationsRequestHandler);
+			utils.loadUrl(constants.getUsersURL + id, 'GET', null, false, usersRequestHandler);
 		};
 	}
 
@@ -2293,6 +2316,85 @@ exports['default'] = AccountDetails;
 module.exports = exports['default'];
 
 },{}],5:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var AddAccount = (function () {
+	function AddAccount($, Utils) {
+		_classCallCheck(this, AddAccount);
+
+		var utils = new Utils();
+
+		var constants = {
+			addURL: '/api/account/new'
+		};
+
+		var selectors = {
+			submitButton: '.add-account',
+			inputName: 'input#name'
+		};
+
+		var objects = {
+			submitButton: $(selectors.submitButton),
+			inputName: $(selectors.inputName)
+		};
+
+		var responseHandler = function responseHandler(res) {
+			utils.debugConsole(res);
+			utils.debugConsole(res);
+		};
+
+		var addDevice = function addDevice(e) {
+			var name = objects.inputName.val(),
+			    data = {
+				name: name
+			};
+
+			utils.loadUrl(constants.addURL, 'post', JSON.stringify(data), true, responseHandler);
+		};
+
+		var keyHandler = function keyHandler(e) {
+			if (e.which === 13) {
+				addDevice(null);
+			}
+		};
+
+		var addEventListeners = function addEventListeners() {
+			objects.submitButton.on('click', addDevice);
+			objects.inputName.on('keydown', keyHandler);
+		};
+
+		this.firstRun = function () {
+			addEventListeners();
+		};
+	}
+
+	_createClass(AddAccount, [{
+		key: 'name',
+		value: function name() {
+			return 'AddAccount';
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.firstRun();
+		}
+	}]);
+
+	return AddAccount;
+})();
+
+exports['default'] = AddAccount;
+module.exports = exports['default'];
+//inputLocations: 'input#version'
+//inputDeviceVersion: $(selectors.inputDeviceVersion)
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2327,7 +2429,7 @@ var AddDevice = (function () {
 		};
 
 		var responseHandler = function responseHandler(res) {
-			console.log(res);
+			utils.debugConsole(res);
 		};
 
 		var addDevice = function addDevice(e) {
@@ -2343,7 +2445,7 @@ var AddDevice = (function () {
 		};
 
 		var keyHandler = function keyHandler(e) {
-			console.log(e.which);
+			utils.debugConsole(e.which);
 		};
 
 		var addEventListeners = function addEventListeners() {
@@ -2375,7 +2477,7 @@ var AddDevice = (function () {
 exports['default'] = AddDevice;
 module.exports = exports['default'];
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2790,7 +2892,7 @@ var DeviceDetails = (function () {
 
 		var deviceRequestHandler = function deviceRequestHandler(res) {
 			var device = JSON.parse(res).data;
-			console.log(device);
+			utils.debugConsole(device);
 		};
 
 		var temperatureRequestHandler = function temperatureRequestHandler(res) {
@@ -2800,11 +2902,11 @@ var DeviceDetails = (function () {
 		};
 
 		var deleteResponseHandler = function deleteResponseHandler(res) {
-			console.log(res);
+			utils.debugConsole(res);
 		};
 
 		var deleteBtnHandler = function deleteBtnHandler(e) {
-			console.log("delete");
+			utils.debugConsole("delete");
 			utils.loadUrl(constants.deleteUrl, "DELETE", JSON.stringify({ id: id }), true, deleteResponseHandler);
 		};
 
@@ -2841,7 +2943,7 @@ var DeviceDetails = (function () {
 exports["default"] = DeviceDetails;
 module.exports = exports["default"];
 
-},{"d3":11}],7:[function(require,module,exports){
+},{"d3":12}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2936,7 +3038,7 @@ var LocationDetails = (function () {
 exports['default'] = LocationDetails;
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2966,7 +3068,7 @@ var Login = (function () {
 exports["default"] = Login;
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3044,7 +3146,7 @@ var Main = (function () {
 exports["default"] = Main;
 module.exports = exports["default"];
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3060,6 +3162,8 @@ var _libPromiseMin = require('./../lib/promise.min');
 var _libPromiseMin2 = _interopRequireDefault(_libPromiseMin);
 
 //TODO: make Promise = Promise.Promise
+
+var debug = true;
 
 var Utils = (function () {
   function Utils() {
@@ -3112,6 +3216,13 @@ var Utils = (function () {
       }
       return true;
     };
+    this.debugConsole = function (message) {
+      if (debug) {
+        var c = document.getElementById('console');
+        c.value = c.value + '\n' + message;
+        console.log(message);
+      }
+    };
   }
 
   _createClass(Utils, [{
@@ -3142,7 +3253,7 @@ var Utils = (function () {
 exports['default'] = Utils;
 module.exports = exports['default'];
 
-},{"./../lib/promise.min":3}],11:[function(require,module,exports){
+},{"./../lib/promise.min":3}],12:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.5.6"

@@ -6,22 +6,25 @@ class AccountDetails {
 			getLocationsURL: '/api/locations/account/',
 			viewLocationURL: '/locations/view/',
 			getUsersURL: '/api/users/account/',
-			viewUserURL: '/users/view/'
+			viewUserURL: '/users/view/',
+			deleteUrl: '/api/account/delete/id'
 		};
 
 		let selectors = {
 			wrapper: '.account-details',
 			locationsList: '#locations-list',
-			usersList: '#users-list'
+			usersList: '#users-list',
+			deleteBtn: '.delete-account'
 		};
 
 		let objects = {
 			wrapper: $(selectors.wrapper),
 			locationsList: $(selectors.locationsList),
-			usersList: $(selectors.usersList)
+			usersList: $(selectors.usersList),
+			deleteBtn: $(selectors.deleteBtn)
 		};
 
-		let accountID = '';
+		let id = '';
 
 		let addLink = function( text, url, $target ) {
 			var $link = $(document.createElement('a'));
@@ -48,10 +51,26 @@ class AccountDetails {
 			}
 		};
 
+		let deleteResponseHandler = function (res) {
+			utils.debugConsole(res);
+		};
+
+		let deleteBtnHandler = function(e) {
+			utils.debugConsole('delete');
+			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
+		};
+
+		let addEventListeners = function(e) {
+			objects.deleteBtn.on('click', deleteBtnHandler);
+		};
+
 		this.firstRun = function() {
-			accountID = objects.wrapper.data('id');
-			utils.loadUrl( constants.getLocationsURL+accountID, 'GET', null, false, locationsRequestHandler);
-			utils.loadUrl( constants.getUsersURL+accountID, 'GET', null, false, usersRequestHandler);
+			id = objects.wrapper.data('id');
+
+			addEventListeners();
+
+			utils.loadUrl( constants.getLocationsURL+id, 'GET', null, false, locationsRequestHandler);
+			utils.loadUrl( constants.getUsersURL+id, 'GET', null, false, usersRequestHandler);
 		};
 	}
 

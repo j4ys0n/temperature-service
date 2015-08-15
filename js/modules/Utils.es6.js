@@ -2,6 +2,8 @@
 
 //TODO: make Promise = Promise.Promise
 
+let debug = true;
+
 class Utils {
 	constructor() {
         this.loadUrl = function(url, method, params, json, callback) {
@@ -51,7 +53,13 @@ class Utils {
         	}
         	return true;
         };
-
+		this.debugConsole = function(message) {
+			if(debug){
+				var c = document.getElementById("console");
+				c.value = c.value + '\n' + message;
+				console.log(message);
+			}
+		};
 	}
 
 	loadUrl(url, method, params, json, callback) {

@@ -14,15 +14,19 @@ module.exports = function(app) {
   //app.get( '/', site.default );
   //accounts
   app.get( '/accounts', accounts.renderAccountPage );
+  app.get( '/accounts/new', accounts.renderAccountAdd );
   app.get( '/accounts/view/:id', accounts.renderAccountDetails );
   //locations
   app.get( '/locations', locations.renderLocationsPage );
+  app.get( '/locations/new', locations.renderLocationAdd );
   app.get( '/locations/view/:id', locations.renderLocationDetails );
   //devices
   app.get( '/devices', devices.renderDevicesPage );
+  app.get( '/devices/new', devices.renderDeviceAdd );
   app.get( '/devices/view/:id', devices.renderDeviceDetails );
   //users
   app.get( '/users', users.renderUsersPage );
+  app.get( '/users/new', users.renderUserAdd );
   app.get( '/users/view/:id', users.renderUserDetails );
 
   //api

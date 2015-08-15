@@ -19,6 +19,9 @@ module.exports = {
             res.render( 'index', { data: { page: 'user-detail', user: user } } );
         });
     },
+    renderUserAdd: function( req, res ){
+        res.render( 'index', { data: { page: 'user-new' } } );
+    },
 
     /**
         -------- API --------

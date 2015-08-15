@@ -18,6 +18,9 @@ module.exports = {
             res.render( 'index', { data: { page: 'location-detail', location: location } } );
         });
     },
+    renderLocationAdd: function( req, res ){
+        res.render( 'index', { data: { page: 'location-new' } } );
+    },
 
     /**
         -------- API --------

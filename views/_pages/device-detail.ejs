@@ -1,9 +1,19 @@
-<h2>Account Details</h2>
+<h2>Device Details</h2>
 <div class="device-details" data-module="DeviceDetails" data-id="<%= data.device._id %>">
 	<form>
 		<div>
 			<label for="name">Name:</label>
 			<input type="text" id="name" name="name" value="<%= data.device.name %>" />
 		</div>
+		<div>
+			<label for="battery">Battery:</label>
+			<input type="text" id="battery" name="battery" value="<%= data.device.battery %>%" />
+		</div>
+		<div>
+			<label for="version">Version:</label>
+			<input type="text" id="version" name="version" value="<%= data.device.version %>" />
+		</div>
 	</form>
+	<div id="chart"></div>
+	<button class="delete-device">delete</button>
 </div>

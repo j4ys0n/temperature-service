@@ -19,6 +19,9 @@ module.exports = {
             res.render( 'index', { data: { page: 'account-detail', account: account } } );
         });
     },
+    renderAccountAdd: function( req, res ){
+        res.render( 'index', { data: { page: 'account-new' } } );
+    },
 
     /**
         -------- API --------

@@ -19,6 +19,9 @@ module.exports = {
             res.render( 'index', { data: { page: 'device-detail', device: device } } );
         });
     },
+    renderDeviceAdd: function( req, res ){
+        res.render( 'index', { data: { page: 'device-new' } } );
+    },
 
     /**
         -------- API --------
@@ -28,7 +31,7 @@ module.exports = {
     addDevice: function( req, res ){
         //add auth check
         var devicedata = {
-                battery: 0,
+                battery: req.body.battery,
 				name: req.body.name,
 				version: req.body.version
             };

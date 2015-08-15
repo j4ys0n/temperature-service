@@ -44,7 +44,7 @@ class LocationDetails {
 		let usersRequestHandler = function( res ) {
 			var users = JSON.parse(res).data,
 				i = 0;
-			console.log(users);
+				
 			for (i; i < users.length; i++){
 				addLink(users[i].user_name, constants.viewUserURL+users[i]._id, objects.usersList);
 			}

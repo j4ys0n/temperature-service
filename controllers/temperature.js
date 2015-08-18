@@ -47,6 +47,7 @@ module.exports = {
                     Temp.update({ '_id': temperaturedata._id }, { '$set': temperaturedata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
                     });
+                    console.log(req.body);
                     res.send(temperaturedata);
                 }
             }else{

@@ -40,11 +40,13 @@ module.exports = {
                 }else{
                     console.log('document found');
                     temperaturedata = temps[0];
+                    var tmpid = temperaturedata._id;
+                    delete temperaturedata._id;
                     temperaturedata.device.battery = req.body.device.battery;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
                     //also update metadata.last_updated
-                    Temp.update({ '_id': temperaturedata._id }, { '$set': temperaturedata }, function(error, doc){
+                    Temp.update({ '_id': tmpid }, { '$set': temperaturedata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
                         console.log('error: ' + error);
                     });

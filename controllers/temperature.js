@@ -47,7 +47,6 @@ module.exports = {
                     tmpdata.temperatures = temperaturedata.temperatures;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
-                    console.log(tmpdata);
                     //also update metadata.last_updated
                     Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);

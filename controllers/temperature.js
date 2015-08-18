@@ -41,7 +41,7 @@ module.exports = {
                     console.log('document found');
                     temperaturedata = temps[0];
                     var tmpid = temperaturedata._id;
-                    delete temperaturedata._id;
+                    delete temperaturedata["_id"];
                     temperaturedata.device.battery = req.body.device.battery;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();

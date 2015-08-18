@@ -46,6 +46,7 @@ module.exports = {
                     //also update metadata.last_updated
                     Temp.update({ '_id': temperaturedata._id }, { '$set': temperaturedata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
+                        console.log('error: ' + error);
                     });
                     console.log(req.body);
                     res.send(temperaturedata);

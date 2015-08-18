@@ -41,18 +41,22 @@ module.exports = {
                     console.log('document found');
                     temperaturedata = temps[0];
                     var tmpid = temperaturedata._id;
-                    delete temperaturedata["_id"];
-                    temperaturedata.device.battery = req.body.device.battery;
-                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
-                    temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
-                    console.log(temperaturedata);
+                    //delete temperaturedata._id;
+                    var tmpdata = {}
+                    tmpdata.temperatures = {};
+                    tmpdata.temperatures['hourly'] = {};
+                    tmpdata.temperatures['hourly'][req.body.hour] = {};
+                    tmpdata.temperatures['hourly'][req.body.hour][req.body.interval] = {};
+                    tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
+                    tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
+                    console.log(tmpdata);
                     //also update metadata.last_updated
-                    Temp.update({ '_id': tmpid }, { '$set': temperaturedata }, function(error, doc){
+                    Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
                         console.log('error: ' + error);
                     });
                     console.log(req.body);
-                    res.send(temperaturedata);
+                    res.send(tmpdata);
                 }
             }else{
                 res.send('0');

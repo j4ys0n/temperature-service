@@ -45,6 +45,7 @@ module.exports = {
                     temperaturedata.device.battery = req.body.device.battery;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
+                    console.log(temperaturedata);
                     //also update metadata.last_updated
                     Temp.update({ '_id': tmpid }, { '$set': temperaturedata }, function(error, doc){
                         console.log('updated: ' + temperaturedata._id + ' status: ' + doc);

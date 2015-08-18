@@ -44,9 +44,7 @@ module.exports = {
                     //delete temperaturedata._id;
                     var tmpdata = {}
                     tmpdata.temperatures = {};
-                    tmpdata.temperatures['hourly'] = {};
-                    tmpdata.temperatures['hourly'][req.body.hour] = {};
-                    tmpdata.temperatures['hourly'][req.body.hour][req.body.interval] = {};
+                    tmpdata.temperatures = temperaturedata.temperatures;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
                     console.log(tmpdata);

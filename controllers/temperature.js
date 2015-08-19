@@ -65,8 +65,12 @@ module.exports = {
 
     /* -------- gets -------- */
     deviceMostRecent: function( req, res ){
-        var deviceid = decodeURIComponent( req.params.id );
-        Temp.find( { "device.id": deviceid } ).exec( function( err, temps ){
+        var deviceid = decodeURIComponent( req.params.id ).
+            start = new Date();
+
+        start.setHours(0,0,0,0);
+
+        Temp.find( { "device.id": deviceid, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             res.json( Response.code( err, temps ), Response.data( err, temps ) );
         });
     },

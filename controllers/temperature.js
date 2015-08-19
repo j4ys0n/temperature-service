@@ -65,7 +65,7 @@ module.exports = {
 
     /* -------- gets -------- */
     deviceMostRecent: function( req, res ){
-        var deviceid = decodeURIComponent( req.params.id ).
+        var deviceid = decodeURIComponent( req.params.id ),
             start = new Date();
 
         start.setHours(0,0,0,0);

@@ -24,7 +24,7 @@ module.exports = {
                             battery: req.body.device.battery
                         },
                         account: {
-                            id: req.body.account.id
+                            //id: req.body.account.id
                         }
                     };
                     temperaturedata.temperatures = {};
@@ -62,6 +62,12 @@ module.exports = {
     },
 
     /* -------- gets -------- */
+    deviceMostRecent: function( req, res ){
+        var deviceid = decodeURIComponent( req.params.id );
+        Temp.find( { "device.id": deviceid } ).exec( function( err, temps ){
+            res.json( Response.code( err, temps ), Response.data( err, temps ) );
+        });
+    },
     deviceHistory: function( req, res ){
         var deviceid = decodeURIComponent( req.params.id );
         Temp.find( { "device.id": deviceid } ).exec( function( err, temps ){

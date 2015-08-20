@@ -38,11 +38,12 @@ module.exports = {
 					city: req.body.address.city,
 					state: req.body.address.state,
 					zip: req.body.address.zip,
-					coords: req.body.address.coords
+					//coords: req.body.address.coords
 				}
             };
         var location = new Location(locationdata);
         location.save();
+        console.log(locationdata);
         res.send(locationdata);
     },
 

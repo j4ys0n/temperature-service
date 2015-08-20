@@ -31,6 +31,10 @@ var _modulesDeviceDetailsEs6 = require('./modules/DeviceDetails.es6');
 
 var _modulesDeviceDetailsEs62 = _interopRequireDefault(_modulesDeviceDetailsEs6);
 
+var _modulesUserDetailsEs6 = require('./modules/UserDetails.es6');
+
+var _modulesUserDetailsEs62 = _interopRequireDefault(_modulesUserDetailsEs6);
+
 var _modulesAddDeviceEs6 = require('./modules/AddDevice.es6');
 
 var _modulesAddDeviceEs62 = _interopRequireDefault(_modulesAddDeviceEs6);
@@ -39,11 +43,19 @@ var _modulesAddAccountEs6 = require('./modules/AddAccount.es6');
 
 var _modulesAddAccountEs62 = _interopRequireDefault(_modulesAddAccountEs6);
 
-var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modulesLoginEs62['default'], _modulesAccountDetailsEs62['default'], _modulesLocationDetailsEs62['default'], _modulesDeviceDetailsEs62['default'], _modulesAddDeviceEs62['default'], _modulesAddAccountEs62['default']], _libJquery1112Min2['default']('[data-module]'), _modulesUtilsEs62['default']);
+var _modulesAddLocationEs6 = require('./modules/AddLocation.es6');
+
+var _modulesAddLocationEs62 = _interopRequireDefault(_modulesAddLocationEs6);
+
+var _modulesAddUserEs6 = require('./modules/AddUser.es6');
+
+var _modulesAddUserEs62 = _interopRequireDefault(_modulesAddUserEs6);
+
+var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modulesLoginEs62['default'], _modulesAccountDetailsEs62['default'], _modulesLocationDetailsEs62['default'], _modulesDeviceDetailsEs62['default'], _modulesUserDetailsEs62['default'], _modulesAddDeviceEs62['default'], _modulesAddAccountEs62['default'], _modulesAddLocationEs62['default'], _modulesAddUserEs62['default']], _libJquery1112Min2['default']('[data-module]'), _modulesUtilsEs62['default']);
 
 app.init();
 
-},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/DeviceDetails.es6":7,"./modules/LocationDetails.es6":8,"./modules/Login.es6":9,"./modules/Main.es6":10,"./modules/Utils.es6":11}],2:[function(require,module,exports){
+},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/AddLocation.es6":8,"./modules/AddUser.es6":9,"./modules/DeviceDetails.es6":10,"./modules/LocationDetails.es6":11,"./modules/Login.es6":12,"./modules/Main.es6":13,"./modules/UserDetails.es6":14,"./modules/Utils.es6":15}],2:[function(require,module,exports){
 /*! jQuery v1.11.2 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
 "use strict";
 
@@ -2283,7 +2295,7 @@ var AccountDetails = (function () {
 			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
 		};
 
-		var addEventListeners = function addEventListeners(e) {
+		var addEventListeners = function addEventListeners() {
 			objects.deleteBtn.on('click', deleteBtnHandler);
 		};
 
@@ -2322,56 +2334,36 @@ exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var AddAccount = (function () {
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _AddDocumentEs6 = require('./AddDocument.es6');
+
+var _AddDocumentEs62 = _interopRequireDefault(_AddDocumentEs6);
+
+var AddAccount = (function (_AddDocument) {
+	_inherits(AddAccount, _AddDocument);
+
 	function AddAccount($, Utils) {
 		_classCallCheck(this, AddAccount);
 
-		var utils = new Utils();
-
 		var constants = {
-			addURL: '/api/account/new'
+			addUrl: '/api/account/new'
 		};
 
 		var selectors = {
-			submitButton: '.add-account',
-			inputName: 'input#name'
+			submit: '.add-account',
+			name: 'input#name'
 		};
 
-		var objects = {
-			submitButton: $(selectors.submitButton),
-			inputName: $(selectors.inputName)
-		};
+		_get(Object.getPrototypeOf(AddAccount.prototype), 'constructor', this).call(this, $, Utils, selectors, constants.addUrl);
 
-		var responseHandler = function responseHandler(res) {
-			utils.debugConsole(res);
-			utils.debugConsole(res);
-		};
-
-		var addDevice = function addDevice(e) {
-			var name = objects.inputName.val(),
-			    data = {
-				name: name
-			};
-
-			utils.loadUrl(constants.addURL, 'post', JSON.stringify(data), true, responseHandler);
-		};
-
-		var keyHandler = function keyHandler(e) {
-			if (e.which === 13) {
-				addDevice(null);
-			}
-		};
-
-		var addEventListeners = function addEventListeners() {
-			objects.submitButton.on('click', addDevice);
-			objects.inputName.on('keydown', keyHandler);
-		};
-
-		this.firstRun = function () {
-			addEventListeners();
-		};
+		this.firstRun = function () {};
 	}
 
 	_createClass(AddAccount, [{
@@ -2387,76 +2379,49 @@ var AddAccount = (function () {
 	}]);
 
 	return AddAccount;
-})();
+})(_AddDocumentEs62['default']);
 
 exports['default'] = AddAccount;
 module.exports = exports['default'];
-//inputLocations: 'input#version'
-//inputDeviceVersion: $(selectors.inputDeviceVersion)
 
-},{}],6:[function(require,module,exports){
+},{"./AddDocument.es6":7}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var AddDevice = (function () {
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _AddDocumentEs6 = require('./AddDocument.es6');
+
+var _AddDocumentEs62 = _interopRequireDefault(_AddDocumentEs6);
+
+var AddDevice = (function (_AddDocument) {
+	_inherits(AddDevice, _AddDocument);
+
 	function AddDevice($, Utils) {
 		_classCallCheck(this, AddDevice);
 
-		var utils = new Utils();
-
 		var constants = {
-			addDeviceURL: '/api/device/new',
-			defaults: {
-				battery: 100
-			}
+			addUrl: '/api/device/new'
 		};
 
 		var selectors = {
-			submitButton: '.add-device',
-			inputDeviceName: 'input#name',
-			inputDeviceVersion: 'input#version'
+			submit: '.add-device',
+			name: 'input#name',
+			version: 'input#version'
 		};
 
-		var objects = {
-			submitButton: $(selectors.submitButton),
-			inputDeviceName: $(selectors.inputDeviceName),
-			inputDeviceVersion: $(selectors.inputDeviceVersion)
-		};
+		_get(Object.getPrototypeOf(AddDevice.prototype), 'constructor', this).call(this, $, Utils, selectors, constants.addUrl);
 
-		var responseHandler = function responseHandler(res) {
-			utils.debugConsole(res);
-		};
-
-		var addDevice = function addDevice(e) {
-			var deviceName = objects.inputDeviceName.val(),
-			    deviceVersion = objects.inputDeviceVersion.val(),
-			    data = {
-				name: deviceName,
-				version: deviceVersion,
-				battery: constants.defaults.battery
-			};
-
-			utils.loadUrl(constants.addDeviceURL, 'post', JSON.stringify(data), true, responseHandler);
-		};
-
-		var keyHandler = function keyHandler(e) {
-			utils.debugConsole(e.which);
-		};
-
-		var addEventListeners = function addEventListeners() {
-			objects.submitButton.on('click', addDevice);
-			objects.inputDeviceName.on('keydown', keyHandler);
-			objects.inputDeviceVersion.on('keydown', keyHandler);
-		};
-
-		this.firstRun = function () {
-			addEventListeners();
-		};
+		this.firstRun = function () {};
 	}
 
 	_createClass(AddDevice, [{
@@ -2472,12 +2437,191 @@ var AddDevice = (function () {
 	}]);
 
 	return AddDevice;
-})();
+})(_AddDocumentEs62['default']);
 
 exports['default'] = AddDevice;
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+},{"./AddDocument.es6":7}],7:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var AddDocument = function AddDocument($, Utils, selectors, url) {
+	_classCallCheck(this, AddDocument);
+
+	var utils = new Utils();
+
+	var submitResponseHandler = function submitResponseHandler(res) {
+		utils.debugConsole(res);
+	};
+
+	var composeData = function composeData() {
+		var d = {};
+		for (var index in selectors) {
+			var value = selectors[index];
+			if (index != 'submit' && typeof value != 'object') {
+				d[index] = $(value).val();
+			}
+			if (typeof value == 'object') {
+				for (var subIndex in value) {
+					if (d[index] === undefined) {
+						d[index] = {};
+					}
+					d[index][subIndex] = $(value[subIndex]).val();
+				}
+			}
+		}
+		return d;
+	};
+
+	var addDoc = this.addDoc = function (e) {
+		var postData = composeData();
+		utils.loadUrl(url, 'POST', JSON.stringify(postData), true, submitResponseHandler);
+	};
+
+	var addSubmitButtonListener = function addSubmitButtonListener($button) {
+		$button.on('click', addDoc);
+	};
+
+	addSubmitButtonListener($(selectors.submit));
+};
+
+exports['default'] = AddDocument;
+module.exports = exports['default'];
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _AddDocumentEs6 = require('./AddDocument.es6');
+
+var _AddDocumentEs62 = _interopRequireDefault(_AddDocumentEs6);
+
+var AddLocation = (function (_AddDocument) {
+	_inherits(AddLocation, _AddDocument);
+
+	function AddLocation($, Utils) {
+		_classCallCheck(this, AddLocation);
+
+		var constants = {
+			addUrl: '/api/locations/new'
+		};
+
+		var selectors = {
+			submit: '.add-location',
+			name: 'input#name',
+			address: {
+				company: 'input#company',
+				address1: 'input#address1',
+				address2: 'input#address2',
+				city: 'input#city',
+				state: 'input#state',
+				zip: 'input#zip',
+				coords: 'input#coords'
+			}
+		};
+
+		_get(Object.getPrototypeOf(AddLocation.prototype), 'constructor', this).call(this, $, Utils, selectors, constants.addUrl);
+
+		this.firstRun = function () {};
+	}
+
+	_createClass(AddLocation, [{
+		key: 'name',
+		value: function name() {
+			return 'AddLocation';
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.firstRun();
+		}
+	}]);
+
+	return AddLocation;
+})(_AddDocumentEs62['default']);
+
+exports['default'] = AddLocation;
+module.exports = exports['default'];
+
+},{"./AddDocument.es6":7}],9:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _AddDocumentEs6 = require('./AddDocument.es6');
+
+var _AddDocumentEs62 = _interopRequireDefault(_AddDocumentEs6);
+
+var AddUser = (function (_AddDocument) {
+	_inherits(AddUser, _AddDocument);
+
+	function AddUser($, Utils) {
+		_classCallCheck(this, AddUser);
+
+		var constants = {
+			addUrl: '/api/users/new'
+		};
+
+		var form = {
+			submit: '.add-user',
+			user_name: 'input#username',
+			first_name: 'input#firstname',
+			last_name: 'input#lastname',
+			email: 'input#email',
+			phone: 'input#phone',
+			notification_scheme: 'input#notifications',
+			password: 'input#password'
+		};
+
+		_get(Object.getPrototypeOf(AddUser.prototype), 'constructor', this).call(this, $, Utils, form, constants.addUrl);
+
+		this.firstRun = function () {};
+	}
+
+	_createClass(AddUser, [{
+		key: 'name',
+		value: function name() {
+			return 'AddUser';
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.firstRun();
+		}
+	}]);
+
+	return AddUser;
+})(_AddDocumentEs62['default']);
+
+exports['default'] = AddUser;
+module.exports = exports['default'];
+
+},{"./AddDocument.es6":7}],10:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2943,7 +3087,7 @@ var DeviceDetails = (function () {
 exports["default"] = DeviceDetails;
 module.exports = exports["default"];
 
-},{"d3":12}],8:[function(require,module,exports){
+},{"d3":16}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2962,22 +3106,25 @@ var LocationDetails = (function () {
 			getDeviceURL: '/api/device/id/',
 			viewDeviceURL: '/devices/view/',
 			getUsersURL: '/api/users/id/',
-			viewUserURL: '/users/view/'
+			viewUserURL: '/users/view/',
+			deleteUrl: '/api/locations/delete/id'
 		};
 
 		var selectors = {
 			wrapper: '.location-details',
 			usersList: '#users-list',
-			devicesList: '#devices-list'
+			devicesList: '#devices-list',
+			deleteBtn: '.delete-location'
 		};
 
 		var objects = {
 			wrapper: $(selectors.wrapper),
 			usersList: $(selectors.usersList),
-			devicesList: $(selectors.devicesList)
+			devicesList: $(selectors.devicesList),
+			deleteBtn: $(selectors.deleteBtn)
 		};
 
-		var locationID = '',
+		var id = '',
 		    userIDs = [],
 		    deviceIDs = [];
 
@@ -3006,10 +3153,25 @@ var LocationDetails = (function () {
 			}
 		};
 
+		var deleteResponseHandler = function deleteResponseHandler(res) {
+			utils.debugConsole(res);
+		};
+
+		var deleteBtnHandler = function deleteBtnHandler(e) {
+			utils.debugConsole('delete');
+			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
+		};
+
+		var addEventListeners = function addEventListeners(e) {
+			objects.deleteBtn.on('click', deleteBtnHandler);
+		};
+
 		this.firstRun = function () {
-			locationID = objects.wrapper.data('id');
+			id = objects.wrapper.data('id');
 			userIDs = objects.usersList.data('ids').split(',');
 			deviceIDs = objects.devicesList.data('ids').split(',');
+
+			addEventListeners();
 
 			for (var i = 0; i < deviceIDs.length; i++) {
 				utils.loadUrl(constants.getDeviceURL + deviceIDs[i], 'GET', null, false, devicesRequestHandler);
@@ -3038,7 +3200,7 @@ var LocationDetails = (function () {
 exports['default'] = LocationDetails;
 module.exports = exports['default'];
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3068,7 +3230,7 @@ var Login = (function () {
 exports["default"] = Login;
 module.exports = exports["default"];
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3146,7 +3308,75 @@ var Main = (function () {
 exports["default"] = Main;
 module.exports = exports["default"];
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var UserDetails = (function () {
+	function UserDetails($, Utils) {
+		_classCallCheck(this, UserDetails);
+
+		var utils = new Utils();
+
+		var constants = {
+			deleteUrl: '/api/users/delete/id'
+		};
+
+		var selectors = {
+			wrapper: '.user-details',
+			deleteBtn: '.delete-user'
+		};
+
+		var objects = {
+			wrapper: $(selectors.wrapper),
+			deleteBtn: $(selectors.deleteBtn)
+		};
+
+		var id = '';
+
+		var deleteResponseHandler = function deleteResponseHandler(res) {
+			utils.debugConsole(res);
+		};
+
+		var deleteBtnHandler = function deleteBtnHandler(e) {
+			utils.debugConsole('delete');
+			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
+		};
+
+		var addEventListeners = function addEventListeners() {
+			objects.deleteBtn.on('click', deleteBtnHandler);
+		};
+
+		this.firstRun = function () {
+			id = objects.wrapper.data('id');
+			addEventListeners();
+		};
+	}
+
+	_createClass(UserDetails, [{
+		key: 'name',
+		value: function name() {
+			return 'UserDetails';
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.firstRun();
+		}
+	}]);
+
+	return UserDetails;
+})();
+
+exports['default'] = UserDetails;
+module.exports = exports['default'];
+
+},{}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3253,7 +3483,7 @@ var Utils = (function () {
 exports['default'] = Utils;
 module.exports = exports['default'];
 
-},{"./../lib/promise.min":3}],12:[function(require,module,exports){
+},{"./../lib/promise.min":3}],16:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.5.6"

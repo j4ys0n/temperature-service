@@ -6,22 +6,25 @@ class LocationDetails {
 			getDeviceURL: '/api/device/id/',
 			viewDeviceURL: '/devices/view/',
 			getUsersURL: '/api/users/id/',
-			viewUserURL: '/users/view/'
+			viewUserURL: '/users/view/',
+			deleteUrl: '/api/locations/delete/id'
 		};
 
 		let selectors = {
 			wrapper: '.location-details',
 			usersList: '#users-list',
-			devicesList: '#devices-list'
+			devicesList: '#devices-list',
+			deleteBtn: '.delete-location'
 		};
 
 		let objects = {
 			wrapper: $(selectors.wrapper),
 			usersList: $(selectors.usersList),
-			devicesList: $(selectors.devicesList)
+			devicesList: $(selectors.devicesList),
+			deleteBtn: $(selectors.deleteBtn)
 		};
 
-		let locationID = '',
+		let id = '',
 			userIDs = [],
 			deviceIDs = [];
 
@@ -44,16 +47,31 @@ class LocationDetails {
 		let usersRequestHandler = function( res ) {
 			var users = JSON.parse(res).data,
 				i = 0;
-				
+
 			for (i; i < users.length; i++){
 				addLink(users[i].user_name, constants.viewUserURL+users[i]._id, objects.usersList);
 			}
 		};
 
+		let deleteResponseHandler = function (res) {
+			utils.debugConsole(res);
+		};
+
+		let deleteBtnHandler = function(e) {
+			utils.debugConsole('delete');
+			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
+		};
+
+		let addEventListeners = function(e) {
+			objects.deleteBtn.on('click', deleteBtnHandler);
+		};
+
 		this.firstRun = function() {
-			locationID = objects.wrapper.data('id');
+			id = objects.wrapper.data('id');
 			userIDs = objects.usersList.data('ids').split(',');
 			deviceIDs = objects.devicesList.data('ids').split(',');
+
+			addEventListeners();
 
 			for (var i = 0; i < deviceIDs.length; i++ ){
 				utils.loadUrl( constants.getDeviceURL+deviceIDs[i], 'GET', null, false, devicesRequestHandler);

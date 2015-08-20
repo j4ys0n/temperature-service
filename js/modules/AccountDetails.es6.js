@@ -60,7 +60,7 @@ class AccountDetails {
 			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
 		};
 
-		let addEventListeners = function(e) {
+		let addEventListeners = function() {
 			objects.deleteBtn.on('click', deleteBtnHandler);
 		};
 

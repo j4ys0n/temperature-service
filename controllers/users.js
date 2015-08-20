@@ -31,14 +31,14 @@ module.exports = {
     addUser: function( req, res ){
         //add auth check
         var userdata = {
-                user_name: req.body.username,
-                first_name: req.body.firstname,
-                last_name: req.body.lastname,
+                user_name: req.body.user_name,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
                 email: req.body.email,
                 phone: req.body.phone,
-                notification_scheme: req.body.notifications,
+                notification_scheme: req.body.notification_scheme,
                 password: req.body.password,
-                account_id: req.body.accountid
+                //account_id: req.body.accountid
             };
         var user = new User(userdata);
         user.save();

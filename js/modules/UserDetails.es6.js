@@ -1,4 +1,6 @@
-class UserDetails {
+import DocDetails from './DocDetails.es6';
+
+class UserDetails extends DocDetails {
 	constructor($, Utils) {
 		let utils = new Utils();
 
@@ -13,28 +15,16 @@ class UserDetails {
 
 		let objects = {
 			wrapper: $(selectors.wrapper),
-			deleteBtn: $(selectors.deleteBtn)
 		};
 
-		let id = '';
-
-		let deleteResponseHandler = function(res) {
-			utils.debugConsole(res);
+		let form = {
+			delete: selectors.deleteBtn,
+			id: objects.wrapper.data('id')
 		};
 
-		let deleteBtnHandler = function(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
-		};
+		super($, Utils, form, constants.deleteUrl );
 
-		let addEventListeners = function() {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
-
-		this.firstRun = function() {
-			id = objects.wrapper.data('id');
-			addEventListeners();
-		}
+		this.firstRun = function() {};
 	}
 
 	name() {

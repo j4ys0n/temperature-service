@@ -55,7 +55,7 @@ var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modul
 
 app.init();
 
-},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/AddLocation.es6":8,"./modules/AddUser.es6":9,"./modules/DeviceDetails.es6":10,"./modules/LocationDetails.es6":11,"./modules/Login.es6":12,"./modules/Main.es6":13,"./modules/UserDetails.es6":14,"./modules/Utils.es6":15}],2:[function(require,module,exports){
+},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/AddLocation.es6":8,"./modules/AddUser.es6":9,"./modules/DeviceDetails.es6":10,"./modules/LocationDetails.es6":12,"./modules/Login.es6":13,"./modules/Main.es6":14,"./modules/UserDetails.es6":15,"./modules/Utils.es6":16}],2:[function(require,module,exports){
 /*! jQuery v1.11.2 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
 "use strict";
 
@@ -3087,7 +3087,37 @@ var DeviceDetails = (function () {
 exports["default"] = DeviceDetails;
 module.exports = exports["default"];
 
-},{"d3":16}],11:[function(require,module,exports){
+},{"d3":17}],11:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var DocDetails = function DocDetails($, Utils, form, deleteUrl) {
+	_classCallCheck(this, DocDetails);
+
+	var utils = new Utils();
+
+	var deleteResponseHandler = function deleteResponseHandler(res) {
+		utils.debugConsole(res);
+	};
+
+	var deleteDoc = function deleteDoc(e) {
+		utils.loadUrl(deleteUrl, 'DELETE', JSON.stringify({ id: form.id }), true, deleteResponseHandler);
+	};
+
+	var addDeleteButtonListener = function addDeleteButtonListener($button) {
+		$button.on('click', deleteDoc);
+	};
+
+	addDeleteButtonListener($(form['delete']));
+};
+
+exports['default'] = DocDetails;
+module.exports = exports['default'];
+
+},{}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3200,7 +3230,7 @@ var LocationDetails = (function () {
 exports['default'] = LocationDetails;
 module.exports = exports['default'];
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3230,7 +3260,7 @@ var Login = (function () {
 exports["default"] = Login;
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3308,16 +3338,28 @@ var Main = (function () {
 exports["default"] = Main;
 module.exports = exports["default"];
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var UserDetails = (function () {
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _DocDetailsEs6 = require('./DocDetails.es6');
+
+var _DocDetailsEs62 = _interopRequireDefault(_DocDetailsEs6);
+
+var UserDetails = (function (_DocDetails) {
+	_inherits(UserDetails, _DocDetails);
+
 	function UserDetails($, Utils) {
 		_classCallCheck(this, UserDetails);
 
@@ -3333,29 +3375,17 @@ var UserDetails = (function () {
 		};
 
 		var objects = {
-			wrapper: $(selectors.wrapper),
-			deleteBtn: $(selectors.deleteBtn)
+			wrapper: $(selectors.wrapper)
 		};
 
-		var id = '';
-
-		var deleteResponseHandler = function deleteResponseHandler(res) {
-			utils.debugConsole(res);
+		var form = {
+			'delete': selectors.deleteBtn,
+			id: objects.wrapper.data('id')
 		};
 
-		var deleteBtnHandler = function deleteBtnHandler(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
-		};
+		_get(Object.getPrototypeOf(UserDetails.prototype), 'constructor', this).call(this, $, Utils, form, constants.deleteUrl);
 
-		var addEventListeners = function addEventListeners() {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
-
-		this.firstRun = function () {
-			id = objects.wrapper.data('id');
-			addEventListeners();
-		};
+		this.firstRun = function () {};
 	}
 
 	_createClass(UserDetails, [{
@@ -3371,12 +3401,12 @@ var UserDetails = (function () {
 	}]);
 
 	return UserDetails;
-})();
+})(_DocDetailsEs62['default']);
 
 exports['default'] = UserDetails;
 module.exports = exports['default'];
 
-},{}],15:[function(require,module,exports){
+},{"./DocDetails.es6":11}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3483,7 +3513,7 @@ var Utils = (function () {
 exports['default'] = Utils;
 module.exports = exports['default'];
 
-},{"./../lib/promise.min":3}],16:[function(require,module,exports){
+},{"./../lib/promise.min":3}],17:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.5.6"

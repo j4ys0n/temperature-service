@@ -32,7 +32,7 @@ class AddDocument {
 
 		let addSubmitButtonListener = function($button){
 			$button.on('click', addDoc);
-		}
+		};
 
 		addSubmitButtonListener($(selectors.submit));
 

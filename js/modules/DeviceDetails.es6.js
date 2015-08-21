@@ -385,11 +385,12 @@ var mockData = [
 	}
 ];
 
-class DeviceDetails {
+import DocDetails from './DocDetails.es6';
+
+class DeviceDetails extends DocDetails {
 	constructor($, Utils) {
 		let d3 = require('d3'),
-			utils = new Utils(),
-			id;
+			utils = new Utils();
 
 			let constants = {
 				getDeviceURL: '/api/device/id/',
@@ -399,12 +400,20 @@ class DeviceDetails {
 
 			let selectors = {
 				wrapper: '.device-details',
-				deleteBtn: '.delete-device'
+				deleteBtn: '.delete-device',
+				enableDelete: '#enable-delete'
 			};
 
 			let objects = {
-				wrapper: $(selectors.wrapper),
-				deleteBtn: $(selectors.deleteBtn)
+				wrapper: $(selectors.wrapper)
+			};
+
+			let id = objects.wrapper.data('id');
+
+			let deleteForm = {
+				id: id,
+				delete: $(selectors.deleteBtn),
+				enable: $(selectors.enableDelete)
 			};
 
 		let createChart = function( data ){
@@ -528,24 +537,9 @@ class DeviceDetails {
 			createChart(temps);
 		};
 
-		let deleteResponseHandler = function (res) {
-			utils.debugConsole(res);
-		};
-
-		let deleteBtnHandler = function(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
-		};
-
-		let addEventListeners = function(e) {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
+		super($, Utils, deleteForm, {delete: constants.deleteUrl});
 
 		this.firstRun = function() {
-			id = objects.wrapper.data('id');
-
-			addEventListeners();
-
 			utils.loadUrl( constants.getDeviceURL+id, 'GET', null, false, deviceRequestHandler );
 			utils.loadUrl( constants.getTempsURL+id, 'GET', null, false, temperatureRequestHandler );
 			//console.log(d3);

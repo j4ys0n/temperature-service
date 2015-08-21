@@ -7,12 +7,16 @@
 		</div>
 		<div>
 			<label for="locations-list">Locations:</label>
-			<span id="locations-list"></span>
+			<span id="locations-list" data-ids="<%= data.account.locations %>"></span>
+		</div>
+		<div>
+			<label for="primary-user">Primary User:</label>
+			<span id="primary-user" class="link-list" data-ids="<%= data.account.primary_user %>"></span>
 		</div>
 		<div>
 			<label for="users-list">Users:</label>
-			<span id="users-list" class="link-list"></span>
+			<span id="users-list" class="link-list" data-ids="<%= data.account.users %>"></span>
 		</div>
 	</form>
-	<button class="delete-account">delete</button>
+	<input type="checkbox" id="enable-delete"/><button class="delete-account" disabled>delete</button>
 </div>

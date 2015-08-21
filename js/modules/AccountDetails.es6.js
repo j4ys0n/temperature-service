@@ -1,11 +1,13 @@
-class AccountDetails {
+import DocDetails from './DocDetails.es6';
+
+class AccountDetails extends DocDetails {
 	constructor($, Utils) {
 		let utils = new Utils();
 
 		let constants = {
-			getLocationsURL: '/api/locations/account/',
+			getLocationsURL: '/api/locations/id/',
 			viewLocationURL: '/locations/view/',
-			getUsersURL: '/api/users/account/',
+			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
 			deleteUrl: '/api/account/delete/id'
 		};
@@ -13,64 +15,35 @@ class AccountDetails {
 		let selectors = {
 			wrapper: '.account-details',
 			locationsList: '#locations-list',
+			primaryUser: '#primary-user',
 			usersList: '#users-list',
-			deleteBtn: '.delete-account'
+			deleteBtn: '.delete-account',
+			enableDelete: '#enable-delete'
 		};
 
 		let objects = {
 			wrapper: $(selectors.wrapper),
 			locationsList: $(selectors.locationsList),
-			usersList: $(selectors.usersList),
-			deleteBtn: $(selectors.deleteBtn)
+			primaryUser: $(selectors.primaryUser),
+			usersList: $(selectors.usersList)
 		};
 
-		let id = '';
+		let id = objects.wrapper.data('id');
 
-		let addLink = function( text, url, $target ) {
-			var $link = $(document.createElement('a'));
-			$link.text(text);
-			$link.attr('href', url);
-			$target.append($link);
+		let deleteForm = {
+			id: id,
+			delete: $(selectors.deleteBtn),
+			enable: $(selectors.enableDelete)
 		};
 
-		let locationsRequestHandler = function( res ) {
-			var locations = JSON.parse(res).data,
-				i = 0;
+		super($, Utils, deleteForm, {delete: constants.deleteUrl});
 
-			for (i; i < locations.length; i++){
-				addLink(locations[i].name, constants.viewLocationURL+locations[i]._id, objects.locationsList);
-			}
-		};
+		let self = this;
 
-		let usersRequestHandler = function( res ) {
-			var users = JSON.parse(res).data,
-				i = 0;
-
-			for (i; i < users.length; i++){
-				addLink(users[i].user_name, constants.viewUserURL+users[i]._id, objects.usersList);
-			}
-		};
-
-		let deleteResponseHandler = function (res) {
-			utils.debugConsole(res);
-		};
-
-		let deleteBtnHandler = function(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
-		};
-
-		let addEventListeners = function() {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
-
-		this.firstRun = function() {
-			id = objects.wrapper.data('id');
-
-			addEventListeners();
-
-			utils.loadUrl( constants.getLocationsURL+id, 'GET', null, false, locationsRequestHandler);
-			utils.loadUrl( constants.getUsersURL+id, 'GET', null, false, usersRequestHandler);
+		self.firstRun = function() {
+			self.addRelatedByIds(objects.locationsList.data('ids'), constants.getLocationsURL, constants.viewLocationURL, 'name', objects.locationsList);
+			self.addRelatedByIds(objects.primaryUser.data('ids'), constants.getUserURL, constants.viewUserURL, 'user_name', objects.primaryUser);
+			self.addRelatedByIds(objects.usersList.data('ids'), constants.getUserURL, constants.viewUserURL, 'user_name', objects.usersList);
 		};
 	}
 

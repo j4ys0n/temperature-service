@@ -1,4 +1,6 @@
-class LocationDetails {
+import DocDetails from './DocDetails.es6';
+
+class LocationDetails extends DocDetails {
 	constructor($, Utils) {
 		let utils = new Utils();
 
@@ -12,75 +14,36 @@ class LocationDetails {
 
 		let selectors = {
 			wrapper: '.location-details',
+			primaryUser: '#primary-user',
 			usersList: '#users-list',
 			devicesList: '#devices-list',
-			deleteBtn: '.delete-location'
+			deleteBtn: '.delete-location',
+			enableDelete: '#enable-delete'
 		};
 
 		let objects = {
 			wrapper: $(selectors.wrapper),
+			primaryUser: $(selectors.primaryUser),
 			usersList: $(selectors.usersList),
-			devicesList: $(selectors.devicesList),
-			deleteBtn: $(selectors.deleteBtn)
+			devicesList: $(selectors.devicesList)
 		};
 
-		let id = '',
-			userIDs = [],
-			deviceIDs = [];
+		let id = objects.wrapper.data('id');
 
-		let addLink = function( text, url, $target ) {
-			var $link = $(document.createElement('a'));
-			$link.text(text);
-			$link.attr('href', url);
-			$target.append($link);
+		let deleteForm = {
+			id: id,
+			delete: $(selectors.deleteBtn),
+			enable: $(selectors.enableDelete)
 		};
 
-		let devicesRequestHandler = function( res ) {
-			var devices = JSON.parse(res).data,
-				i = 0;
+		super($, Utils, deleteForm, {delete: constants.deleteUrl});
 
-			for (i; i < devices.length; i++){
-				addLink(devices[i].name, constants.viewDeviceURL+devices[i]._id, objects.devicesList);
-			}
-		};
+		let self = this;
 
-		let usersRequestHandler = function( res ) {
-			var users = JSON.parse(res).data,
-				i = 0;
-
-			for (i; i < users.length; i++){
-				addLink(users[i].user_name, constants.viewUserURL+users[i]._id, objects.usersList);
-			}
-		};
-
-		let deleteResponseHandler = function (res) {
-			utils.debugConsole(res);
-		};
-
-		let deleteBtnHandler = function(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl( constants.deleteUrl, 'DELETE', JSON.stringify({id: id}), true, deleteResponseHandler );
-		};
-
-		let addEventListeners = function(e) {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
-
-		this.firstRun = function() {
-			id = objects.wrapper.data('id');
-			userIDs = objects.usersList.data('ids').split(',');
-			deviceIDs = objects.devicesList.data('ids').split(',');
-
-			addEventListeners();
-
-			for (var i = 0; i < deviceIDs.length; i++ ){
-				utils.loadUrl( constants.getDeviceURL+deviceIDs[i], 'GET', null, false, devicesRequestHandler);
-			}
-			for (var i = 0; i < userIDs.length; i++ ){
-				utils.loadUrl( constants.getUsersURL+userIDs[i], 'GET', null, false, usersRequestHandler);
-			}
-
-
+		self.firstRun = function() {
+			self.addRelatedByIds(objects.primaryUser.data('ids'), constants.getUsersURL, constants.viewUserURL, 'user_name', objects.primaryUser);
+			self.addRelatedByIds(objects.usersList.data('ids'), constants.getUsersURL, constants.viewUserURL, 'user_name', objects.usersList);
+			self.addRelatedByIds(objects.devicesList.data('ids'), constants.getDeviceURL, constants.viewDeviceURL, 'name', objects.devicesList);
 		};
 	}
 

@@ -14,7 +14,8 @@ module.exports = {
         });
     },
     renderLocationDetails: function( req, res ){
-        Location.findOne().exec( function( err, location ){
+        var id = decodeURIComponent( req.params.id );
+        Location.findOne( { _id: id } ).exec( function( err, location ){
             res.render( 'index', { data: { page: 'location-detail', location: location } } );
         });
     },

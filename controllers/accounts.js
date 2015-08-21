@@ -112,7 +112,24 @@ module.exports = {
 		});
     },
     removeLocation: function( req, res ){
-
+        Account.findOne( { _id: req.body.accountid } ).exec( function( err, account ) {
+            var locations = account.locations,
+                locationid = req.body.locationid,
+                idIndex = locations.indexOf(locationid);
+            if(idIndex > -1){
+                locations.splice(idIndex, 1);
+                Account.update( { _id: req.body.accountid }, { '$set': { 'locations': locations, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.locationid + ' status: ' + status);
+                    if(status === 1){
+                        res.send('updated');
+                    }else{
+                        res.send('error:'+ error);
+                    }
+                });
+            }else{
+                res.send('location not connected to account');
+            }
+        });
     },
     updateName: function( req, res ){
         Account.update( { _id: req.body.accountid }, { '$set': { 'name': req.body.name, 'metadata.last_updated': new Date() } }, function(error, status){

@@ -10,19 +10,21 @@ class UserDetails extends DocDetails {
 
 		let selectors = {
 			wrapper: '.user-details',
-			deleteBtn: '.delete-user'
+			deleteBtn: '.delete-user',
+			enableDelete: '#enable-delete'
 		};
 
 		let objects = {
-			wrapper: $(selectors.wrapper),
+			wrapper: $(selectors.wrapper)
 		};
 
 		let form = {
 			delete: selectors.deleteBtn,
-			id: objects.wrapper.data('id')
+			id: objects.wrapper.data('id'),
+			enable: $(selectors.enableDelete)
 		};
 
-		super($, Utils, form, constants.deleteUrl );
+		super($, Utils, form, {delete: constants.deleteUrl} );
 
 		this.firstRun = function() {};
 	}

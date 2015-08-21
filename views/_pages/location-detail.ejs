@@ -30,6 +30,10 @@
 			<input type="text" id="zip" name="address.zip" value="<%= data.location.address.zip %>" />
 		</div>
 		<div>
+			<label for="primary-user">Primary User:</label>
+			<span id="primary-user" class="link-list" data-ids="<%= data.location.primary_user %>"></span>
+		</div>
+		<div>
 			<label for="users-list">Users:</label>
 			<span id="users-list" class="link-list" data-ids="<%= data.location.users %>"></span>
 		</div>
@@ -38,5 +42,5 @@
 			<span id="devices-list" class="link-list" data-ids="<%= data.location.devices %>"></span>
 		</div>
 	</form>
-	<button class="delete-location">delete</button>
+	<input type="checkbox" id="enable-delete"/><button class="delete-location" disabled>delete</button>
 </div>

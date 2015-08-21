@@ -2229,18 +2229,30 @@ exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var AccountDetails = (function () {
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _DocDetailsEs6 = require('./DocDetails.es6');
+
+var _DocDetailsEs62 = _interopRequireDefault(_DocDetailsEs6);
+
+var AccountDetails = (function (_DocDetails) {
+	_inherits(AccountDetails, _DocDetails);
+
 	function AccountDetails($, Utils) {
 		_classCallCheck(this, AccountDetails);
 
 		var utils = new Utils();
 
 		var constants = {
-			getLocationsURL: '/api/locations/account/',
+			getLocationsURL: '/api/locations/id/',
 			viewLocationURL: '/locations/view/',
-			getUsersURL: '/api/users/account/',
+			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
 			deleteUrl: '/api/account/delete/id'
 		};
@@ -2248,64 +2260,35 @@ var AccountDetails = (function () {
 		var selectors = {
 			wrapper: '.account-details',
 			locationsList: '#locations-list',
+			primaryUser: '#primary-user',
 			usersList: '#users-list',
-			deleteBtn: '.delete-account'
+			deleteBtn: '.delete-account',
+			enableDelete: '#enable-delete'
 		};
 
 		var objects = {
 			wrapper: $(selectors.wrapper),
 			locationsList: $(selectors.locationsList),
-			usersList: $(selectors.usersList),
-			deleteBtn: $(selectors.deleteBtn)
+			primaryUser: $(selectors.primaryUser),
+			usersList: $(selectors.usersList)
 		};
 
-		var id = '';
+		var id = objects.wrapper.data('id');
 
-		var addLink = function addLink(text, url, $target) {
-			var $link = $(document.createElement('a'));
-			$link.text(text);
-			$link.attr('href', url);
-			$target.append($link);
+		var deleteForm = {
+			id: id,
+			'delete': $(selectors.deleteBtn),
+			enable: $(selectors.enableDelete)
 		};
 
-		var locationsRequestHandler = function locationsRequestHandler(res) {
-			var locations = JSON.parse(res).data,
-			    i = 0;
+		_get(Object.getPrototypeOf(AccountDetails.prototype), 'constructor', this).call(this, $, Utils, deleteForm, { 'delete': constants.deleteUrl });
 
-			for (i; i < locations.length; i++) {
-				addLink(locations[i].name, constants.viewLocationURL + locations[i]._id, objects.locationsList);
-			}
-		};
+		var self = this;
 
-		var usersRequestHandler = function usersRequestHandler(res) {
-			var users = JSON.parse(res).data,
-			    i = 0;
-
-			for (i; i < users.length; i++) {
-				addLink(users[i].user_name, constants.viewUserURL + users[i]._id, objects.usersList);
-			}
-		};
-
-		var deleteResponseHandler = function deleteResponseHandler(res) {
-			utils.debugConsole(res);
-		};
-
-		var deleteBtnHandler = function deleteBtnHandler(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
-		};
-
-		var addEventListeners = function addEventListeners() {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
-
-		this.firstRun = function () {
-			id = objects.wrapper.data('id');
-
-			addEventListeners();
-
-			utils.loadUrl(constants.getLocationsURL + id, 'GET', null, false, locationsRequestHandler);
-			utils.loadUrl(constants.getUsersURL + id, 'GET', null, false, usersRequestHandler);
+		self.firstRun = function () {
+			self.addRelatedByIds(objects.locationsList.data('ids'), constants.getLocationsURL, constants.viewLocationURL, 'name', objects.locationsList);
+			self.addRelatedByIds(objects.primaryUser.data('ids'), constants.getUserURL, constants.viewUserURL, 'user_name', objects.primaryUser);
+			self.addRelatedByIds(objects.usersList.data('ids'), constants.getUserURL, constants.viewUserURL, 'user_name', objects.usersList);
 		};
 	}
 
@@ -2322,12 +2305,12 @@ var AccountDetails = (function () {
 	}]);
 
 	return AccountDetails;
-})();
+})(_DocDetailsEs62['default']);
 
 exports['default'] = AccountDetails;
 module.exports = exports['default'];
 
-},{}],5:[function(require,module,exports){
+},{"./DocDetails.es6":11}],5:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2628,7 +2611,17 @@ exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _DocDetailsEs6 = require("./DocDetails.es6");
+
+var _DocDetailsEs62 = _interopRequireDefault(_DocDetailsEs6);
 
 var mockData = [{
 	"date": "2015-08-13T11:11:47-07:00",
@@ -2920,13 +2913,14 @@ var mockData = [{
 	"value": "30"
 }];
 
-var DeviceDetails = (function () {
+var DeviceDetails = (function (_DocDetails) {
+	_inherits(DeviceDetails, _DocDetails);
+
 	function DeviceDetails($, Utils) {
 		_classCallCheck(this, DeviceDetails);
 
 		var d3 = require("d3"),
-		    utils = new Utils(),
-		    id = undefined;
+		    utils = new Utils();
 
 		var constants = {
 			getDeviceURL: "/api/device/id/",
@@ -2936,12 +2930,20 @@ var DeviceDetails = (function () {
 
 		var selectors = {
 			wrapper: ".device-details",
-			deleteBtn: ".delete-device"
+			deleteBtn: ".delete-device",
+			enableDelete: "#enable-delete"
 		};
 
 		var objects = {
-			wrapper: $(selectors.wrapper),
-			deleteBtn: $(selectors.deleteBtn)
+			wrapper: $(selectors.wrapper)
+		};
+
+		var id = objects.wrapper.data("id");
+
+		var deleteForm = {
+			id: id,
+			"delete": $(selectors.deleteBtn),
+			enable: $(selectors.enableDelete)
 		};
 
 		var createChart = function createChart(data) {
@@ -3045,24 +3047,9 @@ var DeviceDetails = (function () {
 			createChart(temps);
 		};
 
-		var deleteResponseHandler = function deleteResponseHandler(res) {
-			utils.debugConsole(res);
-		};
-
-		var deleteBtnHandler = function deleteBtnHandler(e) {
-			utils.debugConsole("delete");
-			utils.loadUrl(constants.deleteUrl, "DELETE", JSON.stringify({ id: id }), true, deleteResponseHandler);
-		};
-
-		var addEventListeners = function addEventListeners(e) {
-			objects.deleteBtn.on("click", deleteBtnHandler);
-		};
+		_get(Object.getPrototypeOf(DeviceDetails.prototype), "constructor", this).call(this, $, Utils, deleteForm, { "delete": constants.deleteUrl });
 
 		this.firstRun = function () {
-			id = objects.wrapper.data("id");
-
-			addEventListeners();
-
 			utils.loadUrl(constants.getDeviceURL + id, "GET", null, false, deviceRequestHandler);
 			utils.loadUrl(constants.getTempsURL + id, "GET", null, false, temperatureRequestHandler);
 			//console.log(d3);
@@ -3082,36 +3069,77 @@ var DeviceDetails = (function () {
 	}]);
 
 	return DeviceDetails;
-})();
+})(_DocDetailsEs62["default"]);
 
 exports["default"] = DeviceDetails;
 module.exports = exports["default"];
 
-},{"d3":17}],11:[function(require,module,exports){
+},{"./DocDetails.es6":11,"d3":17}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var DocDetails = function DocDetails($, Utils, form, deleteUrl) {
+var DocDetails = function DocDetails($, Utils, form, urls) {
 	_classCallCheck(this, DocDetails);
 
 	var utils = new Utils();
+
+	/**
+ 	DELETE
+ **/
 
 	var deleteResponseHandler = function deleteResponseHandler(res) {
 		utils.debugConsole(res);
 	};
 
 	var deleteDoc = function deleteDoc(e) {
-		utils.loadUrl(deleteUrl, 'DELETE', JSON.stringify({ id: form.id }), true, deleteResponseHandler);
+		utils.loadUrl(urls['delete'], 'DELETE', JSON.stringify({ id: form.id }), true, deleteResponseHandler);
 	};
 
-	var addDeleteButtonListener = function addDeleteButtonListener($button) {
+	var toggleDeleteEnable = function toggleDeleteEnable(e) {
+		if (this.checked) {
+			$(form['delete']).removeAttr('disabled');
+		} else {
+			$(form['delete']).attr('disabled', 'true');
+		}
+	};
+
+	var addDeleteButtonListener = function addDeleteButtonListener($button, $enable) {
+		$enable.on('change', toggleDeleteEnable);
 		$button.on('click', deleteDoc);
 	};
 
-	addDeleteButtonListener($(form['delete']));
+	addDeleteButtonListener($(form['delete']), $(form.enable));
+
+	/**
+ 	ADD LINKS
+ **/
+
+	this.addRelatedByIds = function (ids, getDocsUrl, viewDocUrl, docNameField, $container) {
+		ids = ids === '' ? [] : ids.split(',');
+
+		var addLink = function addLink(text, url) {
+			var $link = $(document.createElement('a'));
+			$link.text(text);
+			$link.attr('href', url);
+			$container.append($link);
+		};
+
+		var getRelatedResponseHandler = function getRelatedResponseHandler(res) {
+			var docs = JSON.parse(res).data,
+			    i = 0;
+
+			for (i; i < docs.length; i++) {
+				addLink(docs[i][docNameField], viewDocUrl + docs[i]._id);
+			}
+		};
+
+		for (var i = 0; i < ids.length; i++) {
+			utils.loadUrl(getDocsUrl + ids[i], 'GET', null, false, getRelatedResponseHandler);
+		}
+	};
 };
 
 exports['default'] = DocDetails;
@@ -3124,9 +3152,21 @@ exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var LocationDetails = (function () {
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _DocDetailsEs6 = require('./DocDetails.es6');
+
+var _DocDetailsEs62 = _interopRequireDefault(_DocDetailsEs6);
+
+var LocationDetails = (function (_DocDetails) {
+	_inherits(LocationDetails, _DocDetails);
+
 	function LocationDetails($, Utils) {
 		_classCallCheck(this, LocationDetails);
 
@@ -3142,73 +3182,36 @@ var LocationDetails = (function () {
 
 		var selectors = {
 			wrapper: '.location-details',
+			primaryUser: '#primary-user',
 			usersList: '#users-list',
 			devicesList: '#devices-list',
-			deleteBtn: '.delete-location'
+			deleteBtn: '.delete-location',
+			enableDelete: '#enable-delete'
 		};
 
 		var objects = {
 			wrapper: $(selectors.wrapper),
+			primaryUser: $(selectors.primaryUser),
 			usersList: $(selectors.usersList),
-			devicesList: $(selectors.devicesList),
-			deleteBtn: $(selectors.deleteBtn)
+			devicesList: $(selectors.devicesList)
 		};
 
-		var id = '',
-		    userIDs = [],
-		    deviceIDs = [];
+		var id = objects.wrapper.data('id');
 
-		var addLink = function addLink(text, url, $target) {
-			var $link = $(document.createElement('a'));
-			$link.text(text);
-			$link.attr('href', url);
-			$target.append($link);
+		var deleteForm = {
+			id: id,
+			'delete': $(selectors.deleteBtn),
+			enable: $(selectors.enableDelete)
 		};
 
-		var devicesRequestHandler = function devicesRequestHandler(res) {
-			var devices = JSON.parse(res).data,
-			    i = 0;
+		_get(Object.getPrototypeOf(LocationDetails.prototype), 'constructor', this).call(this, $, Utils, deleteForm, { 'delete': constants.deleteUrl });
 
-			for (i; i < devices.length; i++) {
-				addLink(devices[i].name, constants.viewDeviceURL + devices[i]._id, objects.devicesList);
-			}
-		};
+		var self = this;
 
-		var usersRequestHandler = function usersRequestHandler(res) {
-			var users = JSON.parse(res).data,
-			    i = 0;
-
-			for (i; i < users.length; i++) {
-				addLink(users[i].user_name, constants.viewUserURL + users[i]._id, objects.usersList);
-			}
-		};
-
-		var deleteResponseHandler = function deleteResponseHandler(res) {
-			utils.debugConsole(res);
-		};
-
-		var deleteBtnHandler = function deleteBtnHandler(e) {
-			utils.debugConsole('delete');
-			utils.loadUrl(constants.deleteUrl, 'DELETE', JSON.stringify({ id: id }), true, deleteResponseHandler);
-		};
-
-		var addEventListeners = function addEventListeners(e) {
-			objects.deleteBtn.on('click', deleteBtnHandler);
-		};
-
-		this.firstRun = function () {
-			id = objects.wrapper.data('id');
-			userIDs = objects.usersList.data('ids').split(',');
-			deviceIDs = objects.devicesList.data('ids').split(',');
-
-			addEventListeners();
-
-			for (var i = 0; i < deviceIDs.length; i++) {
-				utils.loadUrl(constants.getDeviceURL + deviceIDs[i], 'GET', null, false, devicesRequestHandler);
-			}
-			for (var i = 0; i < userIDs.length; i++) {
-				utils.loadUrl(constants.getUsersURL + userIDs[i], 'GET', null, false, usersRequestHandler);
-			}
+		self.firstRun = function () {
+			self.addRelatedByIds(objects.primaryUser.data('ids'), constants.getUsersURL, constants.viewUserURL, 'user_name', objects.primaryUser);
+			self.addRelatedByIds(objects.usersList.data('ids'), constants.getUsersURL, constants.viewUserURL, 'user_name', objects.usersList);
+			self.addRelatedByIds(objects.devicesList.data('ids'), constants.getDeviceURL, constants.viewDeviceURL, 'name', objects.devicesList);
 		};
 	}
 
@@ -3225,12 +3228,12 @@ var LocationDetails = (function () {
 	}]);
 
 	return LocationDetails;
-})();
+})(_DocDetailsEs62['default']);
 
 exports['default'] = LocationDetails;
 module.exports = exports['default'];
 
-},{}],13:[function(require,module,exports){
+},{"./DocDetails.es6":11}],13:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3371,7 +3374,8 @@ var UserDetails = (function (_DocDetails) {
 
 		var selectors = {
 			wrapper: '.user-details',
-			deleteBtn: '.delete-user'
+			deleteBtn: '.delete-user',
+			enableDelete: '#enable-delete'
 		};
 
 		var objects = {
@@ -3380,10 +3384,11 @@ var UserDetails = (function (_DocDetails) {
 
 		var form = {
 			'delete': selectors.deleteBtn,
-			id: objects.wrapper.data('id')
+			id: objects.wrapper.data('id'),
+			enable: $(selectors.enableDelete)
 		};
 
-		_get(Object.getPrototypeOf(UserDetails.prototype), 'constructor', this).call(this, $, Utils, form, constants.deleteUrl);
+		_get(Object.getPrototypeOf(UserDetails.prototype), 'constructor', this).call(this, $, Utils, form, { 'delete': constants.deleteUrl });
 
 		this.firstRun = function () {};
 	}

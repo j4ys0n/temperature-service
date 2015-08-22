@@ -89,7 +89,7 @@ module.exports = {
                 'address.city': d.address.city,
                 'address.state': d.address.state,
                 'address.zip': d.address.zip,
-                'address.coords': d.address.coords,
+                //'address.coords': d.address.coords,
                 'metadata.last_updated': new Date() }
             }, function(error, status){
             console.log('location update: ' + req.body.id + ' status: ' + status);

@@ -69,6 +69,7 @@ module.exports = {
             start = new Date();
 
         start.setHours(0,0,0,0);
+        console.log(start);
 
         Temp.find( { "device.id": deviceid, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             res.json( Response.code( err, temps ), Response.data( err, temps ) );

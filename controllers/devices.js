@@ -54,6 +54,17 @@ module.exports = {
     },
 
     /* -------- updates -------- */
+    updateDeviceNameVersion: function ( req, res ){
+
+        Device.update( { _id: req.body.id }, { '$set': { 'name': req.body.name, 'version': req.body.version, 'metadata.last_updated': new Date() } }, function(error, status){
+            console.log('account updated: ' + req.body.accountid + ' status: ' + status);
+            if(status === 1){
+                res.send('updated');
+            }else{
+                res.send('error:'+ error);
+            }
+        });
+    },
     updateDeviceName: function( req, res ){
         Device.update( { _id: req.body.id }, { '$set': { 'name': req.body.name, 'metadata.last_updated': new Date() } }, function(error, status){
             console.log('account updated: ' + req.body.accountid + ' status: ' + status);

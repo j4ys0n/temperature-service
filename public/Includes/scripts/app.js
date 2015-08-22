@@ -2259,7 +2259,8 @@ var AccountDetails = (function (_DocDetails) {
 			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
 			removeUserURL: '/api/account/update/removeuser',
-			deleteUrl: '/api/account/delete/id'
+			deleteUrl: '/api/account/delete/id',
+			updateUrl: '/api/account/update/name'
 		};
 
 		var selectors = {
@@ -2285,7 +2286,10 @@ var AccountDetails = (function (_DocDetails) {
 			addPrimary: '#add-primary',
 			addPrimaryForm: '#add-form-primary',
 			addPrimarySelect: '#primary-select',
-			addPrimarySubmit: '#primary-select-submit'
+			addPrimarySubmit: '#primary-select-submit',
+			//inputs
+			inputs: 'input[type="text"]',
+			submit: 'button.update-account'
 		};
 
 		var objects = {
@@ -2337,10 +2341,13 @@ var AccountDetails = (function (_DocDetails) {
 					existing: objects.primaryUser.data('ids'),
 					updateField: 'userid'
 				}
-			}
+			},
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
 		};
 
-		_get(Object.getPrototypeOf(AccountDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl });
+		_get(Object.getPrototypeOf(AccountDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl,
+			update: constants.updateUrl });
 
 		var self = this;
 
@@ -3002,13 +3009,17 @@ var DeviceDetails = (function (_DocDetails) {
 		var constants = {
 			getDeviceURL: "/api/device/id/",
 			getTempsURL: "/api/temperature/device/",
-			deleteUrl: "/api/device/delete/id"
+			deleteUrl: "/api/device/delete/id",
+			updateUrl: "/api/device/update/nameversion"
 		};
 
 		var selectors = {
 			wrapper: ".device-details",
 			deleteBtn: ".delete-device",
-			enableDelete: "#enable-delete"
+			enableDelete: "#enable-delete",
+			//inputs
+			inputs: "input[type=\"text\"]",
+			submit: "button.update-device"
 		};
 
 		var objects = {
@@ -3022,7 +3033,9 @@ var DeviceDetails = (function (_DocDetails) {
 			"delete": {
 				deleteBtn: $(selectors.deleteBtn),
 				enable: $(selectors.enableDelete)
-			}
+			},
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
 		};
 
 		var createChart = function createChart(data) {
@@ -3082,17 +3095,17 @@ var DeviceDetails = (function (_DocDetails) {
 			// 	  }
 			//   }
 
-			mockData.forEach(function (d) {
-				d.date = Date.parse(d.date);
-				d.value = +d.value;
-			});
+			//   data.forEach(function(d){
+			// 	  d.date = Date.parse(d.date);
+			// 	  d.value = +d.value;
+			//   });
 
-			mockData.sort(function (a, b) {
+			data.sort(function (a, b) {
 				return parseFloat(a.date) - parseFloat(b.date);
 			});
 
 			//data = newData;
-			data = mockData;
+			//data = mockData;
 			//console.log(data);
 
 			//   data.forEach(function(d) {
@@ -3105,7 +3118,7 @@ var DeviceDetails = (function (_DocDetails) {
 				return d.date;
 			}));
 			//y.domain(d3.extent(data, function(d) { return d.value; }));
-			y.domain([20, 50]);
+			y.domain([20, 100]);
 
 			svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
 
@@ -3113,6 +3126,45 @@ var DeviceDetails = (function (_DocDetails) {
 
 			svg.append("path").datum(data).attr("class", "line").attr("d", line);
 			//});
+		};
+
+		var dateFormatter = function dateFormatter(dt) {
+
+			var leadingZero = function leadingZero(val) {
+				var rtn = val.toString();
+				if (val < 10) {
+					rtn = "0" + val.toString();
+				}
+				return rtn;
+			};
+
+			//var dStr = dt.getFullYear()+'-'+leadingZero((dt.getMonth()+1))+'-'+leadingZero(dt.getDate())+'T'+leadingZero((dt.getHours()+1))+':'+leadingZero(dt.getMinutes())+':'+leadingZero(dt.getSeconds())+'-00:00';
+			//Date.UTC(year,month,day,hours,minutes,seconds,millisec)
+			var dStr = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds());
+			return dStr;
+		};
+
+		var testDataHandler = function testDataHandler(res) {
+
+			var data = JSON.parse(res).data,
+			    chartData = [];
+			utils.debugConsole(data);
+			for (var i = 0; i < data.length; i++) {
+				var doc = data[i],
+				    temps = doc.temperatures.hourly;
+				for (var hour in temps) {
+					for (var interval in temps[hour]) {
+						//utils.debugConsole(temps[hour][interval]);
+						if (temps[hour][interval].time != "") {
+							var dt = new Date(temps[hour][interval].time),
+							    dtStr = dateFormatter(dt);
+
+							chartData.push({ date: dtStr, value: temps[hour][interval].value });
+						}
+					}
+				}
+			}
+			createChart(chartData);
 		};
 
 		var deviceRequestHandler = function deviceRequestHandler(res) {
@@ -3123,15 +3175,19 @@ var DeviceDetails = (function (_DocDetails) {
 		var temperatureRequestHandler = function temperatureRequestHandler(res) {
 			var temps = JSON.parse(res).data;
 			//console.log(temps);
-			createChart(temps);
+			//createChart(temps);
 		};
 
-		_get(Object.getPrototypeOf(DeviceDetails.prototype), "constructor", this).call(this, $, Utils, forms, { "delete": constants.deleteUrl });
+		_get(Object.getPrototypeOf(DeviceDetails.prototype), "constructor", this).call(this, $, Utils, forms, { "delete": constants.deleteUrl,
+			update: constants.updateUrl });
 
 		this.firstRun = function () {
 			utils.loadUrl(constants.getDeviceURL + id, "GET", null, false, deviceRequestHandler);
 			utils.loadUrl(constants.getTempsURL + id, "GET", null, false, temperatureRequestHandler);
 			//console.log(d3);
+
+			//utils.loadUrl('http://52.20.3.36/api/temperature/device/all/55d2a1628dfc55c704d6aa8d', 'GET', null, false, testDataHandler);
+			utils.loadUrl("/api/temperature/device/all/" + id, "GET", null, false, testDataHandler);
 		};
 	}
 

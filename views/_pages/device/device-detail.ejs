@@ -1,19 +1,19 @@
 <h2>Device Details</h2>
 <div class="device-details" data-module="DeviceDetails" data-id="<%= data.device._id %>">
 	<form>
-		<div>
+		<div class="form-item">
 			<label for="name">Name:</label>
-			<input type="text" id="name" name="name" value="<%= data.device.name %>" />
+			<input type="text" id="name" name="name" value="<%= data.device.name %>" enable-update="true" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="battery">Battery:</label>
-			<input type="text" id="battery" name="battery" value="<%= data.device.battery %>%" />
+			<input type="text" id="battery" name="battery" value="<%= data.device.battery %>" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="version">Version:</label>
-			<input type="text" id="version" name="version" value="<%= data.device.version %>" />
+			<input type="text" id="version" name="version" value="<%= data.device.version %>" enable-update="true" />
 		</div>
+		<button class="update-device" disabled>update</button><input type="checkbox" id="enable-delete"/><button class="delete-device" disabled>delete</button>
 	</form>
 	<div id="chart"></div>
-	<input type="checkbox" id="enable-delete"/><button class="delete-device" disabled>delete</button>
 </div>

@@ -11,22 +11,21 @@ html, body {
   height: 100%;
   font-family: "helvetica", georgia, sans-serif;
   margin: 0;
-  overflow: hidden;
   padding: 0;
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important; }
 
-/* line 11, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+/* line 10, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-/* line 17, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+/* line 16, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
 ::-webkit-scrollbar {
   width: 0; }
 
-/* line 21, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+/* line 20, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
 .outer {
   height: 100%;
   max-width: 100%;
@@ -58,7 +57,7 @@ html, body {
         content: "";
         display: table; } }
 
-/* line 34, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+/* line 33, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
 .wrapper {
   float: left;
   display: block;
@@ -70,10 +69,10 @@ html, body {
   /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
   .wrapper:last-child {
     margin-right: 0; }
-  /* line 41, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 40, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper:last-child {
     margin-right: auto; }
-  /* line 45, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 44, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper .lg-three-col {
     float: left;
     display: block;
@@ -82,7 +81,7 @@ html, body {
     /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
     .wrapper .lg-three-col:last-child {
       margin-right: 0; }
-  /* line 49, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 48, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper .lg-nine-col {
     float: left;
     display: block;
@@ -91,7 +90,7 @@ html, body {
     /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
     .wrapper .lg-nine-col:last-child {
       margin-right: 0; }
-  /* line 53, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 52, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper .lg-twelve-col {
     float: left;
     display: block;
@@ -100,7 +99,7 @@ html, body {
     /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
     .wrapper .lg-twelve-col:last-child {
       margin-right: 0; }
-  /* line 57, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 56, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper .style-element {
     cursor: pointer; }
   @media screen and (max-width: 1024px)  {
@@ -113,10 +112,10 @@ html, body {
       /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
       .wrapper:last-child {
         margin-right: 0; }
-      /* line 66, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 65, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper:last-child {
         margin-right: auto; }
-      /* line 70, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 69, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .med-two-col {
         float: left;
         display: block;
@@ -125,7 +124,7 @@ html, body {
         /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
         .wrapper .med-two-col:last-child {
           margin-right: 0; }
-      /* line 74, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 73, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .med-seven-col {
         float: left;
         display: block;
@@ -134,7 +133,7 @@ html, body {
         /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
         .wrapper .med-seven-col:last-child {
           margin-right: 0; }
-      /* line 78, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 77, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .med-nine-col {
         float: left;
         display: block;
@@ -153,10 +152,10 @@ html, body {
       /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
       .wrapper:last-child {
         margin-right: 0; }
-      /* line 87, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 86, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper:last-child {
         margin-right: auto; }
-      /* line 91, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 90, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .one-col {
         float: left;
         display: block;
@@ -165,7 +164,7 @@ html, body {
         /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
         .wrapper .one-col:last-child {
           margin-right: 0; }
-      /* line 95, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 94, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .two-col {
         float: left;
         display: block;
@@ -174,7 +173,7 @@ html, body {
         /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
         .wrapper .two-col:last-child {
           margin-right: 0; }
-      /* line 99, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 98, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .three-col {
         float: left;
         display: block;
@@ -183,7 +182,7 @@ html, body {
         /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
         .wrapper .three-col:last-child {
           margin-right: 0; }
-      /* line 103, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 102, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .four-col {
         float: left;
         display: block;
@@ -192,13 +191,13 @@ html, body {
         /* line 89, /Users/jjacobs/Documents/projects/temperature-service/neat/grid/_span-columns.scss */
         .wrapper .four-col:last-child {
           margin-right: 0; }
-      /* line 107, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+      /* line 106, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
       .wrapper .small-no-gutter {
         margin-right: 0; } }
-  /* line 112, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 111, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper .console {
     margin-top: 50px; }
-  /* line 116, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
+  /* line 115, /Users/jjacobs/Documents/projects/temperature-service/sass/_global.scss */
   .wrapper #console {
     height: 500px;
     width: 100%; }

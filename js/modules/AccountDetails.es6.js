@@ -11,7 +11,8 @@ class AccountDetails extends DocDetails {
 			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
 			removeUserURL: '/api/account/update/removeuser',
-			deleteUrl: '/api/account/delete/id'
+			deleteUrl: '/api/account/delete/id',
+			updateUrl: '/api/account/update/name'
 		};
 
 		let selectors = {
@@ -37,7 +38,10 @@ class AccountDetails extends DocDetails {
 			addPrimary: '#add-primary',
 			addPrimaryForm: '#add-form-primary',
 			addPrimarySelect: '#primary-select',
-			addPrimarySubmit: '#primary-select-submit'
+			addPrimarySubmit: '#primary-select-submit',
+			//inputs
+			inputs: 'input[type="text"]',
+			submit: 'button.update-account'
 		};
 
 		let objects = {
@@ -89,10 +93,13 @@ class AccountDetails extends DocDetails {
 					existing: objects.primaryUser.data('ids'),
 					updateField: 'userid'
 				}
-			}
+			},
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
 		};
 
-		super($, Utils, forms, {delete: constants.deleteUrl});
+		super($, Utils, forms, {delete: constants.deleteUrl,
+								update: constants.updateUrl});
 
 		let self = this;
 

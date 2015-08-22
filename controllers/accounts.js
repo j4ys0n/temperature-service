@@ -149,8 +149,8 @@ module.exports = {
         });
     },
     updateName: function( req, res ){
-        Account.update( { _id: req.body.accountid }, { '$set': { 'name': req.body.name, 'metadata.last_updated': new Date() } }, function(error, status){
-            console.log('account updated: ' + req.body.accountid + ' status: ' + status);
+        Account.update( { _id: req.body.id }, { '$set': { 'name': req.body.name, 'metadata.last_updated': new Date() } }, function(error, status){
+            console.log('account updated: ' + req.body.id + ' status: ' + status);
             if(status === 1){
                 res.send('updated');
             }else{

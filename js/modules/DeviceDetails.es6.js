@@ -395,13 +395,17 @@ class DeviceDetails extends DocDetails {
 			let constants = {
 				getDeviceURL: '/api/device/id/',
 				getTempsURL: '/api/temperature/device/',
-				deleteUrl: '/api/device/delete/id'
+				deleteUrl: '/api/device/delete/id',
+				updateUrl: '/api/device/update/nameversion'
 			};
 
 			let selectors = {
 				wrapper: '.device-details',
 				deleteBtn: '.delete-device',
-				enableDelete: '#enable-delete'
+				enableDelete: '#enable-delete',
+				//inputs
+				inputs: 'input[type="text"]',
+				submit: 'button.update-device'
 			};
 
 			let objects = {
@@ -415,7 +419,9 @@ class DeviceDetails extends DocDetails {
 				delete: {
 					deleteBtn: $(selectors.deleteBtn),
 					enable: $(selectors.enableDelete)
-				}
+				},
+				inputs: $(selectors.inputs),
+				submit: $(selectors.submit)
 			};
 
 		let createChart = function( data ){
@@ -483,17 +489,17 @@ class DeviceDetails extends DocDetails {
 			// 	  }
 			//   }
 
-			  mockData.forEach(function(d){
-				  d.date = Date.parse(d.date);
-				  d.value = +d.value;
-			  });
+			//   data.forEach(function(d){
+			// 	  d.date = Date.parse(d.date);
+			// 	  d.value = +d.value;
+			//   });
 
-			  mockData.sort(function(a,b){
+			  data.sort(function(a,b){
 				  return parseFloat(a.date) - parseFloat(b.date);
 			  });
 
 			  //data = newData;
-			  data = mockData;
+			  //data = mockData;
 			  //console.log(data);
 
 			//   data.forEach(function(d) {
@@ -504,7 +510,7 @@ class DeviceDetails extends DocDetails {
 
 			  x.domain(d3.extent(data, function(d) { return d.date; }));
 			  //y.domain(d3.extent(data, function(d) { return d.value; }));
-			  y.domain([20, 50]);
+			  y.domain([20, 100]);
 
 			  svg.append("g")
 			      .attr("class", "x axis")
@@ -528,6 +534,46 @@ class DeviceDetails extends DocDetails {
 			//});
 		}
 
+		let dateFormatter = function(dt) {
+
+			let leadingZero = function(val) {
+				var rtn = val.toString();
+				if(val < 10){
+					rtn = '0'+val.toString();
+				}
+				return rtn;
+			}
+
+			//var dStr = dt.getFullYear()+'-'+leadingZero((dt.getMonth()+1))+'-'+leadingZero(dt.getDate())+'T'+leadingZero((dt.getHours()+1))+':'+leadingZero(dt.getMinutes())+':'+leadingZero(dt.getSeconds())+'-00:00';
+			//Date.UTC(year,month,day,hours,minutes,seconds,millisec)
+			var dStr = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds());
+			return dStr;
+		}
+
+		let testDataHandler = function( res ){
+
+			var data = JSON.parse(res).data,
+				chartData = [];
+			utils.debugConsole(data);
+			for( var i = 0; i < data.length; i++ ){
+				var doc = data[i],
+					temps = doc.temperatures.hourly;
+				for( var hour in temps ) {
+					for( var interval in temps[hour] ){
+						//utils.debugConsole(temps[hour][interval]);
+						if(temps[hour][interval].time != ''){
+							var dt = new Date(temps[hour][interval].time),
+								dtStr = dateFormatter(dt);
+
+							chartData.push({date: dtStr, value: temps[hour][interval].value });
+						}
+
+					}
+				}
+			}
+			createChart(chartData);
+		};
+
 		let deviceRequestHandler = function( res ){
 			var device = JSON.parse(res).data;
 			utils.debugConsole(device);
@@ -536,16 +582,20 @@ class DeviceDetails extends DocDetails {
 		let temperatureRequestHandler = function( res ){
 			var temps = JSON.parse(res).data;
 			//console.log(temps);
-			createChart(temps);
+			//createChart(temps);
 		};
 
-		super($, Utils, forms, {delete: constants.deleteUrl});
+		super($, Utils, forms, {delete: constants.deleteUrl,
+								update: constants.updateUrl });
 
 		this.firstRun = function() {
 			utils.loadUrl( constants.getDeviceURL+id, 'GET', null, false, deviceRequestHandler );
 			utils.loadUrl( constants.getTempsURL+id, 'GET', null, false, temperatureRequestHandler );
 			//console.log(d3);
 
+
+			//utils.loadUrl('http://52.20.3.36/api/temperature/device/all/55d2a1628dfc55c704d6aa8d', 'GET', null, false, testDataHandler);
+			utils.loadUrl('/api/temperature/device/all/'+id, 'GET', null, false, testDataHandler);
 		};
 	}
 

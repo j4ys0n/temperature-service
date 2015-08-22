@@ -41,6 +41,7 @@ module.exports = function(app) {
   app.post( '/api/device/update/battery', devices.updateDeviceBattery );
   app.post( '/api/device/update/uname', devices.updateDeviceUName );
   app.post( '/api/device/update/version', devices.updateDeviceVersion );
+  app.post( '/api/device/update/nameversion', devices.updateDeviceNameVersion );
   app.delete( '/api/device/delete/id', devices.deleteDeviceById );
 
   //api users

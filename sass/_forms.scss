@@ -1,6 +1,13 @@
 form {
-	.link-list a{
+	.link-list .linked-doc{
 		margin-right: 10px;
+	}
+	.link-list + .linked-doc,
+	.link-list ~ .link-form select {
+		margin-right: 10px;
+	}
+	.link-form {
+		display: none;
 	}
 }
 .axis path,

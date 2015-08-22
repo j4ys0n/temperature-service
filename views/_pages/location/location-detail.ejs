@@ -32,14 +32,17 @@
 		<div>
 			<label for="primary-user">Primary User:</label>
 			<span id="primary-user" class="link-list" data-ids="<%= data.location.primary_user %>"></span>
+			<a id="add-primary" href="#">Change</a><span id="add-form-primary" class="link-form"><select id="primary-select"><option value="false" selected>Select</option></select><button id="primary-select-submit" disabled>Update</button></span>
 		</div>
 		<div>
 			<label for="users-list">Users:</label>
 			<span id="users-list" class="link-list" data-ids="<%= data.location.users %>"></span>
+			<a id="add-user" href="#">+</a><span id="add-form-user" class="link-form"><select id="user-select"><option value="false" selected>Select</option></select><button id="user-select-submit" disabled>Add</button></span>
 		</div>
 		<div>
 			<label for="devices-list">Devices:</label>
 			<span id="devices-list" class="link-list" data-ids="<%= data.location.devices %>"></span>
+			<a id="add-device" href="#">+</a><span id="add-form-device" class="link-form"><select id="device-select"><option value="false" selected>Select</option></select><button id="device-select-submit" disabled>Add</button></span>
 		</div>
 	</form>
 	<input type="checkbox" id="enable-delete"/><button class="delete-location" disabled>delete</button>

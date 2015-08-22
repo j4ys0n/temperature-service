@@ -410,10 +410,12 @@ class DeviceDetails extends DocDetails {
 
 			let id = objects.wrapper.data('id');
 
-			let deleteForm = {
+			let forms = {
 				id: id,
-				delete: $(selectors.deleteBtn),
-				enable: $(selectors.enableDelete)
+				delete: {
+					deleteBtn: $(selectors.deleteBtn),
+					enable: $(selectors.enableDelete)
+				}
 			};
 
 		let createChart = function( data ){
@@ -537,7 +539,7 @@ class DeviceDetails extends DocDetails {
 			createChart(temps);
 		};
 
-		super($, Utils, deleteForm, {delete: constants.deleteUrl});
+		super($, Utils, forms, {delete: constants.deleteUrl});
 
 		this.firstRun = function() {
 			utils.loadUrl( constants.getDeviceURL+id, 'GET', null, false, deviceRequestHandler );

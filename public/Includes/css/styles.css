@@ -216,20 +216,26 @@ html, body {
     display: table; }
 
 /* line 2, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
-form .link-list a {
+form .link-list .linked-doc {
   margin-right: 10px; }
+/* line 6, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+form .link-list + .linked-doc, form .link-list ~ .link-form select {
+  margin-right: 10px; }
+/* line 9, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+form .link-form {
+  display: none; }
 
-/* line 7, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 14, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .axis path, .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges; }
 
-/* line 13, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 20, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .x.axis path {
   display: none; }
 
-/* line 17, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 24, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .line {
   fill: none;
   stroke: steelblue;

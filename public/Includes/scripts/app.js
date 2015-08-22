@@ -2252,8 +2252,10 @@ var AccountDetails = (function (_DocDetails) {
 		var constants = {
 			getLocationsURL: '/api/locations/id/',
 			viewLocationURL: '/locations/view/',
+			removeLocationURL: '/api/account/update/removelocation',
 			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
+			removeUserURL: '/api/account/update/removeuser',
 			deleteUrl: '/api/account/delete/id'
 		};
 
@@ -2262,8 +2264,25 @@ var AccountDetails = (function (_DocDetails) {
 			locationsList: '#locations-list',
 			primaryUser: '#primary-user',
 			usersList: '#users-list',
+			//delete selects
 			deleteBtn: '.delete-account',
-			enableDelete: '#enable-delete'
+			enableDelete: '#enable-delete',
+			//linked doc selects
+			//location
+			addLocation: '#add-location',
+			addLocationForm: '#add-form-location',
+			addLocationSelect: '#location-select',
+			addLocationSubmit: '#location-select-submit',
+			//user
+			addUser: '#add-user',
+			addUserForm: '#add-form-user',
+			addUserSelect: '#user-select',
+			addUserSubmit: '#user-select-submit',
+			//primary user
+			addPrimary: '#add-primary',
+			addPrimaryForm: '#add-form-primary',
+			addPrimarySelect: '#primary-select',
+			addPrimarySubmit: '#primary-select-submit'
 		};
 
 		var objects = {
@@ -2275,20 +2294,75 @@ var AccountDetails = (function (_DocDetails) {
 
 		var id = objects.wrapper.data('id');
 
-		var deleteForm = {
+		var forms = {
 			id: id,
-			'delete': $(selectors.deleteBtn),
-			enable: $(selectors.enableDelete)
+			'delete': {
+				deleteBtn: $(selectors.deleteBtn),
+				enable: $(selectors.enableDelete)
+			},
+			link: {
+				account: {
+					docsUrl: '/api/locations/all',
+					submitUrl: '/api/account/update/addlocation',
+					add: $(selectors.addLocation),
+					form: $(selectors.addLocationForm),
+					select: $(selectors.addLocationSelect),
+					selectDisplayField: 'name',
+					submit: $(selectors.addLocationSubmit),
+					existing: objects.locationsList.data('ids'),
+					updateField: 'locationid'
+				},
+				user: {
+					docsUrl: '/api/users/all',
+					submitUrl: '/api/account/update/adduser',
+					add: $(selectors.addUser),
+					form: $(selectors.addUserForm),
+					select: $(selectors.addUserSelect),
+					selectDisplayField: 'user_name',
+					submit: $(selectors.addUserSubmit),
+					existing: objects.usersList.data('ids'),
+					updateField: 'userid'
+				},
+				primaryUser: {
+					docsUrl: '/api/users/all',
+					submitUrl: '/api/account/update/primaryuser',
+					add: $(selectors.addPrimary),
+					form: $(selectors.addPrimaryForm),
+					select: $(selectors.addPrimarySelect),
+					selectDisplayField: 'user_name',
+					submit: $(selectors.addPrimarySubmit),
+					existing: objects.primaryUser.data('ids'),
+					updateField: 'userid'
+				}
+			}
 		};
 
-		_get(Object.getPrototypeOf(AccountDetails.prototype), 'constructor', this).call(this, $, Utils, deleteForm, { 'delete': constants.deleteUrl });
+		_get(Object.getPrototypeOf(AccountDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl });
 
 		var self = this;
 
 		self.firstRun = function () {
-			self.addRelatedByIds(objects.locationsList.data('ids'), constants.getLocationsURL, constants.viewLocationURL, 'name', objects.locationsList);
-			self.addRelatedByIds(objects.primaryUser.data('ids'), constants.getUserURL, constants.viewUserURL, 'user_name', objects.primaryUser);
-			self.addRelatedByIds(objects.usersList.data('ids'), constants.getUserURL, constants.viewUserURL, 'user_name', objects.usersList);
+			var locationUrls = {
+				get: constants.getLocationsURL,
+				view: constants.viewLocationURL,
+				remove: constants.removeLocationURL,
+				removeIdField: 'locationid'
+			};
+			self.addRelatedByIds(objects.locationsList.data('ids'), locationUrls, 'name', objects.locationsList);
+			var userUrls = {
+				get: constants.getUserURL,
+				view: constants.viewUserURL,
+				remove: constants.removeUserURL,
+				removeIdField: 'userid'
+			};
+			self.addRelatedByIds(objects.usersList.data('ids'), userUrls, 'user_name', objects.usersList);
+			var primaryUrls = {
+				get: constants.getUserURL,
+				view: constants.viewUserURL,
+				remove: null,
+				removeIdField: null
+			};
+			self.addRelatedByIds(objects.primaryUser.data('ids'), primaryUrls, 'user_name', objects.primaryUser);
 		};
 	}
 
@@ -2940,10 +3014,12 @@ var DeviceDetails = (function (_DocDetails) {
 
 		var id = objects.wrapper.data("id");
 
-		var deleteForm = {
+		var forms = {
 			id: id,
-			"delete": $(selectors.deleteBtn),
-			enable: $(selectors.enableDelete)
+			"delete": {
+				deleteBtn: $(selectors.deleteBtn),
+				enable: $(selectors.enableDelete)
+			}
 		};
 
 		var createChart = function createChart(data) {
@@ -3047,7 +3123,7 @@ var DeviceDetails = (function (_DocDetails) {
 			createChart(temps);
 		};
 
-		_get(Object.getPrototypeOf(DeviceDetails.prototype), "constructor", this).call(this, $, Utils, deleteForm, { "delete": constants.deleteUrl });
+		_get(Object.getPrototypeOf(DeviceDetails.prototype), "constructor", this).call(this, $, Utils, forms, { "delete": constants.deleteUrl });
 
 		this.firstRun = function () {
 			utils.loadUrl(constants.getDeviceURL + id, "GET", null, false, deviceRequestHandler);
@@ -3081,7 +3157,7 @@ exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var DocDetails = function DocDetails($, Utils, form, urls) {
+var DocDetails = function DocDetails($, Utils, forms, urls) {
 	_classCallCheck(this, DocDetails);
 
 	var utils = new Utils();
@@ -3095,14 +3171,14 @@ var DocDetails = function DocDetails($, Utils, form, urls) {
 	};
 
 	var deleteDoc = function deleteDoc(e) {
-		utils.loadUrl(urls['delete'], 'DELETE', JSON.stringify({ id: form.id }), true, deleteResponseHandler);
+		utils.loadUrl(urls['delete'], 'DELETE', JSON.stringify({ id: forms.id }), true, deleteResponseHandler);
 	};
 
 	var toggleDeleteEnable = function toggleDeleteEnable(e) {
 		if (this.checked) {
-			$(form['delete']).removeAttr('disabled');
+			$(forms['delete'].deleteBtn)[0].disabled = false;
 		} else {
-			$(form['delete']).attr('disabled', 'true');
+			$(forms['delete'].deleteBtn)[0].disabled = true;
 		}
 	};
 
@@ -3111,35 +3187,113 @@ var DocDetails = function DocDetails($, Utils, form, urls) {
 		$button.on('click', deleteDoc);
 	};
 
-	addDeleteButtonListener($(form['delete']), $(form.enable));
+	addDeleteButtonListener($(forms['delete'].deleteBtn), $(forms['delete'].enable));
 
 	/**
  	ADD LINKS
  **/
 
-	this.addRelatedByIds = function (ids, getDocsUrl, viewDocUrl, docNameField, $container) {
+	this.addRelatedByIds = function (ids, urls, docNameField, $container) {
 		ids = ids === '' ? [] : ids.split(',');
+		console.log(ids);
 
-		var addLink = function addLink(text, url) {
-			var $link = $(document.createElement('a'));
-			$link.text(text);
-			$link.attr('href', url);
-			$container.append($link);
+		var addLink = function addLink(text, id) {
+			var $span = $(document.createElement('span'));
+			var $viewLink = $(document.createElement('a'));
+			var $removeLink = $(document.createElement('a'));
+			$viewLink.text(text);
+			$viewLink.attr('href', urls.view + id);
+			$span.addClass('linked-doc');
+			$span.append($viewLink);
+			if (urls.remove !== null) {
+				$removeLink.text('-');
+				$removeLink.attr('href', '#');
+				$removeLink.on('click', function (e) {
+					e.preventDefault();
+					var d = { id: forms.id };
+					d[urls.removeIdField] = id;
+					utils.loadUrl(urls.remove, 'POST', JSON.stringify(d), true, function (res) {
+						utils.debugConsole(res);
+						$span.remove();
+					});
+				});
+				$span.append(' (').append($removeLink).append(')');
+			}
+			$container.append($span);
 		};
 
 		var getRelatedResponseHandler = function getRelatedResponseHandler(res) {
 			var docs = JSON.parse(res).data,
 			    i = 0;
-
 			for (i; i < docs.length; i++) {
-				addLink(docs[i][docNameField], viewDocUrl + docs[i]._id);
+				addLink(docs[i][docNameField], docs[i]._id);
+			}
+		};
+		utils.debugConsole(ids.length);
+		if (ids.length > 0) {
+			$container.empty();
+			for (var i = 0; i < ids.length; i++) {
+				utils.loadUrl(urls.get + ids[i], 'GET', null, false, getRelatedResponseHandler);
+			}
+		}
+	};
+
+	/**
+ 	LINK DOCUMENT
+ **/
+
+	var populateDocuments = function populateDocuments(url, select, displayField, submit, existing) {
+		existing = existing === '' ? [] : existing.split(',');
+
+		var responseHandler = function responseHandler(res) {
+			utils.debugConsole(res);
+			var docs = JSON.parse(res).data,
+			    option,
+			    i = 0;
+			for (i; i < docs.length; i++) {
+				option = $(document.createElement('option'));
+				option.text(docs[i][displayField]);
+				option.attr('value', docs[i]._id);
+				select.append(option);
 			}
 		};
 
-		for (var i = 0; i < ids.length; i++) {
-			utils.loadUrl(getDocsUrl + ids[i], 'GET', null, false, getRelatedResponseHandler);
-		}
+		var selectChangeHandler = function selectChangeHandler(e) {
+			if (existing.indexOf(select.val()) > -1 || select.val() === 'false') {
+				submit[0].disabled = true;
+			} else {
+				submit[0].disabled = false;
+			}
+		};
+
+		select.on('change', selectChangeHandler);
+
+		utils.loadUrl(url, 'GET', null, false, responseHandler);
 	};
+
+	var addLinkForm = function addLinkForm(f, id) {
+		f.add.on('click', function (e) {
+			e.preventDefault();
+			f.form.show();
+			$(this).hide();
+			populateDocuments(f.docsUrl, f.select, f.selectDisplayField, f.submit, f.existing);
+		});
+		var submitHandler = function submitHandler(res) {
+			utils.debugConsole('link document response: ' + res);
+		};
+		f.submit.on('click', function (e) {
+			e.preventDefault();
+			var d = { id: id };
+			d[f.updateField] = f.select.val();
+			utils.loadUrl(f.submitUrl, 'POST', JSON.stringify(d), true, submitHandler);
+		});
+	};
+
+	if (forms.link != undefined) {
+		for (var item in forms.link) {
+			addLinkForm(forms.link[item], forms.id);
+		}
+	}
 };
 
 exports['default'] = DocDetails;
@@ -3175,8 +3329,10 @@ var LocationDetails = (function (_DocDetails) {
 		var constants = {
 			getDeviceURL: '/api/device/id/',
 			viewDeviceURL: '/devices/view/',
-			getUsersURL: '/api/users/id/',
+			removeDeviceURL: '/api/locations/update/removedevice',
+			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
+			removeUserURL: '/api/locations/update/removeuser',
 			deleteUrl: '/api/locations/delete/id'
 		};
 
@@ -3186,7 +3342,23 @@ var LocationDetails = (function (_DocDetails) {
 			usersList: '#users-list',
 			devicesList: '#devices-list',
 			deleteBtn: '.delete-location',
-			enableDelete: '#enable-delete'
+			enableDelete: '#enable-delete',
+			//linked doc selects
+			//user
+			addUser: '#add-user',
+			addUserForm: '#add-form-user',
+			addUserSelect: '#user-select',
+			addUserSubmit: '#user-select-submit',
+			//primary user
+			addPrimary: '#add-primary',
+			addPrimaryForm: '#add-form-primary',
+			addPrimarySelect: '#primary-select',
+			addPrimarySubmit: '#primary-select-submit',
+			//device
+			addDevice: '#add-device',
+			addDeviceForm: '#add-form-device',
+			addDeviceSelect: '#device-select',
+			addDeviceSubmit: '#device-select-submit'
 		};
 
 		var objects = {
@@ -3198,20 +3370,75 @@ var LocationDetails = (function (_DocDetails) {
 
 		var id = objects.wrapper.data('id');
 
-		var deleteForm = {
+		var forms = {
 			id: id,
-			'delete': $(selectors.deleteBtn),
-			enable: $(selectors.enableDelete)
+			'delete': {
+				deleteBtn: $(selectors.deleteBtn),
+				enable: $(selectors.enableDelete)
+			},
+			link: {
+				user: {
+					docsUrl: '/api/users/all',
+					submitUrl: '/api/locations/update/adduser',
+					add: $(selectors.addUser),
+					form: $(selectors.addUserForm),
+					select: $(selectors.addUserSelect),
+					selectDisplayField: 'user_name',
+					submit: $(selectors.addUserSubmit),
+					existing: objects.usersList.data('ids'),
+					updateField: 'userid'
+				},
+				primaryUser: {
+					docsUrl: '/api/users/all',
+					submitUrl: '/api/locations/update/primaryuser',
+					add: $(selectors.addPrimary),
+					form: $(selectors.addPrimaryForm),
+					select: $(selectors.addPrimarySelect),
+					selectDisplayField: 'user_name',
+					submit: $(selectors.addPrimarySubmit),
+					existing: objects.primaryUser.data('ids'),
+					updateField: 'userid'
+				},
+				deivce: {
+					docsUrl: '/api/device/all',
+					submitUrl: '/api/locations/update/adddevice',
+					add: $(selectors.addDevice),
+					form: $(selectors.addDeviceForm),
+					select: $(selectors.addDeviceSelect),
+					selectDisplayField: 'name',
+					submit: $(selectors.addDeviceSubmit),
+					existing: objects.devicesList.data('ids'),
+					updateField: 'deviceid'
+				}
+			}
 		};
 
-		_get(Object.getPrototypeOf(LocationDetails.prototype), 'constructor', this).call(this, $, Utils, deleteForm, { 'delete': constants.deleteUrl });
+		_get(Object.getPrototypeOf(LocationDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl });
 
 		var self = this;
 
 		self.firstRun = function () {
-			self.addRelatedByIds(objects.primaryUser.data('ids'), constants.getUsersURL, constants.viewUserURL, 'user_name', objects.primaryUser);
-			self.addRelatedByIds(objects.usersList.data('ids'), constants.getUsersURL, constants.viewUserURL, 'user_name', objects.usersList);
-			self.addRelatedByIds(objects.devicesList.data('ids'), constants.getDeviceURL, constants.viewDeviceURL, 'name', objects.devicesList);
+			var primaryUrls = {
+				get: constants.getUserURL,
+				view: constants.viewUserURL,
+				remove: null,
+				removeIdField: null
+			};
+			self.addRelatedByIds(objects.primaryUser.data('ids'), primaryUrls, 'user_name', objects.primaryUser);
+			var userUrls = {
+				get: constants.getUserURL,
+				view: constants.viewUserURL,
+				remove: constants.removeUserURL,
+				removeIdField: 'userid'
+			};
+			self.addRelatedByIds(objects.usersList.data('ids'), userUrls, 'user_name', objects.usersList);
+			var deviceUrls = {
+				get: constants.getDeviceURL,
+				view: constants.viewDeviceURL,
+				remove: constants.removeDeviceURL,
+				removeIdField: 'deviceid'
+			};
+			self.addRelatedByIds(objects.devicesList.data('ids'), deviceUrls, 'name', objects.devicesList);
 		};
 	}
 
@@ -3369,28 +3596,64 @@ var UserDetails = (function (_DocDetails) {
 		var utils = new Utils();
 
 		var constants = {
-			deleteUrl: '/api/users/delete/id'
+			deleteUrl: '/api/users/delete/id',
+			getAccountUrl: '/api/account/id/',
+			viewAccountUrl: '/accounts/view/'
 		};
 
 		var selectors = {
 			wrapper: '.user-details',
+			account: '#linked-account',
+			//delete selects
 			deleteBtn: '.delete-user',
-			enableDelete: '#enable-delete'
+			enableDelete: '#enable-delete',
+			//link selects
+			addAccount: '#add-account',
+			addAccountForm: '#add-form-account',
+			addAccountSelect: '#account-select',
+			addAccountSubmit: '#account-select-submit'
 		};
 
 		var objects = {
-			wrapper: $(selectors.wrapper)
+			wrapper: $(selectors.wrapper),
+			account: $(selectors.account)
 		};
 
-		var form = {
-			'delete': selectors.deleteBtn,
+		var forms = {
 			id: objects.wrapper.data('id'),
-			enable: $(selectors.enableDelete)
+			'delete': {
+				deleteBtn: selectors.deleteBtn,
+				enable: $(selectors.enableDelete)
+			},
+			link: {
+				account: {
+					docsUrl: '/api/account/all',
+					submitUrl: '/api/users/update/account',
+					add: $(selectors.addAccount),
+					form: $(selectors.addAccountForm),
+					select: $(selectors.addAccountSelect),
+					selectDisplayField: 'name',
+					submit: $(selectors.addAccountSubmit),
+					existing: objects.account.data('ids'),
+					updateField: 'accountid'
+				}
+			}
+
 		};
 
-		_get(Object.getPrototypeOf(UserDetails.prototype), 'constructor', this).call(this, $, Utils, form, { 'delete': constants.deleteUrl });
+		_get(Object.getPrototypeOf(UserDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl });
 
-		this.firstRun = function () {};
+		var self = this;
+
+		self.firstRun = function () {
+			var accountUrls = {
+				get: constants.getAccountUrl,
+				view: constants.viewAccountUrl,
+				remove: null,
+				removeIdField: null
+			};
+			self.addRelatedByIds(objects.account.data('ids'), accountUrls, 'name', objects.account);
+		};
 	}
 
 	_createClass(UserDetails, [{

@@ -53,8 +53,8 @@ module.exports = {
 
     /* -------- updates -------- */
     updatePrimaryUser: function( req, res ){
-        Account.update( { _id: req.body.accountid }, { '$set': { 'primary_user': req.body.userid, 'metadata.last_updated': new Date() } }, function(error, status){
-            console.log('account updated: ' + req.body.accountid + ' status: ' + status);
+        Account.update( { _id: req.body.id }, { '$set': { 'primary_user': req.body.userid, 'metadata.last_updated': new Date() } }, function(error, status){
+            console.log('account updated: ' + req.body.id + ' status: ' + status);
             if(status === 1){
                 res.send('updated');
             }else{
@@ -63,7 +63,7 @@ module.exports = {
         });
     },
     addUser: function( req, res ){
-        Account.findOne( { _id: req.body.accountid } ).exec( function( err, account ){
+        Account.findOne( { _id: req.body.id } ).exec( function( err, account ){
             var users = account.users || [],
                 userid = req.body.userid,
                 added = false;
@@ -72,8 +72,8 @@ module.exports = {
                 added = true;
             }
             if(added){
-                Account.update( { _id: req.body.accountid }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
-                    console.log('location update: ' + req.body.locationid + ' status: ' + status);
+                Account.update( { _id: req.body.id }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.userid + ' status: ' + status);
                     if(status === 1){
                         res.send('updated');
                     }else{
@@ -86,10 +86,27 @@ module.exports = {
 		});
     },
     removeUser: function( req, res ){
-
+        Account.findOne( { _id: req.body.id } ).exec( function( err, account ) {
+            var users = account.users,
+                userid = req.body.userid,
+                idIndex = users.indexOf(userid);
+            if(idIndex > -1){
+                users.splice(idIndex, 1);
+                Account.update( { _id: req.body.id }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('account update: ' + req.body.userid + ' status: ' + status);
+                    if(status === 1){
+                        res.send('updated');
+                    }else{
+                        res.send('error:'+ error);
+                    }
+                });
+            }else{
+                res.send('user not connected to account');
+            }
+        });
     },
     addLocation: function( req, res ){
-        Account.findOne( { _id: req.body.accountid } ).exec( function( err, account ){
+        Account.findOne( { _id: req.body.id } ).exec( function( err, account ){
             var locations = account.locations || [],
                 locationid = req.body.locationid,
                 added = false;
@@ -98,7 +115,7 @@ module.exports = {
                 added = true;
             }
             if(added){
-                Account.update( { _id: req.body.accountid }, { '$set': { 'locations': locations, 'metadata.last_updated': new Date() } }, function(error, status){
+                Account.update( { _id: req.body.id }, { '$set': { 'locations': locations, 'metadata.last_updated': new Date() } }, function(error, status){
                     console.log('location update: ' + req.body.locationid + ' status: ' + status);
                     if(status === 1){
                         res.send('updated');
@@ -112,13 +129,13 @@ module.exports = {
 		});
     },
     removeLocation: function( req, res ){
-        Account.findOne( { _id: req.body.accountid } ).exec( function( err, account ) {
+        Account.findOne( { _id: req.body.id } ).exec( function( err, account ) {
             var locations = account.locations,
                 locationid = req.body.locationid,
                 idIndex = locations.indexOf(locationid);
             if(idIndex > -1){
                 locations.splice(idIndex, 1);
-                Account.update( { _id: req.body.accountid }, { '$set': { 'locations': locations, 'metadata.last_updated': new Date() } }, function(error, status){
+                Account.update( { _id: req.body.id }, { '$set': { 'locations': locations, 'metadata.last_updated': new Date() } }, function(error, status){
                     console.log('location update: ' + req.body.locationid + ' status: ' + status);
                     if(status === 1){
                         res.send('updated');

@@ -100,7 +100,7 @@ module.exports = {
         });
     },
     addDevice: function( req, res ){
-        Location.findOne( { _id: req.body.locationid } ).exec( function( err, location ){
+        Location.findOne( { _id: req.body.id } ).exec( function( err, location ){
 			//res.json( Response.code( err, locations ), Response.data( err, locations ) );
             var devices = location.devices || [],
                 deviceid = req.body.deviceid,
@@ -110,8 +110,8 @@ module.exports = {
                 added = true;
             }
             if(added){
-                Location.update( { _id: req.body.locationid }, { '$set': { 'devices': devices, 'metadata.last_updated': new Date() } }, function(error, status){
-                    console.log('location update: ' + req.body.locationid + ' status: ' + status);
+                Location.update( { _id: req.body.id }, { '$set': { 'devices': devices, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.id + ' status: ' + status);
                     if(status === 1){
                         res.send('updated');
                     }else{
@@ -124,10 +124,27 @@ module.exports = {
 		});
     },
     removeDevice: function( req, res ){
-
+        Location.findOne( { _id: req.body.id } ).exec( function( err, location ) {
+            var devices = location.devices,
+                deviceid = req.body.deviceid,
+                idIndex = devices.indexOf(deviceid);
+            if(idIndex > -1){
+                devices.splice(idIndex, 1);
+                Location.update( { _id: req.body.id }, { '$set': { 'devices': devices, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.deviceid + ' status: ' + status);
+                    if(status === 1){
+                        res.send('updated');
+                    }else{
+                        res.send('error:'+ error);
+                    }
+                });
+            }else{
+                res.send('user not connected to location');
+            }
+        });
     },
     addUser: function( req, res ){
-        Location.findOne( { _id: req.body.locationid } ).exec( function( err, location ){
+        Location.findOne( { _id: req.body.id } ).exec( function( err, location ){
 			//res.json( Response.code( err, locations ), Response.data( err, locations ) );
             var users = location.users || [],
                 userid = req.body.userid,
@@ -137,7 +154,7 @@ module.exports = {
                 added = true;
             }
             if(added){
-                Location.update( { _id: req.body.locationid }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
+                Location.update( { _id: req.body.id }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
                     console.log('location update: ' + req.body.locationid + ' status: ' + status);
                     if(status === 1){
                         res.send('updated');
@@ -151,7 +168,24 @@ module.exports = {
 		});
     },
     removeUser: function( req, res ){
-
+        Location.findOne( { _id: req.body.id } ).exec( function( err, account ) {
+            var users = account.users,
+                userid = req.body.userid,
+                idIndex = users.indexOf(userid);
+            if(idIndex > -1){
+                users.splice(idIndex, 1);
+                Location.update( { _id: req.body.id }, { '$set': { 'users': users, 'metadata.last_updated': new Date() } }, function(error, status){
+                    console.log('location update: ' + req.body.userid + ' status: ' + status);
+                    if(status === 1){
+                        res.send('updated');
+                    }else{
+                        res.send('error:'+ error);
+                    }
+                });
+            }else{
+                res.send('user not connected to location');
+            }
+        });
     },
     updateBilling: function( req, res ){
 
@@ -168,8 +202,8 @@ module.exports = {
         });
     },
     updatePrimaryUser: function( req, res ){
-        Location.update( { _id: req.body.locationid }, { '$set': { 'primary_user': req.body.userid, 'metadata.last_updated': new Date() } }, function(error, status){
-            console.log('location update: ' + req.body.locationid + ' status: ' + status);
+        Location.update( { _id: req.body.id }, { '$set': { 'primary_user': req.body.userid, 'metadata.last_updated': new Date() } }, function(error, status){
+            console.log('location update: ' + req.body.id + ' status: ' + status);
             if(status === 1){
                 res.send('updated');
             }else{

@@ -9,6 +9,23 @@ form {
 	.link-form {
 		display: none;
 	}
+
+	.form-item {
+		margin-bottom: 10px;
+	}
+
+	input {
+		border: 1px solid #dddddd;
+		font-size: 16px;
+
+		&:focus {
+			border: 1px solid #000000;
+			outline: none;
+		}
+	}
+	button[class*="update-"] {
+		margin-right: 10px;
+	}
 }
 .axis path,
 .axis line {

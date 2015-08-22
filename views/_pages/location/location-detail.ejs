@@ -1,49 +1,49 @@
 <h2>Location Details</h2>
 <div class="location-details" data-module="LocationDetails" data-id="<%= data.location._id %>">
 	<form>
-		<div>
+		<div class="form-item">
 			<label for="name">Name:</label>
-			<input type="text" id="name" name="name" value="<%= data.location.name %>" />
+			<input type="text" id="name" name="name" value="<%= data.location.name %>" enable-update="true" update-group="name" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="company">Company:</label>
-			<input type="text" id="company" name="address.company" value="<%= data.location.address.company %>" />
+			<input type="text" id="company" name="address.company" value="<%= data.location.address.company %>" enable-update="true" update-group="address" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="address1">Address 1:</label>
-			<input type="text" id="address1" name="address.address1" value="<%= data.location.address.address1 %>" />
+			<input type="text" id="address1" name="address.address1" value="<%= data.location.address.address1 %>" enable-update="true" update-group="address" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="address2">Address 2:</label>
-			<input type="text" id="address2" name="address.address2" value="<%= data.location.address.address2 %>" />
+			<input type="text" id="address2" name="address.address2" value="<%= data.location.address.address2 %>" enable-update="true" update-group="address" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="city">City:</label>
-			<input type="text" id="city" name="address.city" value="<%= data.location.address.city %>" />
+			<input type="text" id="city" name="address.city" value="<%= data.location.address.city %>" enable-update="true" update-group="address" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="state">State:</label>
-			<input type="text" id="state" name="address.state" value="<%= data.location.address.state %>" />
+			<input type="text" id="state" name="address.state" value="<%= data.location.address.state %>" enable-update="true" update-group="address" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="zip">Zip:</label>
-			<input type="text" id="zip" name="address.zip" value="<%= data.location.address.zip %>" />
+			<input type="text" id="zip" name="address.zip" value="<%= data.location.address.zip %>" enable-update="true" update-group="address" />
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="primary-user">Primary User:</label>
 			<span id="primary-user" class="link-list" data-ids="<%= data.location.primary_user %>"></span>
 			<a id="add-primary" href="#">Change</a><span id="add-form-primary" class="link-form"><select id="primary-select"><option value="false" selected>Select</option></select><button id="primary-select-submit" disabled>Update</button></span>
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="users-list">Users:</label>
 			<span id="users-list" class="link-list" data-ids="<%= data.location.users %>"></span>
 			<a id="add-user" href="#">+</a><span id="add-form-user" class="link-form"><select id="user-select"><option value="false" selected>Select</option></select><button id="user-select-submit" disabled>Add</button></span>
 		</div>
-		<div>
+		<div class="form-item">
 			<label for="devices-list">Devices:</label>
 			<span id="devices-list" class="link-list" data-ids="<%= data.location.devices %>"></span>
 			<a id="add-device" href="#">+</a><span id="add-form-device" class="link-form"><select id="device-select"><option value="false" selected>Select</option></select><button id="device-select-submit" disabled>Add</button></span>
 		</div>
+		<button class="update-location" disabled>update</button><input type="checkbox" id="enable-delete"/><button class="delete-location" disabled>delete</button>
 	</form>
-	<input type="checkbox" id="enable-delete"/><button class="delete-location" disabled>delete</button>
 </div>

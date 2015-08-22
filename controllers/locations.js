@@ -78,9 +78,30 @@ module.exports = {
             }
         });
     },
+    updateNameAndAddress: function( req, res ){
+        var d = req.body;
+        Location.update( { _id: d.id },
+            { '$set': {
+                'name': d.name,
+                'address.company': d.address.company,
+                'address.address1': d.address.address1,
+                'address.address2': d.address.address2,
+                'address.city': d.address.city,
+                'address.state': d.address.state,
+                'address.zip': d.address.zip,
+                'address.coords': d.address.coords,
+                'metadata.last_updated': new Date() }
+            }, function(error, status){
+            console.log('location update: ' + req.body.id + ' status: ' + status);
+            if(status === 1){
+                res.send('updated');
+            }else{
+                res.send('error:'+ error);
+            }
+        });
+    },
     updateAddress: function( req, res ){
-        //test me
-        Location.update( { _id: req.body.locationid },
+        Location.update( { _id: req.body.id },
             { '$set': {
                 'address.company': req.body.company,
                 'address.address1': req.body.address1,
@@ -91,7 +112,7 @@ module.exports = {
                 'address.coords': req.body.coords,
                 'metadata.last_updated': new Date() }
             }, function(error, status){
-            console.log('location update: ' + req.body.locationid + ' status: ' + status);
+            console.log('location update: ' + req.body.id + ' status: ' + status);
             if(status === 1){
                 res.send('updated');
             }else{

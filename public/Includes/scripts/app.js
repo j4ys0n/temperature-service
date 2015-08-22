@@ -55,6 +55,9 @@ var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modul
 
 app.init();
 
+//FOR DEBUGGING
+window._app = app;
+
 },{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/AddLocation.es6":8,"./modules/AddUser.es6":9,"./modules/DeviceDetails.es6":10,"./modules/LocationDetails.es6":12,"./modules/Login.es6":13,"./modules/Main.es6":14,"./modules/UserDetails.es6":15,"./modules/Utils.es6":16}],2:[function(require,module,exports){
 /*! jQuery v1.11.2 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
 "use strict";
@@ -3190,7 +3193,7 @@ var DocDetails = function DocDetails($, Utils, forms, urls) {
 	addDeleteButtonListener($(forms['delete'].deleteBtn), $(forms['delete'].enable));
 
 	/**
- 	ADD LINKS
+ 	DISPLAY LINKS
  **/
 
 	this.addRelatedByIds = function (ids, urls, docNameField, $container) {
@@ -3294,6 +3297,75 @@ var DocDetails = function DocDetails($, Utils, forms, urls) {
 			addLinkForm(forms.link[item], forms.id);
 		}
 	}
+
+	/**
+ 	INPUTS
+ **/
+
+	var inputsObject = function inputsObject() {
+		var values = {};
+		for (var i = 0; i < forms.inputs.length; i++) {
+			var $input = $(forms.inputs[i]),
+			    name = $input.attr('name'),
+			    value = $input.val();
+			//build update object
+			utils.debugConsole('input update on change: ' + $input.attr('name') + ' : ' + $input.attr('enable-update'));
+			if ($input.attr('enable-update') === 'true') {
+				//values[$input.attr('name')] = $input.val();
+				var dotIndex = name.indexOf('.');
+				if (dotIndex > -1) {
+					var parent = name.substr(0, dotIndex);
+					var child = name.substr(dotIndex + 1);
+					if (values[parent] === undefined) {
+						values[parent] = {};
+					}
+					values[parent][child] = value;
+				} else {
+					values[name] = value;
+				}
+			}
+		}
+		return values;
+	};
+
+	var addInputChangeListeners = function addInputChangeListeners() {
+		var changed = false;
+		for (var i = 0; i < forms.inputs.length; i++) {
+			var $input = $(forms.inputs[i]);
+			$input.on('keydown', function (e) {
+				changed = true;
+				forms.submit[0].disabled = false;
+				//utils.debugConsole(e.which);
+			});
+		}
+	};
+
+	var formSubmitHandler = function formSubmitHandler(res) {
+		utils.debugConsole(res);
+	};
+
+	var initForms = function initForms() {
+		utils.debugConsole('init form');
+		addInputChangeListeners();
+
+		forms.submit.on('click', function (e) {
+			e.preventDefault();
+			var values = inputsObject();
+			values.id = forms.id;
+			utils.debugConsole(values);
+			utils.debugConsole(urls.update);
+			utils.loadUrl(urls.update, 'POST', JSON.stringify(values), true, formSubmitHandler);
+		});
+	};
+
+	/*
+ 	//add change event listeners
+ $input.on('change', function(e){
+ 	});*/
+
+	if (forms.inputs !== undefined) {
+		initForms();
+	}
 };
 
 exports['default'] = DocDetails;
@@ -3333,7 +3405,8 @@ var LocationDetails = (function (_DocDetails) {
 			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
 			removeUserURL: '/api/locations/update/removeuser',
-			deleteUrl: '/api/locations/delete/id'
+			deleteUrl: '/api/locations/delete/id',
+			updateUrl: '/api/locations/update/nameandaddress'
 		};
 
 		var selectors = {
@@ -3358,7 +3431,10 @@ var LocationDetails = (function (_DocDetails) {
 			addDevice: '#add-device',
 			addDeviceForm: '#add-form-device',
 			addDeviceSelect: '#device-select',
-			addDeviceSubmit: '#device-select-submit'
+			addDeviceSubmit: '#device-select-submit',
+			//inputs
+			inputs: 'input[type="text"]',
+			submit: 'button.update-location'
 		};
 
 		var objects = {
@@ -3410,10 +3486,13 @@ var LocationDetails = (function (_DocDetails) {
 					existing: objects.devicesList.data('ids'),
 					updateField: 'deviceid'
 				}
-			}
+			},
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
 		};
 
-		_get(Object.getPrototypeOf(LocationDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl });
+		_get(Object.getPrototypeOf(LocationDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl,
+			update: constants.updateUrl });
 
 		var self = this;
 

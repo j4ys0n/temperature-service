@@ -75,6 +75,7 @@ module.exports = function(app) {
   app.post( '/api/locations/update/account', locations.updateAccount );
   app.post( '/api/locations/update/name', locations.updateName );
   app.post( '/api/locations/update/wifi', locations.updateWifiInfo );
+  app.post( '/api/locations/update/nameandaddress', locations.updateNameAndAddress );
   app.post( '/api/locations/update/address', locations.updateAddress );
   app.post( '/api/locations/update/adddevice', locations.addDevice );
   app.post( '/api/locations/update/removedevice', locations.removeDevice );

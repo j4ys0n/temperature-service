@@ -30,7 +30,7 @@ class DocDetails {
 		addDeleteButtonListener($(forms.delete.deleteBtn), $(forms.delete.enable));
 
 		/**
-			ADD LINKS
+			DISPLAY LINKS
 		**/
 
 		this.addRelatedByIds = function(ids, urls, docNameField, $container) {
@@ -134,6 +134,78 @@ class DocDetails {
 				addLinkForm(forms.link[item], forms.id);
 			}
 		}
+
+		/**
+			INPUTS
+		**/
+
+		let inputsObject = function() {
+			let values = {};
+			for(var i = 0; i < forms.inputs.length; i++) {
+				var $input = $(forms.inputs[i]),
+					name = $input.attr('name'),
+					value = $input.val();
+				//build update object
+				utils.debugConsole('input update on change: '+$input.attr('name')+' : '+$input.attr('enable-update'));
+				if($input.attr('enable-update') === 'true') {
+					//values[$input.attr('name')] = $input.val();
+					var dotIndex = name.indexOf('.');
+					if( dotIndex > -1){
+						var parent = name.substr(0, dotIndex);
+						var child = name.substr(dotIndex+1);
+						if(values[parent] === undefined) {
+							values[parent] = {};
+						}
+						values[parent][child] = value;
+					}else{
+						values[name] = value;
+					}
+				}
+			}
+			return values;
+		};
+
+		let addInputChangeListeners = function() {
+			var changed = false;
+			for(var i = 0; i < forms.inputs.length; i++) {
+				var $input = $(forms.inputs[i]);
+				$input.on('keydown', function(e){
+					changed = true;
+					forms.submit[0].disabled = false;
+					//utils.debugConsole(e.which);
+				});
+			}
+		};
+
+		let formSubmitHandler = function(res) {
+			utils.debugConsole(res);
+		};
+
+		let initForms = function() {
+			utils.debugConsole('init form');
+			addInputChangeListeners();
+
+			forms.submit.on('click', function(e){
+				e.preventDefault();
+				let values = inputsObject();
+				values.id = forms.id;
+				utils.debugConsole(values);
+				utils.debugConsole(urls.update);
+				utils.loadUrl(urls.update, 'POST', JSON.stringify(values), true, formSubmitHandler);
+			});
+		};
+
+		/*
+
+		//add change event listeners
+		$input.on('change', function(e){
+
+		});*/
+
+		if(forms.inputs !== undefined) {
+			initForms();
+		}
+
 	}
 }
 

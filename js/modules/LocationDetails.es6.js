@@ -11,7 +11,8 @@ class LocationDetails extends DocDetails {
 			getUserURL: '/api/users/id/',
 			viewUserURL: '/users/view/',
 			removeUserURL: '/api/locations/update/removeuser',
-			deleteUrl: '/api/locations/delete/id'
+			deleteUrl: '/api/locations/delete/id',
+			updateUrl: '/api/locations/update/nameandaddress'
 		};
 
 		let selectors = {
@@ -36,7 +37,10 @@ class LocationDetails extends DocDetails {
 			addDevice: '#add-device',
 			addDeviceForm: '#add-form-device',
 			addDeviceSelect: '#device-select',
-			addDeviceSubmit: '#device-select-submit'
+			addDeviceSubmit: '#device-select-submit',
+			//inputs
+			inputs: 'input[type="text"]',
+			submit: 'button.update-location'
 		};
 
 		let objects = {
@@ -88,10 +92,13 @@ class LocationDetails extends DocDetails {
 					existing: objects.devicesList.data('ids'),
 					updateField: 'deviceid'
 				}
-			}
+			},
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
 		};
 
-		super($, Utils, forms, {delete: constants.deleteUrl});
+		super($, Utils, forms, {delete: constants.deleteUrl,
+								update: constants.updateUrl});
 
 		let self = this;
 

@@ -24,3 +24,7 @@ let app = new Main($, [
 ], $('[data-module]'), Utils);
 
 app.init();
+
+
+//FOR DEBUGGING
+window._app = app;

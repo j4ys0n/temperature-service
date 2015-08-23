@@ -2790,7 +2790,7 @@ var DeviceDetails = (function (_DocDetails) {
 				tickFormat: timeFormat
 			});
 
-			x_axis.render();
+			//x_axis.render();
 
 			var y_axis = new Rickshaw.Graph.Axis.Y({
 				graph: graph,
@@ -2814,10 +2814,11 @@ var DeviceDetails = (function (_DocDetails) {
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {
 						if (temps[hour][interval].time != '') {
-							var dt = dateFormatter(new Date(temps[hour][interval].time)) / 1000;
+							var dt = dateFormatter(new Date(temps[hour][interval].time));
 							var localDate = new Date();
 							var tzOffset = localDate.getTimezoneOffset() * 60000;
-							dt -= tzOffset;
+							//dt += tzOffset;
+							dt = dt / 1000;
 							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 							//chartData.push({date: dt, value: temps[hour][interval].value });
 							chartData.push({ x: dt, y: temps[hour][interval].value });

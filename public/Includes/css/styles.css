@@ -267,7 +267,7 @@ form button[class*="update-"] {
 .rickshaw_graph .x_tick .title {
   position: absolute;
   font-size: 12px;
-  opacity: 0.5;
+  opacity: 0.9;
   white-space: nowrap;
   margin-left: 3px;
   bottom: 1px; }
@@ -437,10 +437,9 @@ form button[class*="update-"] {
 
 /* line 248, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_graph .detail .x_label {
-  font-family: Arial, sans-serif;
   border-radius: 3px;
   padding: 6px;
-  opacity: 0.5;
+  opacity: 0.9;
   border: 1px solid #e0e0e0;
   font-size: 12px;
   position: absolute;

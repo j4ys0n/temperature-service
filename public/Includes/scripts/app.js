@@ -2780,10 +2780,18 @@ var DeviceDetails = (function (_DocDetails) {
 				element: document.getElementById('legend')
 			});
 
-			var axes = new Rickshaw.Graph.Axis.Time({
-				graph: graph
+			var timeFormat = function timeFormat(d) {
+				d = new Date(d);
+				return d3.time.format('%c')(d);
+			};
+
+			var x_axis = new Rickshaw.Graph.Axis.X({
+				graph: graph,
+				tickFormat: timeFormat
 			});
-			axes.render();
+
+			x_axis.render();
+
 			var y_axis = new Rickshaw.Graph.Axis.Y({
 				graph: graph,
 				orientation: 'left',
@@ -2806,7 +2814,8 @@ var DeviceDetails = (function (_DocDetails) {
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {
 						if (temps[hour][interval].time != '') {
-							var dt = dateFormatter(new Date(temps[hour][interval].time));
+							var dt = dateFormatter(new Date(temps[hour][interval].time)) / 1000;
+							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 							//chartData.push({date: dt, value: temps[hour][interval].value });
 							chartData.push({ x: dt, y: temps[hour][interval].value });
 						}

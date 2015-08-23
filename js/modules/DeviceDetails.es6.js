@@ -7,37 +7,37 @@ class DeviceDetails extends DocDetails {
 			Rickshaw = require('rickshaw'),
 			utils = new Utils();
 
-			let constants = {
-				getDeviceURL: '/api/device/id/',
-				getTempsURL: '/api/temperature/device/',
-				deleteUrl: '/api/device/delete/id',
-				updateUrl: '/api/device/update/nameversion'
-			};
+		let constants = {
+			getDeviceURL: '/api/device/id/',
+			getTempsURL: '/api/temperature/device/',
+			deleteUrl: '/api/device/delete/id',
+			updateUrl: '/api/device/update/nameversion'
+		};
 
-			let selectors = {
-				wrapper: '.device-details',
-				deleteBtn: '.delete-device',
-				enableDelete: '#enable-delete',
-				//inputs
-				inputs: 'input[type="text"]',
-				submit: 'button.update-device'
-			};
+		let selectors = {
+			wrapper: '.device-details',
+			deleteBtn: '.delete-device',
+			enableDelete: '#enable-delete',
+			//inputs
+			inputs: 'input[type="text"]',
+			submit: 'button.update-device'
+		};
 
-			let objects = {
-				wrapper: $(selectors.wrapper)
-			};
+		let objects = {
+			wrapper: $(selectors.wrapper)
+		};
 
-			let id = objects.wrapper.data('id');
+		let id = objects.wrapper.data('id');
 
-			let forms = {
-				id: id,
-				delete: {
-					deleteBtn: $(selectors.deleteBtn),
-					enable: $(selectors.enableDelete)
-				},
-				inputs: $(selectors.inputs),
-				submit: $(selectors.submit)
-			};
+		let forms = {
+			id: id,
+			delete: {
+				deleteBtn: $(selectors.deleteBtn),
+				enable: $(selectors.enableDelete)
+			},
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
+		};
 
 		let rickshawChart = function( data ) {
 
@@ -70,10 +70,18 @@ class DeviceDetails extends DocDetails {
 				element: document.getElementById('legend')
 			});
 
-			var axes = new Rickshaw.Graph.Axis.Time({
-				graph: graph
+			var timeFormat = function(d) {
+				d = new Date(d);
+				return d3.time.format('%c')(d);
+			}
+
+			var x_axis = new Rickshaw.Graph.Axis.X({
+				graph: graph,
+				tickFormat: timeFormat
 			});
-			axes.render();
+
+			x_axis.render();
+
 			var y_axis = new Rickshaw.Graph.Axis.Y( {
 				graph:graph,
 				orientation: 'left',
@@ -96,7 +104,8 @@ class DeviceDetails extends DocDetails {
 				for( var hour in temps ) {
 					for( var interval in temps[hour] ){
 						if(temps[hour][interval].time != ''){
-							var dt = dateFormatter(new Date(temps[hour][interval].time));
+							var dt = dateFormatter(new Date(temps[hour][interval].time))/1000;
+							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 							//chartData.push({date: dt, value: temps[hour][interval].value });
 							chartData.push({x: dt, y: temps[hour][interval].value });
 						}

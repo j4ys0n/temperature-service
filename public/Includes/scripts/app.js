@@ -2819,9 +2819,15 @@ var DeviceDetails = (function (_DocDetails) {
 							var tzOffset = localDate.getTimezoneOffset() * 60000;
 							//dt += tzOffset;
 							dt = dt / 1000;
-							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
-							//chartData.push({date: dt, value: temps[hour][interval].value });
-							chartData.push({ x: dt, y: temps[hour][interval].value });
+
+							localDate.setDate(localDate.getDate() - 1);
+							var ldt = dateFormatter(localDate) / 1000;
+
+							if (dt > ldt) {
+								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
+								//chartData.push({date: dt, value: temps[hour][interval].value });
+								chartData.push({ x: dt, y: temps[hour][interval].value });
+							}
 						}
 					}
 				}
@@ -2841,8 +2847,8 @@ var DeviceDetails = (function (_DocDetails) {
 		this.firstRun = function () {
 			utils.loadUrl(constants.getDeviceURL + id, 'GET', null, false, deviceRequestHandler);
 
-			utils.loadUrl('http://52.20.3.36/api/temperature/device/all/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			//utils.loadUrl('/api/temperature/device/all/'+id, 'GET', null, false, temperatureRequestHandler);
+			//utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			utils.loadUrl('/api/temperature/device/all/' + id, 'GET', null, false, temperatureRequestHandler);
 		};
 	}
 

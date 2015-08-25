@@ -1,6 +1,14 @@
 class DocDetails {
-	constructor($, Utils, forms, urls) {
+	constructor($, Utils, forms, urls, idBased) {
 		let utils = new Utils();
+
+		if( idBased === undefined ){
+			idBased = true;
+		}else{
+			idBased = false;
+		}
+
+		utils.debugConsole('is id based update: '+ idBased.toString());
 
 		/**
 			DELETE
@@ -27,7 +35,9 @@ class DocDetails {
 			$button.on('click', deleteDoc);
 		};
 
-		addDeleteButtonListener($(forms.delete.deleteBtn), $(forms.delete.enable));
+		if(forms.delete !== undefined && forms.delete !== null) {
+			addDeleteButtonListener($(forms.delete.deleteBtn), $(forms.delete.enable));
+		}
 
 		/**
 			DISPLAY LINKS
@@ -179,6 +189,9 @@ class DocDetails {
 
 		let formSubmitHandler = function(res) {
 			utils.debugConsole(res);
+			if(urls.updateCallback !== undefined){
+				urls.updateCallback(JSON.parse(res));
+			}
 		};
 
 		let initForms = function() {
@@ -188,7 +201,9 @@ class DocDetails {
 			forms.submit.on('click', function(e){
 				e.preventDefault();
 				let values = inputsObject();
-				values.id = forms.id;
+				if(idBased){
+					values.id = forms.id;
+				}
 				utils.debugConsole(values);
 				utils.debugConsole(urls.update);
 				utils.loadUrl(urls.update, 'POST', JSON.stringify(values), true, formSubmitHandler);

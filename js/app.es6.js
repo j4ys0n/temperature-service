@@ -10,6 +10,7 @@ import AddDevice from './modules/AddDevice.es6';
 import AddAccount from './modules/AddAccount.es6';
 import AddLocation from './modules/AddLocation.es6';
 import AddUser from './modules/AddUser.es6';
+import TemperatureChart from './modules/TemperatureChart.es6';
 
 let app = new Main($, [
 	Login,
@@ -20,7 +21,8 @@ let app = new Main($, [
 	AddDevice,
 	AddAccount,
 	AddLocation,
-	AddUser
+	AddUser,
+	TemperatureChart
 ], $('[data-module]'), Utils);
 
 app.init();

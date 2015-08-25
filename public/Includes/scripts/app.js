@@ -51,14 +51,18 @@ var _modulesAddUserEs6 = require('./modules/AddUser.es6');
 
 var _modulesAddUserEs62 = _interopRequireDefault(_modulesAddUserEs6);
 
-var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modulesLoginEs62['default'], _modulesAccountDetailsEs62['default'], _modulesLocationDetailsEs62['default'], _modulesDeviceDetailsEs62['default'], _modulesUserDetailsEs62['default'], _modulesAddDeviceEs62['default'], _modulesAddAccountEs62['default'], _modulesAddLocationEs62['default'], _modulesAddUserEs62['default']], _libJquery1112Min2['default']('[data-module]'), _modulesUtilsEs62['default']);
+var _modulesTemperatureChartEs6 = require('./modules/TemperatureChart.es6');
+
+var _modulesTemperatureChartEs62 = _interopRequireDefault(_modulesTemperatureChartEs6);
+
+var app = new _modulesMainEs62['default'](_libJquery1112Min2['default'], [_modulesLoginEs62['default'], _modulesAccountDetailsEs62['default'], _modulesLocationDetailsEs62['default'], _modulesDeviceDetailsEs62['default'], _modulesUserDetailsEs62['default'], _modulesAddDeviceEs62['default'], _modulesAddAccountEs62['default'], _modulesAddLocationEs62['default'], _modulesAddUserEs62['default'], _modulesTemperatureChartEs62['default']], _libJquery1112Min2['default']('[data-module]'), _modulesUtilsEs62['default']);
 
 app.init();
 
 //FOR DEBUGGING
 window._app = app;
 
-},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/AddLocation.es6":8,"./modules/AddUser.es6":9,"./modules/DeviceDetails.es6":10,"./modules/LocationDetails.es6":12,"./modules/Login.es6":13,"./modules/Main.es6":14,"./modules/UserDetails.es6":15,"./modules/Utils.es6":16}],2:[function(require,module,exports){
+},{"./lib/jquery-1.11.2.min":2,"./modules/AccountDetails.es6":4,"./modules/AddAccount.es6":5,"./modules/AddDevice.es6":6,"./modules/AddLocation.es6":8,"./modules/AddUser.es6":9,"./modules/DeviceDetails.es6":10,"./modules/LocationDetails.es6":12,"./modules/Login.es6":13,"./modules/Main.es6":14,"./modules/TemperatureChart.es6":15,"./modules/UserDetails.es6":16,"./modules/Utils.es6":17}],2:[function(require,module,exports){
 /*! jQuery v1.11.2 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
 "use strict";
 
@@ -2713,11 +2717,7 @@ var DeviceDetails = (function (_DocDetails) {
 	function DeviceDetails($, Utils) {
 		_classCallCheck(this, DeviceDetails);
 
-		var d3 = require('d3'),
-		   
-		//j = require('jQuery'),
-		Rickshaw = require('rickshaw'),
-		    utils = new Utils();
+		var utils = new Utils();
 
 		var constants = {
 			getDeviceURL: '/api/device/id/',
@@ -2751,91 +2751,6 @@ var DeviceDetails = (function (_DocDetails) {
 			submit: $(selectors.submit)
 		};
 
-		var rickshawChart = function rickshawChart(data) {
-
-			data.sort(function (a, b) {
-				return parseFloat(a.x) - parseFloat(b.x);
-			});
-
-			var graph = new Rickshaw.Graph({
-				element: document.getElementById('chart'),
-				width: 960,
-				height: 500,
-				min: 50,
-				renderer: 'line',
-				series: [{
-					color: '#c05020',
-					data: data,
-					name: 'Temperature'
-				}]
-			});
-			graph.render();
-
-			var hoverDetail = new Rickshaw.Graph.HoverDetail({
-				graph: graph
-			});
-
-			var legend = new Rickshaw.Graph.Legend({
-				graph: graph,
-				element: document.getElementById('legend')
-			});
-
-			var timeFormat = function timeFormat(d) {
-				d = new Date(d);
-				return d3.time.format('%c')(d);
-			};
-
-			var x_axis = new Rickshaw.Graph.Axis.X({
-				graph: graph,
-				tickFormat: timeFormat
-			});
-
-			//x_axis.render();
-
-			var y_axis = new Rickshaw.Graph.Axis.Y({
-				graph: graph,
-				orientation: 'left',
-				element: document.getElementById('y_axis')
-			});
-
-			y_axis.render();
-		};
-
-		var dateFormatter = function dateFormatter(dt) {
-			return Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds());
-		};
-
-		var temperatureRequestHandler = function temperatureRequestHandler(res) {
-			var data = JSON.parse(res).data,
-			    chartData = [];
-			for (var i = 0; i < data.length; i++) {
-				var doc = data[i],
-				    temps = doc.temperatures.hourly;
-				for (var hour in temps) {
-					for (var interval in temps[hour]) {
-						if (temps[hour][interval].time != '') {
-							var dt = dateFormatter(new Date(temps[hour][interval].time));
-							var localDate = new Date();
-							var tzOffset = localDate.getTimezoneOffset() * 60000;
-							//dt += tzOffset;
-							dt = dt / 1000;
-
-							localDate.setDate(localDate.getDate() - 1);
-							var ldt = dateFormatter(localDate) / 1000;
-
-							if (dt > ldt) {
-								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
-								//chartData.push({date: dt, value: temps[hour][interval].value });
-								chartData.push({ x: dt, y: temps[hour][interval].value });
-							}
-						}
-					}
-				}
-			}
-			console.log(chartData);
-			rickshawChart(chartData);
-		};
-
 		var deviceRequestHandler = function deviceRequestHandler(res) {
 			var device = JSON.parse(res).data;
 			utils.debugConsole(device);
@@ -2844,12 +2759,7 @@ var DeviceDetails = (function (_DocDetails) {
 		_get(Object.getPrototypeOf(DeviceDetails.prototype), 'constructor', this).call(this, $, Utils, forms, { 'delete': constants.deleteUrl,
 			update: constants.updateUrl });
 
-		this.firstRun = function () {
-			utils.loadUrl(constants.getDeviceURL + id, 'GET', null, false, deviceRequestHandler);
-
-			//utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			utils.loadUrl('/api/temperature/device/all/' + id, 'GET', null, false, temperatureRequestHandler);
-		};
+		this.firstRun = function () {};
 	}
 
 	_createClass(DeviceDetails, [{
@@ -2870,17 +2780,27 @@ var DeviceDetails = (function (_DocDetails) {
 exports['default'] = DeviceDetails;
 module.exports = exports['default'];
 
-},{"./DocDetails.es6":11,"d3":17,"rickshaw":20}],11:[function(require,module,exports){
+//utils.loadUrl( constants.getDeviceURL+id, 'GET', null, false, deviceRequestHandler );
+
+},{"./DocDetails.es6":11}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var DocDetails = function DocDetails($, Utils, forms, urls) {
+var DocDetails = function DocDetails($, Utils, forms, urls, idBased) {
 	_classCallCheck(this, DocDetails);
 
 	var utils = new Utils();
+
+	if (idBased === undefined) {
+		idBased = true;
+	} else {
+		idBased = false;
+	}
+
+	utils.debugConsole('is id based update: ' + idBased.toString());
 
 	/**
  	DELETE
@@ -2907,7 +2827,9 @@ var DocDetails = function DocDetails($, Utils, forms, urls) {
 		$button.on('click', deleteDoc);
 	};
 
-	addDeleteButtonListener($(forms['delete'].deleteBtn), $(forms['delete'].enable));
+	if (forms['delete'] !== undefined && forms['delete'] !== null) {
+		addDeleteButtonListener($(forms['delete'].deleteBtn), $(forms['delete'].enable));
+	}
 
 	/**
  	DISPLAY LINKS
@@ -3059,6 +2981,9 @@ var DocDetails = function DocDetails($, Utils, forms, urls) {
 
 	var formSubmitHandler = function formSubmitHandler(res) {
 		utils.debugConsole(res);
+		if (urls.updateCallback !== undefined) {
+			urls.updateCallback(JSON.parse(res));
+		}
 	};
 
 	var initForms = function initForms() {
@@ -3068,7 +2993,9 @@ var DocDetails = function DocDetails($, Utils, forms, urls) {
 		forms.submit.on('click', function (e) {
 			e.preventDefault();
 			var values = inputsObject();
-			values.id = forms.id;
+			if (idBased) {
+				values.id = forms.id;
+			}
 			utils.debugConsole(values);
 			utils.debugConsole(urls.update);
 			utils.loadUrl(urls.update, 'POST', JSON.stringify(values), true, formSubmitHandler);
@@ -3257,36 +3184,76 @@ exports['default'] = LocationDetails;
 module.exports = exports['default'];
 
 },{"./DocDetails.es6":11}],13:[function(require,module,exports){
-"use strict";
+'use strict';
 
 exports.__esModule = true;
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-var Login = (function () {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var _DocDetailsEs6 = require('./DocDetails.es6');
+
+var _DocDetailsEs62 = _interopRequireDefault(_DocDetailsEs6);
+
+var Login = (function (_DocDetails) {
+	_inherits(Login, _DocDetails);
+
 	function Login($, Utils) {
 		_classCallCheck(this, Login);
+
+		var utils = new Utils();
+
+		var constants = {
+			loginUrl: '/api/users/login'
+		};
+
+		var selectors = {
+			wrapper: '.login-container',
+			inputs: 'input[type="text"]',
+			submit: 'button.submit-login'
+		};
+
+		var objects = {
+			wrapper: $(selectors.wrapper_)
+		};
+
+		var forms = {
+			inputs: $(selectors.inputs),
+			submit: $(selectors.submit)
+		};
+
+		var loginResponseHandler = function loginResponseHandler(res) {
+			utils.debugConsole('user id: ' + res.data[0]._id);
+		};
+
+		_get(Object.getPrototypeOf(Login.prototype), 'constructor', this).call(this, $, Utils, forms, { update: constants.loginUrl,
+			updateCallback: loginResponseHandler }, false);
 	}
 
 	_createClass(Login, [{
-		key: "name",
+		key: 'name',
 		value: function name() {
-			return "Login";
+			return 'Login';
 		}
 	}, {
-		key: "init",
+		key: 'init',
 		value: function init() {}
 	}]);
 
 	return Login;
-})();
+})(_DocDetailsEs62['default']);
 
-exports["default"] = Login;
-module.exports = exports["default"];
+exports['default'] = Login;
+module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{"./DocDetails.es6":11}],14:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3365,6 +3332,146 @@ exports["default"] = Main;
 module.exports = exports["default"];
 
 },{}],15:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var TemperatureChart = (function () {
+	function TemperatureChart($, Utils) {
+		_classCallCheck(this, TemperatureChart);
+
+		var utils = new Utils();
+
+		var constants = {};
+
+		var selectors = {
+			wrapper: '.chart-container'
+		};
+
+		var objects = {
+			wrapper: $(selectors.wrapper)
+		};
+
+		var d3 = require('d3'),
+		   
+		//j = require('jQuery'),
+		Rickshaw = require('rickshaw'),
+		    id = objects.wrapper.data('id');
+
+		var rickshawChart = function rickshawChart(data) {
+
+			data.sort(function (a, b) {
+				return parseFloat(a.x) - parseFloat(b.x);
+			});
+
+			var graph = new Rickshaw.Graph({
+				element: document.getElementById('chart'),
+				width: 960,
+				height: 500,
+				min: 50,
+				renderer: 'line',
+				series: [{
+					color: '#c05020',
+					data: data,
+					name: 'Temperature'
+				}]
+			});
+			graph.render();
+
+			var hoverDetail = new Rickshaw.Graph.HoverDetail({
+				graph: graph
+			});
+
+			var legend = new Rickshaw.Graph.Legend({
+				graph: graph,
+				element: document.getElementById('legend')
+			});
+
+			var timeFormat = function timeFormat(d) {
+				d = new Date(d);
+				return d3.time.format('%c')(d);
+			};
+
+			var x_axis = new Rickshaw.Graph.Axis.X({
+				graph: graph,
+				tickFormat: timeFormat
+			});
+
+			//x_axis.render();
+
+			var y_axis = new Rickshaw.Graph.Axis.Y({
+				graph: graph,
+				orientation: 'left',
+				element: document.getElementById('y_axis')
+			});
+
+			y_axis.render();
+		};
+
+		var dateFormatter = function dateFormatter(dt) {
+			return Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), dt.getSeconds());
+		};
+
+		var temperatureRequestHandler = function temperatureRequestHandler(res) {
+			var data = JSON.parse(res).data,
+			    chartData = [];
+			for (var i = 0; i < data.length; i++) {
+				var doc = data[i],
+				    temps = doc.temperatures.hourly;
+				for (var hour in temps) {
+					for (var interval in temps[hour]) {
+						if (temps[hour][interval].time != '') {
+							var dt = dateFormatter(new Date(temps[hour][interval].time));
+							var localDate = new Date();
+							var tzOffset = localDate.getTimezoneOffset() * 60000;
+							//dt += tzOffset;
+							dt = dt / 1000;
+
+							localDate.setDate(localDate.getDate() - 1);
+							var ldt = dateFormatter(localDate) / 1000;
+
+							if (dt > ldt) {
+								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
+								//chartData.push({date: dt, value: temps[hour][interval].value });
+								chartData.push({ x: dt, y: temps[hour][interval].value });
+							}
+						}
+					}
+				}
+			}
+			console.log(chartData);
+			rickshawChart(chartData);
+		};
+
+		this.firstRun = function () {
+			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			//utils.loadUrl('/api/temperature/device/all/'+id, 'GET', null, false, temperatureRequestHandler);
+		};
+	}
+
+	_createClass(TemperatureChart, [{
+		key: 'name',
+		value: function name() {
+			return 'TemperatureChart';
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.firstRun();
+		}
+	}]);
+
+	return TemperatureChart;
+})();
+
+exports['default'] = TemperatureChart;
+module.exports = exports['default'];
+
+},{"d3":18,"rickshaw":21}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3470,7 +3577,7 @@ var UserDetails = (function (_DocDetails) {
 exports['default'] = UserDetails;
 module.exports = exports['default'];
 
-},{"./DocDetails.es6":11}],16:[function(require,module,exports){
+},{"./DocDetails.es6":11}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3577,7 +3684,7 @@ var Utils = (function () {
 exports['default'] = Utils;
 module.exports = exports['default'];
 
-},{"./../lib/promise.min":3}],17:[function(require,module,exports){
+},{"./../lib/promise.min":3}],18:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.5.6"
@@ -13082,7 +13189,7 @@ module.exports = exports['default'];
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 d3 = function() {
   var d3 = {
     version: "3.3.13"
@@ -22376,12 +22483,12 @@ d3 = function() {
   });
   return d3;
 }();
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 require("./d3");
 module.exports = d3;
 (function () { delete this.d3; })(); // unset global
 
-},{"./d3":18}],20:[function(require,module,exports){
+},{"./d3":19}],21:[function(require,module,exports){
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(['d3'], function (d3) {
@@ -26451,7 +26558,7 @@ Rickshaw.Series.FixedDuration = Rickshaw.Class.create(Rickshaw.Series, {
 	return Rickshaw;
 }));
 
-},{"d3":19}]},{},[1])
+},{"d3":20}]},{},[1])
 
 
 //# sourceMappingURL=app.js.map

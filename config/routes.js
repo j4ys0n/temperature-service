@@ -6,12 +6,19 @@ var users = require( __dirname + '/../controllers/users' );
 var accounts = require( __dirname + '/../controllers/accounts' );
 var locations = require( __dirname + '/../controllers/locations' );
 var temperature = require( __dirname + '/../controllers/temperature' );
+var site = require( __dirname + '/../controllers/site' );
 
 //routes
 
 module.exports = function(app) {
   //front-end application
   //app.get( '/', site.default );
+
+  //production routes
+  app.get( '/login', site.login );
+
+
+  //for dev
   //accounts
   app.get( '/accounts', accounts.renderAccountPage );
   app.get( '/accounts/new', accounts.renderAccountAdd );
@@ -46,6 +53,7 @@ module.exports = function(app) {
 
   //api users
   app.post( '/api/users/new', users.addUser );
+  app.post( '/api/users/login', users.getUserByUsernameAndPass );
   app.get( '/api/users/id/:id', users.getUserById );
   app.get( '/api/users/username/:username', users.getUserByUsername );
   app.get( '/api/users/account/:accountid', users.getUsersByAccount );

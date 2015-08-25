@@ -15,13 +15,6 @@
 		</div>
 		<button class="update-device" disabled>update</button><input type="checkbox" id="enable-delete"/><button class="delete-device" disabled>delete</button>
 	</form>
-	<div class="chart-container">
-		<div id="chart" class="rickshaw_graph"></div>
-		<div id="legend_container">
-			<div id="smoother" title="Smoothing"></div>
-			<div id="legend" class="rickshaw_legend"></div>
-		</div>
-		<div id="y_axis"></div>
-	</div>
+	<%- include ../../_partials/charts/temperature.ejs %>
 
 </div>

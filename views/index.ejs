@@ -47,6 +47,12 @@
 					<% } else if (data.page == 'user-detail') { %>
 						<%- include _pages/user/user-detail.ejs %>
 					<% } %>
+
+<% //------------ USERS ------------ %>
+
+					<% if (data.page == 'login') { %>
+						<%- include _pages/login.ejs %>
+					<% } %>
 				</section>
 				<section class="console col lg-twelve-col med-nine-col">
 					<h3>Debugging Console</h3>

@@ -53,7 +53,7 @@ module.exports = {
         });
     },
     getUserByUsername: function( req, res ){
-        var username = decodeURIComponent( req.params.username );
+        var username = req.body.username;
         User.find( { user_name: username } ).exec( function( err, user ){
             res.json( Response.code( err, user ), Response.data( err, user ) );
         });
@@ -76,14 +76,13 @@ module.exports = {
         });
     },
     //login
-    getUserByUsernameAndPass: function( req, res ) {
-        var username = req.body.username,
-            password = req.body.password;
-        User.find( { user_name: username, password: password } ).exec( function( err, user ){
-            console.log(username);
-            res.json( Response.code( err, user ), Response.data( err, user ) );
-        });
-    },
+    // getUserByUsername: function( req, res ) {
+    //     var username = req.body.username;
+    //     User.find( { user_name: username} ).exec( function( err, user ){
+    //         console.log(username);
+    //         res.json( Response.code( err, user ), Response.data( err, user ) );
+    //     });
+    // },
 
     /* -------- updates -------- */
     updateUserAccount: function( req, res ){

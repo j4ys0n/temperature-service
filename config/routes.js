@@ -53,9 +53,9 @@ module.exports = function(app) {
 
   //api users
   app.post( '/api/users/new', users.addUser );
-  app.post( '/api/users/login', users.getUserByUsernameAndPass );
+  //app.post( '/api/users/login', users.getUserByUsernameAndPass );
   app.get( '/api/users/id/:id', users.getUserById );
-  app.get( '/api/users/username/:username', users.getUserByUsername );
+  app.post( '/api/users/username', users.getUserByUsername );
   app.get( '/api/users/account/:accountid', users.getUsersByAccount );
   app.get( '/api/users/location/:locationid', users.getUsersByLocation );
   app.get( '/api/users/all', users.getAllUsers );

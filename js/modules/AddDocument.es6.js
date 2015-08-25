@@ -1,6 +1,7 @@
 class AddDocument {
 	constructor($, Utils, selectors, url) {
-		let utils = new Utils();
+		let utils = new Utils(),
+			bcrypt = require('bcryptjs');
 
 		let submitResponseHandler = function(res) {
 			utils.debugConsole(res);
@@ -11,7 +12,12 @@ class AddDocument {
 			for( var index in selectors ) {
 				var value = selectors[index];
 				if( index != 'submit' && typeof value != 'object' ) {
-					d[index] = $(value).val();
+					var $v = $(value);
+					d[index] = $v.val();
+					if ($v.data('action') === 'encrypt') {
+						var salt = bcrypt.genSaltSync(10);
+						d[index] = bcrypt.hashSync(d[index], salt);
+					}
 				}
 				if(typeof value == 'object'){
 					for( var subIndex in value ){

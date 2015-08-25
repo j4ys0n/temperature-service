@@ -1,6 +1,7 @@
 class DocDetails {
 	constructor($, Utils, forms, urls, idBased) {
-		let utils = new Utils();
+		let utils = new Utils(),
+			bcrypt = require('bcryptjs');
 
 		if( idBased === undefined ){
 			idBased = true;
@@ -19,6 +20,7 @@ class DocDetails {
 		};
 
 		let deleteDoc = function(e) {
+			e.preventDefault();
 			utils.loadUrl( urls.delete, 'DELETE', JSON.stringify({id: forms.id}), true, deleteResponseHandler );
 		};
 
@@ -89,7 +91,7 @@ class DocDetails {
 		};
 
 		/**
-			LINK DOCUMENT
+			ADD LINK TO DOCUMENT
 		**/
 
 		let populateDocuments = function(url, select, displayField, submit, existing) {
@@ -149,12 +151,15 @@ class DocDetails {
 			INPUTS
 		**/
 
+		var submitValues = {};
+
 		let inputsObject = function() {
 			let values = {};
 			for(var i = 0; i < forms.inputs.length; i++) {
 				var $input = $(forms.inputs[i]),
 					name = $input.attr('name'),
 					value = $input.val();
+				//utils.debugConsole(value);
 				//build update object
 				utils.debugConsole('input update on change: '+$input.attr('name')+' : '+$input.attr('enable-update'));
 				if($input.attr('enable-update') === 'true') {
@@ -194,20 +199,41 @@ class DocDetails {
 			}
 		};
 
+		let sendUpdate = function(values) {
+			utils.loadUrl(urls.update, 'POST', JSON.stringify(values), true, formSubmitHandler);
+		};
+
+		let decrypt = function(password) {
+			utils.loadUrl(urls.update, 'POST', JSON.stringify({username: submitValues.username}), true, function(res){
+				res = JSON.parse(res).data[0];
+				utils.debugConsole('password match: '+bcrypt.compareSync(submitValues.password, res.password));
+			});
+		};
+
+		let decryptFilter = function() {
+			utils.debugConsole(urls.update);
+			if(submitValues.password === undefined){
+				sendUpdate(submitValues);
+			}else{
+				decrypt(submitValues.password);
+			}
+		};
+
+		let formSubmit = function(e) {
+			e.preventDefault();
+			submitValues = inputsObject();
+			if(idBased){
+				submitValues.id = forms.id;
+			}
+			utils.debugConsole(submitValues);
+			decryptFilter();
+		};
+
 		let initForms = function() {
 			utils.debugConsole('init form');
 			addInputChangeListeners();
 
-			forms.submit.on('click', function(e){
-				e.preventDefault();
-				let values = inputsObject();
-				if(idBased){
-					values.id = forms.id;
-				}
-				utils.debugConsole(values);
-				utils.debugConsole(urls.update);
-				utils.loadUrl(urls.update, 'POST', JSON.stringify(values), true, formSubmitHandler);
-			});
+			forms.submit.on('click', formSubmit);
 		};
 
 		/*

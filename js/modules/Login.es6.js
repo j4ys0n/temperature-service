@@ -3,14 +3,14 @@ import DocDetails from './DocDetails.es6';
 class Login extends DocDetails {
 	constructor($, Utils) {
 		let utils = new Utils();
-		
+
 		let constants = {
-			loginUrl: '/api/users/login'
+			loginUrl: '/api/users/username'
 		};
 
 		let selectors = {
 			wrapper: '.login-container',
-			inputs: 'input[type="text"]',
+			inputs: 'input[type="text"], input[type="password"]',
 			submit: 'button.submit-login'
 		};
 

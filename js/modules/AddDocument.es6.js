@@ -1,7 +1,11 @@
+import Geocoder from './Geocoder.es6';
+
 class AddDocument {
 	constructor($, Utils, selectors, url) {
 		let utils = new Utils(),
-			bcrypt = require('bcryptjs');
+			bcrypt = require('bcryptjs'),
+			postData,
+			g = new Geocoder();
 
 		let submitResponseHandler = function(res) {
 			utils.debugConsole(res);
@@ -31,9 +35,29 @@ class AddDocument {
 			return d;
 		};
 
-		let addDoc = this.addDoc = function(e) {
-			var postData = composeData();
+		let storeDoc = function() {
 			utils.loadUrl(url, 'POST', JSON.stringify(postData), true, submitResponseHandler);
+		};
+
+		let geocodeResponseHandler = function(res, status){
+			if(status === 'OK') {
+				postData.address.coords = [res[0].geometry.location.K, res[0].geometry.location.G];
+				storeDoc();
+			}
+		};
+
+		let addDoc = this.addDoc = function(e) {
+			postData = composeData();
+			if(postData.address != undefined){
+				if(postData.address.coords === 'geocode') {
+					utils.debugConsole('geocode me');
+					var address = postData.address.address1 + ' ' + postData.address.city + ', ' + postData.address.state + ' ' + postData.address.zip;
+					g.geocode(address, geocodeResponseHandler);
+				}
+			}else{
+				utils.debugConsole(postData);
+				storeDoc();
+			}
 		};
 
 		let addSubmitButtonListener = function($button){

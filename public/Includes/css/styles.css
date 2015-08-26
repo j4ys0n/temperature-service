@@ -642,3 +642,8 @@ form button[class*="update-"] {
   top: 0;
   bottom: 0;
   width: 40px; }
+
+/* line 433, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+.map-canvas {
+  height: 400px;
+  width: 600px; }

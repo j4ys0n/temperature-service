@@ -11,7 +11,7 @@ import AddAccount from './modules/AddAccount.es6';
 import AddLocation from './modules/AddLocation.es6';
 import AddUser from './modules/AddUser.es6';
 import TemperatureChart from './modules/TemperatureChart.es6';
-import Geocoder from './modules/Geocoder.es6';
+import Map from './modules/Map.es6';
 
 let app = new Main($, [
 	Login,
@@ -24,7 +24,7 @@ let app = new Main($, [
 	AddLocation,
 	AddUser,
 	TemperatureChart,
-	Geocoder
+	Map
 ], $('[data-module]'), Utils);
 
 app.init();

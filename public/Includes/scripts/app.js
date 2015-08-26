@@ -3447,6 +3447,9 @@ var Map = (function () {
 		_classCallCheck(this, Map);
 
 		var utils = new Utils(),
+		   
+		//locationName,
+		type = undefined,
 		    GoogleMapsLoader = require('google-maps'),
 		    mapOptions = undefined,
 		    coords = undefined,
@@ -3460,16 +3463,20 @@ var Map = (function () {
 			map: $(selectors.map)
 		};
 
-		this.firstRun = function () {
-			name = objects.map.data('name');
+		var addMap = function addMap(google, center, markers) {
+			mapOptions = {
+				center: new google.maps.LatLng(center[1], center[0]),
+				zoom: 13
+			};
+			map = new google.maps.Map(objects.map[0], mapOptions);
+			markers();
+		};
+
+		var singleMarker = function singleMarker(google) {
 			coords = objects.map.data('coords').split(',');
 			utils.debugConsole(coords);
-			GoogleMapsLoader.load(function (google) {
-				mapOptions = {
-					center: new google.maps.LatLng(coords[1], coords[0]),
-					zoom: 13
-				};
-				map = new google.maps.Map(objects.map[0], mapOptions);
+			var marker = function marker() {
+				var name = objects.map.data('name');
 				var marker = new google.maps.Marker({
 					map: map,
 					draggable: false,
@@ -3477,7 +3484,19 @@ var Map = (function () {
 					position: new google.maps.LatLng(coords[1], coords[0]),
 					title: name
 				});
-			});
+			};
+			addMap(google, coords, marker);
+		};
+
+		this.firstRun = function () {
+			var callback;
+			type = objects.map.data('type');
+
+			if (type === 'single') {
+				callback = singleMarker;
+			}
+
+			GoogleMapsLoader.load(callback);
 		};
 	}
 

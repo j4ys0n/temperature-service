@@ -1,6 +1,8 @@
 class Map {
 	constructor($, Utils) {
 		let utils = new Utils(),
+			//locationName,
+			type,
 			GoogleMapsLoader = require('google-maps'),
 			mapOptions,
 			coords,
@@ -14,18 +16,20 @@ class Map {
 			map: $(selectors.map)
 		};
 
+		let addMap = function(google, center, markers) {
+			mapOptions = {
+				center: new google.maps.LatLng( center[1], center[0] ),
+				zoom: 13
+			};
+			map = new google.maps.Map( objects.map[0] , mapOptions );
+			markers();
+		};
 
-
-		this.firstRun = function() {
-			name = objects.map.data('name');
+		let singleMarker = function(google) {
 			coords = objects.map.data('coords').split(',');
 			utils.debugConsole(coords);
-			GoogleMapsLoader.load(function( google ){
-				mapOptions = {
-					center: new google.maps.LatLng( coords[1], coords[0] ),
-					zoom: 13
-				};
-				map = new google.maps.Map( objects.map[0] , mapOptions );
+			let marker = function() {
+				var name = objects.map.data('name');
 				var marker = new google.maps.Marker({
 					map: map,
 					draggable: false,
@@ -33,7 +37,19 @@ class Map {
 					position: new google.maps.LatLng( coords[1], coords[0] ),
 					title: name
 				});
-			});
+			}
+			addMap(google, coords, marker);
+		};
+
+		this.firstRun = function() {
+			var callback;
+			type = objects.map.data('type');
+
+			if(type === 'single') {
+				callback = singleMarker;
+			}
+
+			GoogleMapsLoader.load(callback);
 		};
 
 	}

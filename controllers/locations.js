@@ -68,6 +68,18 @@ module.exports = {
             res.json( Response.code( err, locations ), Response.data( err, locations ) );
         });
     },
+    userIn: function( req, res ){
+        var userid = req.body.id;
+        Location.find( { users: userid } ).exec( function( err, locations ){
+            res.json( Response.code( err, locations ), Response.data( err, locations ) );
+        });
+    },
+    inArray: function( req, res ){
+        var locations = req.body.locations;
+        Location.find( { _id: { $in: locations } } ).exec( function( err, locations){
+            res.json( Response.code( err, locations ), Response.data( err, locations ) );
+        });
+    },
 
     /* -------- updates -------- */
     updateWifiInfo: function( req, res ){

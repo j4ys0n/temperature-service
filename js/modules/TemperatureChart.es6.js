@@ -29,6 +29,7 @@ class TemperatureChart {
 				element: document.getElementById('chart'),
 				width: 960,
 				height: 500,
+				max: 100,
 				min: 50,
 				renderer: 'line',
 				series: [

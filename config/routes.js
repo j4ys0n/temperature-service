@@ -16,6 +16,7 @@ module.exports = function(app) {
 
   //production routes
   app.get( '/login', site.login );
+  app.get( '/home/:user', site.home );
 
 
   //for dev
@@ -90,6 +91,8 @@ module.exports = function(app) {
   app.post( '/api/locations/update/removedevice', locations.removeDevice );
   app.post( '/api/locations/update/adduser', locations.addUser );
   app.post( '/api/locations/update/removeuser', locations.removeUser );
+  app.post( '/api/locations/userin', locations.userIn );
+  app.post( '/api/locations/in', locations.inArray );
   app.delete( '/api/locations/delete/id', locations.deleteLocationById );
 
   //api temperatures

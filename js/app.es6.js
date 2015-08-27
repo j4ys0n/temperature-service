@@ -12,6 +12,7 @@ import AddLocation from './modules/AddLocation.es6';
 import AddUser from './modules/AddUser.es6';
 import TemperatureChart from './modules/TemperatureChart.es6';
 import Map from './modules/Map.es6';
+import Home from './modules/Home.es6';
 
 let app = new Main($, [
 	Login,
@@ -24,7 +25,8 @@ let app = new Main($, [
 	AddLocation,
 	AddUser,
 	TemperatureChart,
-	Map
+	Map,
+	Home
 ], $('[data-module]'), Utils);
 
 app.init();

@@ -48,10 +48,12 @@
 						<%- include _pages/user/user-detail.ejs %>
 					<% } %>
 
-<% //------------ USERS ------------ %>
+<% //------------ SITE ------------ %>
 
 					<% if (data.page == 'login') { %>
 						<%- include _pages/login.ejs %>
+					<% } else if (data.page == 'home') { %>
+						<%- include _pages/home.ejs %>
 					<% } %>
 				</section>
 				<section class="console col lg-twelve-col med-nine-col">

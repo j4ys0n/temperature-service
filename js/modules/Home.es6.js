@@ -1,3 +1,5 @@
+import TemperatureChart from './TemperatureChart.es6';
+
 class Home {
 	constructor($, Utils) {
 		let utils = new Utils();
@@ -5,20 +7,29 @@ class Home {
 		let constants = {
 			accountUrl: '/api/account/id/',
 			locationsByUserIdUrl: '/api/locations/userin',
-			locationsById: '/api/locations/in'
+			locationsById: '/api/locations/in',
+			getDevicesById: '/api/device/in'
 		};
 
 		let selectors = {
-			wrapper: '.home'
+			wrapper: '.home',
+			chart: '.chart-container'
 		};
 
 		let objects = {
-			wrapper: $(selectors.wrapper)
+			wrapper: $(selectors.wrapper),
+			chart: $(selectors.chart)
 		};
 
 		let id = objects.wrapper.data('id'),
 			account = objects.wrapper.data('account'),
 			accountObj;
+
+		let deviceRequestHandler = function(res) {
+			utils.debugConsole('devices:');
+			res = JSON.parse(res).data;
+			utils.debugConsole(res);
+		}
 
 		let locationsRequestHandler = function(res) {
 			//utils.debugConsole(res);
@@ -37,6 +48,15 @@ class Home {
 			}
 			utils.debugConsole('devices:');
 			utils.debugConsole(devices);
+			objects.chart.attr('data-ids', devices);
+
+			var chart = new TemperatureChart($, Utils);
+			chart.init();
+
+			//DO I NEED THIS?
+			// if(devices.length > 0){
+			// 	utils.loadUrl(constants.getDevicesById, 'POST', JSON.stringify({devices: devices}), true, deviceRequestHandler);
+			// }
 		};
 
 		let accountRequestHandler = function(res) {

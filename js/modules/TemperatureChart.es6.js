@@ -3,7 +3,7 @@ class TemperatureChart {
 		let utils = new Utils();
 
 		let constants = {
-
+			deviceUrl: '/api/device/id/'
 		};
 
 		let selectors = {
@@ -17,13 +17,10 @@ class TemperatureChart {
 		let d3 = require('d3'),
 			//j = require('jQuery'),
 			Rickshaw = require('rickshaw'),
-			id = objects.wrapper.data('id');
+			id = objects.wrapper.data('ids'),
+			chartSeries = [];
 
-		let rickshawChart = function( data ) {
-
-			data.sort(function(a,b){
-				return parseFloat(a.x) - parseFloat(b.x);
-			});
+		let rickshawChart = function() {
 
 			var graph = new Rickshaw.Graph( {
 				element: document.getElementById('chart'),
@@ -32,13 +29,7 @@ class TemperatureChart {
 				max: 100,
 				min: 50,
 				renderer: 'line',
-				series: [
-					{
-						color: '#c05020',
-						data: data,
-						name: 'Temperature'
-					}
-				]
+				series: chartSeries
 			});
 			graph.render();
 
@@ -78,10 +69,18 @@ class TemperatureChart {
 
 		let temperatureRequestHandler = function( res ){
 			var data = JSON.parse(res).data,
-				chartData = [];
+				series = {
+					color: '#c05020',
+					data: [],
+					id: '',
+					name: 'Temperature'
+				};
+				utils.debugConsole('temp data');
+				utils.debugConsole(data);
 			for( var i = 0; i < data.length; i++ ){
 				var doc = data[i],
 					temps = doc.temperatures.hourly;
+				series.id = doc.device.id;
 				for( var hour in temps ) {
 					for( var interval in temps[hour] ){
 						if(temps[hour][interval].time != ''){
@@ -97,22 +96,42 @@ class TemperatureChart {
 							if(dt > ldt){
 								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 								//chartData.push({date: dt, value: temps[hour][interval].value });
-								chartData.push({x: dt, y: temps[hour][interval].value });
+								series.data.push({x: dt, y: temps[hour][interval].value });
 							}
-
-
 						}
 
 					}
 				}
 			}
-			console.log(chartData);
-			rickshawChart(chartData);
+			series.data.sort(function(a,b){
+				return parseFloat(a.x) - parseFloat(b.x);
+			});
+
+
+			// let deviceNameHandler = function(d) {
+			// 	utils.debugConsole(d);
+			// 	d = JSON.parse(d).data[0];
+			// 	series.name = d.name;
+			//
+			// 	chartSeries.push(series);
+			// 	rickshawChart();
+			// };
+			//
+			// utils.loadUrl(constants.deviceUrl+series.id, 'GET', null, false, deviceNameHandler);
+			chartSeries.push(series);
+			rickshawChart();
 		};
 
 		this.firstRun = function() {
+			id = id.split(',');
+			//utils.debugConsole(id);
+
+			for(var i = 0; i < id.length; i++){
+				//utils.loadUrl('/api/temperature/device/all/'+id[i], 'GET', null, false, temperatureRequestHandler);
+			}
 			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			//utils.loadUrl('/api/temperature/device/all/'+id, 'GET', null, false, temperatureRequestHandler);
+			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+
 		};
 
 	}

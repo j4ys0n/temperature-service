@@ -3128,7 +3128,13 @@ exports.__esModule = true;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _TemperatureChartEs6 = require('./TemperatureChart.es6');
+
+var _TemperatureChartEs62 = _interopRequireDefault(_TemperatureChartEs6);
 
 var Home = (function () {
 	function Home($, Utils) {
@@ -3139,20 +3145,29 @@ var Home = (function () {
 		var constants = {
 			accountUrl: '/api/account/id/',
 			locationsByUserIdUrl: '/api/locations/userin',
-			locationsById: '/api/locations/in'
+			locationsById: '/api/locations/in',
+			getDevicesById: '/api/device/in'
 		};
 
 		var selectors = {
-			wrapper: '.home'
+			wrapper: '.home',
+			chart: '.chart-container'
 		};
 
 		var objects = {
-			wrapper: $(selectors.wrapper)
+			wrapper: $(selectors.wrapper),
+			chart: $(selectors.chart)
 		};
 
 		var id = objects.wrapper.data('id'),
 		    account = objects.wrapper.data('account'),
 		    accountObj = undefined;
+
+		var deviceRequestHandler = function deviceRequestHandler(res) {
+			utils.debugConsole('devices:');
+			res = JSON.parse(res).data;
+			utils.debugConsole(res);
+		};
 
 		var locationsRequestHandler = function locationsRequestHandler(res) {
 			//utils.debugConsole(res);
@@ -3171,6 +3186,15 @@ var Home = (function () {
 			}
 			utils.debugConsole('devices:');
 			utils.debugConsole(devices);
+			objects.chart.attr('data-ids', devices);
+
+			var chart = new _TemperatureChartEs62['default']($, Utils);
+			chart.init();
+
+			//DO I NEED THIS?
+			// if(devices.length > 0){
+			// 	utils.loadUrl(constants.getDevicesById, 'POST', JSON.stringify({devices: devices}), true, deviceRequestHandler);
+			// }
 		};
 
 		var accountRequestHandler = function accountRequestHandler(res) {
@@ -3210,7 +3234,7 @@ var Home = (function () {
 exports['default'] = Home;
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{"./TemperatureChart.es6":18}],14:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3626,7 +3650,9 @@ var TemperatureChart = (function () {
 
 		var utils = new Utils();
 
-		var constants = {};
+		var constants = {
+			deviceUrl: '/api/device/id/'
+		};
 
 		var selectors = {
 			wrapper: '.chart-container'
@@ -3640,13 +3666,10 @@ var TemperatureChart = (function () {
 		   
 		//j = require('jQuery'),
 		Rickshaw = require('rickshaw'),
-		    id = objects.wrapper.data('id');
+		    id = objects.wrapper.data('ids'),
+		    chartSeries = [];
 
-		var rickshawChart = function rickshawChart(data) {
-
-			data.sort(function (a, b) {
-				return parseFloat(a.x) - parseFloat(b.x);
-			});
+		var rickshawChart = function rickshawChart() {
 
 			var graph = new Rickshaw.Graph({
 				element: document.getElementById('chart'),
@@ -3655,11 +3678,7 @@ var TemperatureChart = (function () {
 				max: 100,
 				min: 50,
 				renderer: 'line',
-				series: [{
-					color: '#c05020',
-					data: data,
-					name: 'Temperature'
-				}]
+				series: chartSeries
 			});
 			graph.render();
 
@@ -3699,10 +3718,18 @@ var TemperatureChart = (function () {
 
 		var temperatureRequestHandler = function temperatureRequestHandler(res) {
 			var data = JSON.parse(res).data,
-			    chartData = [];
+			    series = {
+				color: '#c05020',
+				data: [],
+				id: '',
+				name: 'Temperature'
+			};
+			utils.debugConsole('temp data');
+			utils.debugConsole(data);
 			for (var i = 0; i < data.length; i++) {
 				var doc = data[i],
 				    temps = doc.temperatures.hourly;
+				series.id = doc.device.id;
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {
 						if (temps[hour][interval].time != '') {
@@ -3718,19 +3745,37 @@ var TemperatureChart = (function () {
 							if (dt > ldt) {
 								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 								//chartData.push({date: dt, value: temps[hour][interval].value });
-								chartData.push({ x: dt, y: temps[hour][interval].value });
+								series.data.push({ x: dt, y: temps[hour][interval].value });
 							}
 						}
 					}
 				}
 			}
-			console.log(chartData);
-			rickshawChart(chartData);
+			series.data.sort(function (a, b) {
+				return parseFloat(a.x) - parseFloat(b.x);
+			});
+
+			// let deviceNameHandler = function(d) {
+			// 	utils.debugConsole(d);
+			// 	d = JSON.parse(d).data[0];
+			// 	series.name = d.name;
+			//
+			// 	chartSeries.push(series);
+			// 	rickshawChart();
+			// };
+			//
+			// utils.loadUrl(constants.deviceUrl+series.id, 'GET', null, false, deviceNameHandler);
+			chartSeries.push(series);
+			rickshawChart();
 		};
 
 		this.firstRun = function () {
+			id = id.split(',');
+			//utils.debugConsole(id);
+
+			for (var i = 0; i < id.length; i++) {}
 			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			//utils.loadUrl('/api/temperature/device/all/'+id, 'GET', null, false, temperatureRequestHandler);
+			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
 		};
 	}
 
@@ -3751,6 +3796,8 @@ var TemperatureChart = (function () {
 
 exports['default'] = TemperatureChart;
 module.exports = exports['default'];
+
+//utils.loadUrl('/api/temperature/device/all/'+id[i], 'GET', null, false, temperatureRequestHandler);
 
 },{"d3":22,"rickshaw":191}],19:[function(require,module,exports){
 'use strict';

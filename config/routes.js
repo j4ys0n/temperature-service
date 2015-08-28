@@ -45,6 +45,7 @@ module.exports = function(app) {
   app.post( '/api/device/new', devices.addDevice );
   app.get( '/api/device/id/:id', devices.getDeviceById );
   app.get( '/api/device/all', devices.getAllDevices );
+  app.post( '/api/device/in', devices.getDevicesIn );
   app.post( '/api/device/update/name', devices.updateDeviceName );
   app.post( '/api/device/update/battery', devices.updateDeviceBattery );
   app.post( '/api/device/update/uname', devices.updateDeviceUName );

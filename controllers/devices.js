@@ -52,6 +52,12 @@ module.exports = {
             res.json( Response.code( err, devices ), Response.data( err, devices ) );
         });
     },
+    getDevicesIn: function( req, res ){
+        var devices = req.body.devices;
+        Device.find( { _id: { $in: devices } } ).exec(function( err, devices ){
+            res.json( Response.code( err, devices ), Response.data( err, devices ) );
+        });
+    },
 
     /* -------- updates -------- */
     updateDeviceNameVersion: function ( req, res ){

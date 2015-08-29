@@ -3673,7 +3673,8 @@ var TemperatureChart = (function () {
 		//j = require('jQuery'),
 		Rickshaw = require('rickshaw'),
 		    id = objects.wrapper.data('ids'),
-		    chartSeries = [];
+		    chartSeries = [],
+		    colors = ['#c05020', '#1367e5'];
 
 		var rickshawChart = function rickshawChart() {
 			objects.chart.empty();
@@ -3754,6 +3755,7 @@ var TemperatureChart = (function () {
 							if (dt > ldt) {
 								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 								//chartData.push({date: dt, value: temps[hour][interval].value });
+								series.color = colors[i];
 								series.data.push({ x: dt, y: temps[hour][interval].value });
 							}
 						}

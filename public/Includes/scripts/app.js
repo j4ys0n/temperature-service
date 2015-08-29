@@ -3655,11 +3655,17 @@ var TemperatureChart = (function () {
 		};
 
 		var selectors = {
-			wrapper: '.chart-container'
+			wrapper: '.chart-container',
+			chart: '#chart',
+			legend: '#legend',
+			yaxis: '#y_axis'
 		};
 
 		var objects = {
-			wrapper: $(selectors.wrapper)
+			wrapper: $(selectors.wrapper),
+			chart: $(selectors.chart),
+			legend: $(selectors.legend),
+			yaxis: $(selectors.yaxis)
 		};
 
 		var d3 = require('d3'),
@@ -3670,9 +3676,12 @@ var TemperatureChart = (function () {
 		    chartSeries = [];
 
 		var rickshawChart = function rickshawChart() {
+			objects.chart.empty();
+			objects.legend.empty();
+			objects.yaxis.empty();
 
 			var graph = new Rickshaw.Graph({
-				element: document.getElementById('chart'),
+				element: objects.chart[0],
 				width: 960,
 				height: 500,
 				max: 100,
@@ -3755,27 +3764,29 @@ var TemperatureChart = (function () {
 				return parseFloat(a.x) - parseFloat(b.x);
 			});
 
-			// let deviceNameHandler = function(d) {
-			// 	utils.debugConsole(d);
-			// 	d = JSON.parse(d).data[0];
-			// 	series.name = d.name;
-			//
-			// 	chartSeries.push(series);
-			// 	rickshawChart();
-			// };
-			//
-			// utils.loadUrl(constants.deviceUrl+series.id, 'GET', null, false, deviceNameHandler);
-			chartSeries.push(series);
-			rickshawChart();
+			var deviceNameHandler = function deviceNameHandler(d) {
+				utils.debugConsole(d);
+				d = JSON.parse(d).data[0];
+				series.name = d.name;
+
+				chartSeries.push(series);
+				rickshawChart();
+			};
+
+			utils.loadUrl(constants.deviceUrl + series.id, 'GET', null, false, deviceNameHandler);
+			//chartSeries.push(series);
+			//rickshawChart();
 		};
 
 		this.firstRun = function () {
 			id = id.split(',');
 			//utils.debugConsole(id);
 
-			for (var i = 0; i < id.length; i++) {}
-			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			for (var i = 0; i < id.length; i++) {
+				utils.loadUrl('/api/temperature/device/all/' + id[i], 'GET', null, false, temperatureRequestHandler);
+			}
+			// utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			// utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
 		};
 	}
 
@@ -3796,8 +3807,6 @@ var TemperatureChart = (function () {
 
 exports['default'] = TemperatureChart;
 module.exports = exports['default'];
-
-//utils.loadUrl('/api/temperature/device/all/'+id[i], 'GET', null, false, temperatureRequestHandler);
 
 },{"d3":22,"rickshaw":191}],19:[function(require,module,exports){
 'use strict';

@@ -7,11 +7,17 @@ class TemperatureChart {
 		};
 
 		let selectors = {
-			wrapper: '.chart-container'
+			wrapper: '.chart-container',
+			chart: '#chart',
+			legend: '#legend',
+			yaxis: '#y_axis'
 		};
 
 		let objects = {
-			wrapper: $(selectors.wrapper)
+			wrapper: $(selectors.wrapper),
+			chart: $(selectors.chart),
+			legend: $(selectors.legend),
+			yaxis: $(selectors.yaxis)
 		};
 
 		let d3 = require('d3'),
@@ -21,9 +27,12 @@ class TemperatureChart {
 			chartSeries = [];
 
 		let rickshawChart = function() {
+			objects.chart.empty();
+			objects.legend.empty();
+			objects.yaxis.empty();
 
 			var graph = new Rickshaw.Graph( {
-				element: document.getElementById('chart'),
+				element: objects.chart[0],
 				width: 960,
 				height: 500,
 				max: 100,
@@ -108,18 +117,18 @@ class TemperatureChart {
 			});
 
 
-			// let deviceNameHandler = function(d) {
-			// 	utils.debugConsole(d);
-			// 	d = JSON.parse(d).data[0];
-			// 	series.name = d.name;
-			//
-			// 	chartSeries.push(series);
-			// 	rickshawChart();
-			// };
-			//
-			// utils.loadUrl(constants.deviceUrl+series.id, 'GET', null, false, deviceNameHandler);
-			chartSeries.push(series);
-			rickshawChart();
+			let deviceNameHandler = function(d) {
+				utils.debugConsole(d);
+				d = JSON.parse(d).data[0];
+				series.name = d.name;
+
+				chartSeries.push(series);
+				rickshawChart();
+			};
+
+			utils.loadUrl(constants.deviceUrl+series.id, 'GET', null, false, deviceNameHandler);
+			//chartSeries.push(series);
+			//rickshawChart();
 		};
 
 		this.firstRun = function() {
@@ -127,10 +136,10 @@ class TemperatureChart {
 			//utils.debugConsole(id);
 
 			for(var i = 0; i < id.length; i++){
-				//utils.loadUrl('/api/temperature/device/all/'+id[i], 'GET', null, false, temperatureRequestHandler);
+				utils.loadUrl('/api/temperature/device/all/'+id[i], 'GET', null, false, temperatureRequestHandler);
 			}
-			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			// utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			// utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
 
 		};
 

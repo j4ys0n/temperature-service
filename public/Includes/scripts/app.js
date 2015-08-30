@@ -3136,6 +3136,10 @@ var _TemperatureChartEs6 = require('./TemperatureChart.es6');
 
 var _TemperatureChartEs62 = _interopRequireDefault(_TemperatureChartEs6);
 
+var _MapEs6 = require('./Map.es6');
+
+var _MapEs62 = _interopRequireDefault(_MapEs6);
+
 var Home = (function () {
 	function Home($, Utils) {
 		_classCallCheck(this, Home);
@@ -3151,12 +3155,14 @@ var Home = (function () {
 
 		var selectors = {
 			wrapper: '.home',
-			chart: '.chart-container'
+			chart: '.chart-container',
+			map: '.map-canvas'
 		};
 
 		var objects = {
 			wrapper: $(selectors.wrapper),
-			chart: $(selectors.chart)
+			chart: $(selectors.chart),
+			map: $(selectors.map)
 		};
 
 		var id = objects.wrapper.data('id'),
@@ -3171,25 +3177,38 @@ var Home = (function () {
 
 		var locationsRequestHandler = function locationsRequestHandler(res) {
 			//utils.debugConsole(res);
-			var devices = [];
+			var devices = [],
+			    names = [],
+			    coords = '';
 			res = JSON.parse(res).data;
 			//get device ids
 			for (var i = 0; i < res.length; i++) {
 				//utils.debugConsole(res[i].devices);
-				var locDevices = res[i].devices;
+				var locDevices = res[i].devices,
+				    locCoords = res[i].address.coords,
+				    locNames = res[i].name;
 				for (var j = 0; j < locDevices.length; j++) {
-
 					if (devices.indexOf(locDevices[j]) == -1) {
 						devices.push(locDevices[j]);
 					}
+				}
+				names.push(locNames);
+				if (coords === '') {
+					coords += locCoords;
+				} else {
+					coords += ';' + locCoords;
 				}
 			}
 			utils.debugConsole('devices:');
 			utils.debugConsole(devices);
 			objects.chart.attr('data-ids', devices);
+			objects.map.attr('data-names', names);
+			objects.map.attr('data-coords', coords);
 
 			var chart = new _TemperatureChartEs62['default']($, Utils);
 			chart.init();
+			var map = new _MapEs62['default']($, Utils);
+			map.init();
 
 			//DO I NEED THIS?
 			// if(devices.length > 0){
@@ -3234,7 +3253,7 @@ var Home = (function () {
 exports['default'] = Home;
 module.exports = exports['default'];
 
-},{"./TemperatureChart.es6":18}],14:[function(require,module,exports){
+},{"./Map.es6":17,"./TemperatureChart.es6":18}],14:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3570,6 +3589,7 @@ var Map = (function () {
 		    GoogleMapsLoader = require('google-maps'),
 		    mapOptions = undefined,
 		    coords = undefined,
+		    names = undefined,
 		    map = undefined;
 
 		var selectors = {
@@ -3587,6 +3607,27 @@ var Map = (function () {
 			};
 			map = new google.maps.Map(objects.map[0], mapOptions);
 			markers();
+		};
+
+		var multipleMarkers = function multipleMarkers(google) {
+			coords = objects.map.data('coords').split(';');
+			names = objects.map.data('names').split(',');
+			utils.debugConsole(coords);
+			var markers = function markers() {
+				for (var i = 0; i < coords.length; i++) {
+					var c = coords[i].split(',');
+					utils.debugConsole('coords: ' + c);
+					var marker = new google.maps.Marker({
+						map: map,
+						draggable: false,
+						animation: google.maps.Animation.DROP,
+						position: new google.maps.LatLng(c[1], c[0]),
+						title: names[i]
+					});
+				}
+			};
+			var center = coords[0].split(',');
+			addMap(google, center, markers);
 		};
 
 		var singleMarker = function singleMarker(google) {
@@ -3611,6 +3652,8 @@ var Map = (function () {
 
 			if (type === 'single') {
 				callback = singleMarker;
+			} else if (type === 'multiple') {
+				callback = multipleMarkers;
 			}
 
 			GoogleMapsLoader.load(callback);

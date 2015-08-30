@@ -1,4 +1,5 @@
 import TemperatureChart from './TemperatureChart.es6';
+import Map from './Map.es6';
 
 class Home {
 	constructor($, Utils) {
@@ -13,12 +14,14 @@ class Home {
 
 		let selectors = {
 			wrapper: '.home',
-			chart: '.chart-container'
+			chart: '.chart-container',
+			map: '.map-canvas'
 		};
 
 		let objects = {
 			wrapper: $(selectors.wrapper),
-			chart: $(selectors.chart)
+			chart: $(selectors.chart),
+			map: $(selectors.map)
 		};
 
 		let id = objects.wrapper.data('id'),
@@ -33,25 +36,38 @@ class Home {
 
 		let locationsRequestHandler = function(res) {
 			//utils.debugConsole(res);
-			var devices = [];
+			var devices = [],
+				names = [],
+				coords = '';
 			res = JSON.parse(res).data;
 			//get device ids
 			for(var i = 0; i < res.length; i++){
 				//utils.debugConsole(res[i].devices);
-				var locDevices = res[i].devices;
+				var locDevices = res[i].devices,
+					locCoords = res[i].address.coords,
+					locNames = res[i].name;
 				for(var j = 0; j < locDevices.length; j++){
-
 					if(devices.indexOf(locDevices[j]) == -1){
 						devices.push(locDevices[j]);
 					}
+				}
+				names.push(locNames);
+				if(coords === ''){
+					coords += locCoords;
+				}else{
+					coords += ';'+locCoords;
 				}
 			}
 			utils.debugConsole('devices:');
 			utils.debugConsole(devices);
 			objects.chart.attr('data-ids', devices);
+			objects.map.attr('data-names', names);
+			objects.map.attr('data-coords', coords);
 
 			var chart = new TemperatureChart($, Utils);
 			chart.init();
+			var map = new Map($, Utils);
+			map.init();
 
 			//DO I NEED THIS?
 			// if(devices.length > 0){

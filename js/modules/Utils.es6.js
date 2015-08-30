@@ -56,7 +56,9 @@ class Utils {
 		this.debugConsole = function(message) {
 			if(debug){
 				var c = document.getElementById("console");
-				c.value = c.value + '\n' + message;
+				if(c !== null) {
+					c.value = c.value + '\n' + message;
+				}
 				console.log(message);
 			}
 		};

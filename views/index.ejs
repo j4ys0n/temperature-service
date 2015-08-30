@@ -6,7 +6,9 @@
 	<body>
 		<div class="outer">
 			<div class="wrapper">
+				<% if (data.page != 'home') {%>
 				<%- include _partials/nav.ejs %>
+				<% } %>
 				<section class="col lg-twelve-col med-nine-col">
 					<% if (data.page == 'default') { %>
 						<%- include _pages/default.ejs %>
@@ -56,10 +58,12 @@
 						<%- include _pages/home.ejs %>
 					<% } %>
 				</section>
+				<% if (data.page != 'home') {%>
 				<section class="console col lg-twelve-col med-nine-col">
 					<h3>Debugging Console</h3>
 					<textarea id="console"></textarea>
 				</section>
+				<% } %>
 			</div>
 		</div>
 		<script type="text/javascript" src="/public/Includes/scripts/app.js" async></script>

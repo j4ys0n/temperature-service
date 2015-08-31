@@ -58,8 +58,9 @@ class TemperatureChart {
 
 			var timeFormat = function(d) {
 				//d = moment(d);
+				var weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 				d = moment(new Date(d*1000));
-				return d.weekday()+' '+d.hour()+':'+d.minute();
+				return weekday[d.weekday()]+' '+d.hour()+':'+d.minute();
 			}
 
 			var x_axis = new Rickshaw.Graph.Axis.X({

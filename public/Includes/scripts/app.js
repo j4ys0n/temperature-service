@@ -3757,7 +3757,7 @@ var TemperatureChart = (function () {
 				tickFormat: timeFormat
 			});
 
-			//x_axis.render();
+			x_axis.render();
 
 			var y_axis = new Rickshaw.Graph.Axis.Y({
 				graph: graph,

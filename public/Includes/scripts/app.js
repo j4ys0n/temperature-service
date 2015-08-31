@@ -3751,7 +3751,7 @@ var TemperatureChart = (function () {
 			var timeFormat = function timeFormat(d) {
 				//d = moment(d);
 				d = moment(new Date(d));
-				return d.date();
+				return d;
 			};
 
 			var x_axis = new Rickshaw.Graph.Axis.X({
@@ -3788,6 +3788,8 @@ var TemperatureChart = (function () {
 				var doc = data[i],
 				    temps = doc.temperatures.hourly;
 				series.id = doc.device.id;
+				series.color = colors[i];
+				console.log(series.color);
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {
 						if (temps[hour][interval].time != '') {
@@ -3803,8 +3805,6 @@ var TemperatureChart = (function () {
 							if (dt > ldt) {
 								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 								//chartData.push({date: dt, value: temps[hour][interval].value });
-								series.color = colors[i];
-								console.log(series.color);
 								series.data.push({ x: dt, y: temps[hour][interval].value });
 								if (series.data.length === 1) {
 									high = temps[hour][interval].value;

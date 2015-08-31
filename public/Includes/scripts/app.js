@@ -3717,7 +3717,10 @@ var TemperatureChart = (function () {
 		Rickshaw = require('rickshaw'),
 		    id = objects.wrapper.data('ids'),
 		    chartSeries = [],
-		    colors = ['#c05020', '#1367e5'];
+		    colors = ['#c05020', '#1367e5'],
+		    low = 0,
+		    high = 100,
+		    rangePadding = 10;
 
 		var rickshawChart = function rickshawChart() {
 			objects.chart.empty();
@@ -3728,8 +3731,8 @@ var TemperatureChart = (function () {
 				element: objects.chart[0],
 				width: 960,
 				height: 500,
-				max: 100,
-				min: 50,
+				max: high + rangePadding,
+				min: low - rangePadding,
 				renderer: 'line',
 				series: chartSeries
 			});
@@ -3799,7 +3802,14 @@ var TemperatureChart = (function () {
 								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
 								//chartData.push({date: dt, value: temps[hour][interval].value });
 								series.color = colors[i];
+								console.log(series.color);
 								series.data.push({ x: dt, y: temps[hour][interval].value });
+								if (temps[hour][interval].value > high) {
+									high = temps[hour][interval].value;
+								}
+								if (temps[hour][interval].value < low) {
+									low = temps[hour][interval].value;
+								}
 							}
 						}
 					}

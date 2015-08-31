@@ -57,7 +57,8 @@ class TemperatureChart {
 			});
 
 			var timeFormat = function(d) {
-				d = moment(d);
+				//d = moment(d);
+				d = moment(new Date(d));
 				return d.date();
 			}
 

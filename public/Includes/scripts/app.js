@@ -3749,7 +3749,8 @@ var TemperatureChart = (function () {
 			});
 
 			var timeFormat = function timeFormat(d) {
-				d = moment(d);
+				//d = moment(d);
+				d = moment(new Date(d));
 				return d.date();
 			};
 

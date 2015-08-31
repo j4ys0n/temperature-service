@@ -59,7 +59,7 @@ class TemperatureChart {
 			var timeFormat = function(d) {
 				//d = moment(d);
 				d = moment(new Date(d*1000));
-				return d;
+				return d.weekday()+' '+d.hour()+':'+d.minute();
 			}
 
 			var x_axis = new Rickshaw.Graph.Axis.X({

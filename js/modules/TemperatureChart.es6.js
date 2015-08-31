@@ -112,6 +112,10 @@ class TemperatureChart {
 								series.color = colors[i];
 								console.log(series.color);
 								series.data.push({x: dt, y: temps[hour][interval].value });
+								if(series.data.length === 1){
+									high = temps[hour][interval].value;
+									low = temps[hour][interval].value;
+								}
 								if( temps[hour][interval].value > high ){
 									high = temps[hour][interval].value;
 								}

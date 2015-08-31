@@ -23,6 +23,7 @@ class TemperatureChart {
 		let d3 = require('d3'),
 			//j = require('jQuery'),
 			Rickshaw = require('rickshaw'),
+			moment = require('moment'),
 			id = objects.wrapper.data('ids'),
 			chartSeries = [],
 			colors = ['#c05020', '#1367e5'],
@@ -56,8 +57,8 @@ class TemperatureChart {
 			});
 
 			var timeFormat = function(d) {
-				d = new Date(d);
-				return d3.time.format('%c')(d);
+				d = moment(d);
+				return d.date();
 			}
 
 			var x_axis = new Rickshaw.Graph.Axis.X({

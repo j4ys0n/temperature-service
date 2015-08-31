@@ -58,7 +58,7 @@ class TemperatureChart {
 
 			var timeFormat = function(d) {
 				//d = moment(d);
-				d = moment(new Date(d));
+				//d = moment(new Date(d));
 				return d;
 			}
 

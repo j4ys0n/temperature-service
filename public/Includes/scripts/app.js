@@ -3719,6 +3719,7 @@ var TemperatureChart = (function () {
 		    id = objects.wrapper.data('ids'),
 		    chartSeries = [],
 		    colors = ['#c05020', '#1367e5'],
+		    currentColor = 0,
 		    low = 0,
 		    high = 100,
 		    rangePadding = 10;
@@ -3778,11 +3779,12 @@ var TemperatureChart = (function () {
 		var temperatureRequestHandler = function temperatureRequestHandler(res) {
 			var data = JSON.parse(res).data,
 			    series = {
-				color: '#c05020',
+				color: colors[currentColor],
 				data: [],
 				id: '',
 				name: 'Temperature'
 			};
+			currentColor++;
 			utils.debugConsole('temp data');
 			utils.debugConsole(data);
 			for (var i = 0; i < data.length; i++) {

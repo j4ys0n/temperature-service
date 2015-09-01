@@ -3789,7 +3789,7 @@ var TemperatureChart = (function () {
 				var doc = data[i],
 				    temps = doc.temperatures.hourly;
 				series.id = doc.device.id;
-				series.color = colors[i];
+				//series.color = colors[i];
 				console.log(series.color);
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {

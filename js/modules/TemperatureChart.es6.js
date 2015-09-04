@@ -1,6 +1,7 @@
 class TemperatureChart {
 	constructor($, Utils) {
 		let utils = new Utils();
+		window.jQuery = $;
 
 		let constants = {
 			deviceUrl: '/api/device/id/'

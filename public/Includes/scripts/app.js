@@ -3692,6 +3692,7 @@ var TemperatureChart = (function () {
 		_classCallCheck(this, TemperatureChart);
 
 		var utils = new Utils();
+		window.jQuery = $;
 
 		var constants = {
 			deviceUrl: '/api/device/id/'

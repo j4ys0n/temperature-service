@@ -18,7 +18,7 @@ module.exports = {
             var hour = req.body.hour,
                 interval = req.body.interval,
                 temperature = req.body.temperature,
-                average,
+                average;
 
             if(temps != undefined) {
                 if(temps.length === 0){

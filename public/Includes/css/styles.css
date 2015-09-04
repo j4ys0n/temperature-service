@@ -543,14 +543,15 @@ form button[class*="update-"] {
 /* line 343, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 #legend_container {
   position: absolute;
-  bottom: 26px; }
+  top: 10px;
+  right: 10px; }
 
-/* line 347, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 348, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 #chart_container {
   float: left;
   position: relative; }
 
-/* line 352, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 353, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend {
   font-family: Arial;
   font-size: 12px;
@@ -561,29 +562,29 @@ form button[class*="update-"] {
   border-radius: 2px;
   position: relative; }
 
-/* line 362, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 363, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend:hover {
   z-index: 10; }
 
-/* line 365, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 366, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .swatch {
   width: 10px;
   height: 10px;
   border: 1px solid rgba(0, 0, 0, 0.2); }
 
-/* line 370, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 371, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .line {
   clear: both;
   line-height: 140%;
   padding-right: 15px; }
 
-/* line 375, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 376, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .line .swatch {
   display: inline-block;
   margin-right: 3px;
   border-radius: 2px; }
 
-/* line 380, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 381, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .label {
   margin: 0;
   white-space: nowrap;
@@ -596,11 +597,11 @@ form button[class*="update-"] {
   padding: 0px;
   text-shadow: none; }
 
-/* line 392, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 393, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .action:hover {
   opacity: 0.6; }
 
-/* line 395, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 396, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .action {
   margin-right: 0.2em;
   font-size: 10px;
@@ -608,11 +609,11 @@ form button[class*="update-"] {
   cursor: pointer;
   font-size: 14px; }
 
-/* line 402, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 403, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend .line.disabled {
   opacity: 0.4; }
 
-/* line 405, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 406, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend ul {
   list-style-type: none;
   margin: 0;
@@ -620,30 +621,30 @@ form button[class*="update-"] {
   margin: 2px;
   cursor: pointer; }
 
-/* line 412, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 413, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend li {
   padding: 0 0 0 2px;
   min-width: 80px;
   white-space: nowrap; }
 
-/* line 417, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 418, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend li:hover {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 3px; }
 
-/* line 421, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 422, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .rickshaw_legend li:active {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 3px; }
 
-/* line 426, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 427, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 #y_axis {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 40px; }
 
-/* line 433, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
+/* line 434, /Users/jjacobs/Documents/projects/temperature-service/sass/_forms.scss */
 .map-canvas {
   height: 400px;
   width: 600px; }

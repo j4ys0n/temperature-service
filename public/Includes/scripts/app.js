@@ -3738,6 +3738,7 @@ var TemperatureChart = (function () {
 				renderer: 'line',
 				series: chartSeries
 			});
+
 			graph.render();
 
 			var hoverDetail = new Rickshaw.Graph.HoverDetail({
@@ -3748,6 +3749,11 @@ var TemperatureChart = (function () {
 				graph: graph,
 				element: document.getElementById('legend')
 			});
+
+			// var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+			// 	graph: graph,
+			// 	legend: legend
+			// });
 
 			var timeFormat = function timeFormat(d) {
 				//d = moment(d);
@@ -3770,6 +3776,24 @@ var TemperatureChart = (function () {
 			});
 
 			y_axis.render();
+
+			var slider = new Rickshaw.Graph.RangeSlider.Preview({
+				graph: graph,
+				element: document.getElementById('slider')
+			});
+
+			var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+				graph: graph,
+				legend: legend,
+				disabledColor: function disabledColor() {
+					return 'rgba(0,0,0,0.2)';
+				}
+			});
+
+			var toggle = new Rickshaw.Graph.Behavior.Series.Toggle({
+				graph: graph,
+				legend: legend
+			});
 		};
 
 		var dateFormatter = function dateFormatter(dt) {
@@ -3791,8 +3815,6 @@ var TemperatureChart = (function () {
 				var doc = data[i],
 				    temps = doc.temperatures.hourly;
 				series.id = doc.device.id;
-				//series.color = colors[i];
-				console.log(series.color);
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {
 						if (temps[hour][interval].time != '') {
@@ -3805,21 +3827,21 @@ var TemperatureChart = (function () {
 							localDate.setDate(localDate.getDate() - 1);
 							var ldt = dateFormatter(localDate) / 1000;
 
-							if (dt > ldt) {
-								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
-								//chartData.push({date: dt, value: temps[hour][interval].value });
-								series.data.push({ x: dt, y: temps[hour][interval].value });
-								if (series.data.length === 1) {
-									high = temps[hour][interval].value;
-									low = temps[hour][interval].value;
-								}
-								if (temps[hour][interval].value > high) {
-									high = temps[hour][interval].value;
-								}
-								if (temps[hour][interval].value < low) {
-									low = temps[hour][interval].value;
-								}
+							//if(dt > ldt){
+							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
+							//chartData.push({date: dt, value: temps[hour][interval].value });
+							series.data.push({ x: dt, y: temps[hour][interval].value });
+							if (series.data.length === 1) {
+								high = temps[hour][interval].value;
+								low = temps[hour][interval].value;
 							}
+							if (temps[hour][interval].value > high) {
+								high = temps[hour][interval].value;
+							}
+							if (temps[hour][interval].value < low) {
+								low = temps[hour][interval].value;
+							}
+							//}
 						}
 					}
 				}
@@ -3849,8 +3871,8 @@ var TemperatureChart = (function () {
 			for (var i = 0; i < id.length; i++) {
 				utils.loadUrl('/api/temperature/device/all/' + id[i], 'GET', null, false, temperatureRequestHandler);
 			}
-			// utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
-			// utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			//utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
+			//utils.loadUrl('http://52.20.3.36/api/temperature/device/55d2a1628dfc55c704d6aa8d', 'GET', null, false, temperatureRequestHandler);
 		};
 	}
 

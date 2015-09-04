@@ -34,7 +34,7 @@ module.exports = {
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
                     if(req.body.humidity !== ''){
-                        temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['humid'] = req.body.humid;
+                        temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['humid'] = req.body.humidity;
                         temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['pressure'] = req.body.pressure;
                     }
                     var temperature = new Temp(temperaturedata);
@@ -52,7 +52,7 @@ module.exports = {
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
                     if(req.body.humidity !== ''){
-                        tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['humid'] = req.body.humid;
+                        tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['humid'] = req.body.humidity;
                         tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['pressure'] = req.body.pressure;
                     }
                     tmpdata.metadata = {};

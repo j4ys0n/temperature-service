@@ -131,7 +131,7 @@ class TemperatureChart {
 							//dt += tzOffset;
 							dt = dt/1000;
 
-							localDate.setDate(localDate.getDate()-5);
+							localDate.setDate(localDate.getDate()-3);
 							var ldt = dateFormatter(localDate)/1000;
 
 							if(dt > ldt){

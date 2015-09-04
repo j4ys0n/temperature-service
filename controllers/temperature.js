@@ -33,6 +33,10 @@ module.exports = {
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval] = {};
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
+                    if(req.body.humid !== undefined){
+                        temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['humid'] = req.body.humid;
+                        temperaturedata.temperatures['hourly'][req.body.hour][req.body.interval]['pressure'] = req.body.pressure;
+                    }
                     var temperature = new Temp(temperaturedata);
                     temperature.save();
                     //res.send(temperaturedata);
@@ -47,6 +51,10 @@ module.exports = {
                     tmpdata.temperatures = temperaturedata.temperatures;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['value'] = req.body.temperature;
                     tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['time'] = new Date();
+                    if(req.body.humid !== undefined){
+                        tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['humid'] = req.body.humid;
+                        tmpdata.temperatures['hourly'][req.body.hour][req.body.interval]['pressure'] = req.body.pressure;
+                    }
                     tmpdata.metadata = {};
                     tmpdata.metadata = temperaturedata.metadata;
                     tmpdata.metadata.last_updated = new Date();

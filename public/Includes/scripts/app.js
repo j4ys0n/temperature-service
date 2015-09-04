@@ -3825,24 +3825,24 @@ var TemperatureChart = (function () {
 							//dt += tzOffset;
 							dt = dt / 1000;
 
-							localDate.setDate(localDate.getDate() - 1);
+							localDate.setDate(localDate.getDate() - 5);
 							var ldt = dateFormatter(localDate) / 1000;
 
-							//if(dt > ldt){
-							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
-							//chartData.push({date: dt, value: temps[hour][interval].value });
-							series.data.push({ x: dt, y: temps[hour][interval].value });
-							if (series.data.length === 1) {
-								high = temps[hour][interval].value;
-								low = temps[hour][interval].value;
+							if (dt > ldt) {
+								//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
+								//chartData.push({date: dt, value: temps[hour][interval].value });
+								series.data.push({ x: dt, y: temps[hour][interval].value });
+								if (series.data.length === 1) {
+									high = temps[hour][interval].value;
+									low = temps[hour][interval].value;
+								}
+								if (temps[hour][interval].value > high) {
+									high = temps[hour][interval].value;
+								}
+								if (temps[hour][interval].value < low) {
+									low = temps[hour][interval].value;
+								}
 							}
-							if (temps[hour][interval].value > high) {
-								high = temps[hour][interval].value;
-							}
-							if (temps[hour][interval].value < low) {
-								low = temps[hour][interval].value;
-							}
-							//}
 						}
 					}
 				}

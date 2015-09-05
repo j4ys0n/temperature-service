@@ -124,9 +124,8 @@ module.exports = {
         // Temp.find( { "device.id": id } ).remove().exec( function( err, temps ){
         //     res.json(Response.code( err, temps ), Response.data( err, temps ) );
         // });
-        Temp.remove({}, function(err) {
-            res.send(err);
-            console.log('collection removed')
+        mongoose.connection.collections['Temperature'].drop( function(err) {
+            console.log('collection dropped');
         });
     }
 };

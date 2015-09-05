@@ -3816,9 +3816,9 @@ var TemperatureChart = (function () {
 
 				//stats
 				if (i === 0) {
-					objects.stats.find('.hi').text(temps.high);
-					objects.stats.find('.lo').text(temps.low);
-					objects.stats.find('.avg').text(temps.average);
+					objects.stats.find('.hi').text(data[i].temperatures.high);
+					objects.stats.find('.lo').text(data[i].temperatures.low);
+					objects.stats.find('.avg').text(data[i].temperatures.average);
 				} else {}
 
 				for (var hour in temps) {

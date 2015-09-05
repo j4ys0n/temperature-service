@@ -9,11 +9,12 @@ module.exports = {
 
     /* -------- inserts/updates -------- */
     post: function( req, res ){
-        var start = new Date(),
+        var current = new Date(),
+            start = new Date(current.getUTCFullYear(), current.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds() ),
             temperaturedata;
-
+        console.log(start);
         start.setHours(0,0,0,0);
-
+        console.log(start);
         Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             var hour = req.body.hour,
                 interval = req.body.interval,

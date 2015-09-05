@@ -125,6 +125,7 @@ module.exports = {
         //     res.json(Response.code( err, temps ), Response.data( err, temps ) );
         // });
         Temp.remove({}, function(err) {
+            res.send(err);
             console.log('collection removed')
         });
     }

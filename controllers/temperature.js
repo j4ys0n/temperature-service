@@ -120,9 +120,12 @@ module.exports = {
         });
     },
     deleteAllByDeviceId: function( req, res ){
-        var id = req.body.id;
-        Temp.find( { "device.id": id } ).remove().exec( function( err, temps ){
-            res.json(Response.code( err, temps ), Response.data( err, temps ) );
+        //var id = req.body.id;
+        // Temp.find( { "device.id": id } ).remove().exec( function( err, temps ){
+        //     res.json(Response.code( err, temps ), Response.data( err, temps ) );
+        // });
+        Temp.remove({}, function(err) {
+            console.log('collection removed')
         });
     }
 };

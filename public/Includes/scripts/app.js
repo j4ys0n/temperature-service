@@ -3702,14 +3702,16 @@ var TemperatureChart = (function () {
 			wrapper: '.chart-container',
 			chart: '#chart',
 			legend: '#legend',
-			yaxis: '#y_axis'
+			yaxis: '#y_axis',
+			stats: '.stats'
 		};
 
 		var objects = {
 			wrapper: $(selectors.wrapper),
 			chart: $(selectors.chart),
 			legend: $(selectors.legend),
-			yaxis: $(selectors.yaxis)
+			yaxis: $(selectors.yaxis),
+			stats: $(selectors.stats)
 		};
 
 		var d3 = require('d3'),
@@ -3750,11 +3752,6 @@ var TemperatureChart = (function () {
 				graph: graph,
 				element: document.getElementById('legend')
 			});
-
-			// var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
-			// 	graph: graph,
-			// 	legend: legend
-			// });
 
 			var timeFormat = function timeFormat(d) {
 				//d = moment(d);
@@ -3816,6 +3813,14 @@ var TemperatureChart = (function () {
 				var doc = data[i],
 				    temps = doc.temperatures.hourly;
 				series.id = doc.device.id;
+
+				//stats
+				if (i === 0) {
+					objects.stats.find('.hi').text(temps.high);
+					objects.stats.find('.lo').text(temps.low);
+					objects.stats.find('.avg').text(temps.average);
+				} else {}
+
 				for (var hour in temps) {
 					for (var interval in temps[hour]) {
 						if (temps[hour][interval].time != '') {

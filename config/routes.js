@@ -101,5 +101,5 @@ module.exports = function(app) {
   app.get( '/api/temperature/device/:id', temperature.deviceMostRecent );
   app.get( '/api/temperature/device/all/:id', temperature.deviceHistory );
   app.delete( '/api/temperature/tempid', temperature.deleteByTempId );
-
+  app.delete( '/api/temperature/device', temperature.deleteAllByDeviceId );
 };

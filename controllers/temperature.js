@@ -118,5 +118,11 @@ module.exports = {
         Temp.findOneAndRemove( { _id: tempid }, function( err, temp ){
             res.json( Response.code( err, temp ), Response.data( err, temp ) );
         });
+    },
+    deleteAllByDeviceId: function( req, res ){
+        var id = req.body.id;
+        Temp.find( { "device.id": id } ).remove().exec( function( err, temps ){
+            res.json(Response.code( err, temps ), Response.data( err, temps ) );
+        });
     }
 };

@@ -10,7 +10,7 @@ module.exports = {
     /* -------- inserts/updates -------- */
     post: function( req, res ){
         var current = new Date(),
-            start = new Date(current.getUTCFullYear(), current.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds() ),
+            start = new Date(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate(), current.getUTCHours(), current.getUTCMinutes(), current.getUTCSeconds() ),
             temperaturedata;
         console.log(start);
         start.setHours(0,0,0,0);

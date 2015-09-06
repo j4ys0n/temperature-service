@@ -19,6 +19,7 @@ module.exports = {
         console.log('server date: '+start);
         console.log('device hour: '+req.body.hour);
         console.log('device interval: '+req.body.interval);
+        console.log(req.body);
         Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             var hour = req.body.hour,
                 interval = req.body.interval,
@@ -85,7 +86,6 @@ module.exports = {
                     //     console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
                     //     console.log('error: ' + error);
                     // });
-                    console.log(req.body);
                     res.send(tmpdata);
                 }
             }else{

@@ -12,9 +12,12 @@ module.exports = {
         var current = new Date(),
             start = new Date(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate(), current.getUTCHours(), current.getUTCMinutes(), current.getUTCSeconds() ),
             temperaturedata;
-        console.log(start);
+        console.log('*********************');
+        console.log('server date: '+start);
         start.setHours(0,0,0,0);
-        console.log(start);
+        console.log('server date: '+start);
+        console.log('device hour: '+req.body.hour);
+        console.log('device interval: '+req.body.interval);
         Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             var hour = req.body.hour,
                 interval = req.body.interval,
@@ -47,7 +50,7 @@ module.exports = {
                         temperaturedata.temperatures['hourly'][hour][interval]['pressure'] = req.body.pressure;
                     }
                     var temperature = new Temp(temperaturedata);
-                    temperature.save();
+                    //temperature.save();
                     //res.send(temperaturedata);
                     res.json(Response.code(err, temperaturedata), Response.data(err, temperaturedata));
                 }else{
@@ -77,10 +80,10 @@ module.exports = {
                     tmpdata.metadata = {};
                     tmpdata.metadata = temperaturedata.metadata;
                     tmpdata.metadata.last_updated = new Date();
-                    Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
-                        console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
-                        console.log('error: ' + error);
-                    });
+                    // Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
+                    //     console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
+                    //     console.log('error: ' + error);
+                    // });
                     console.log(req.body);
                     res.send(tmpdata);
                 }

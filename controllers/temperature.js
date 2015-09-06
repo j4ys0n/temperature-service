@@ -13,7 +13,8 @@ module.exports = {
             start = new Date(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate(), current.getUTCHours(), current.getUTCMinutes(), current.getUTCSeconds() ),
             temperaturedata;
         console.log('*********************');
-        console.log('server date: '+start);
+        console.log('server date: '+current);
+        console.log('server utc: '+start);
         start.setHours(0,0,0,0);
         console.log('server date: '+start);
         console.log('device hour: '+req.body.hour);

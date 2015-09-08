@@ -99,6 +99,7 @@ module.exports = function(app) {
   //api temperatures
   app.post( '/api/temperature/new', temperature.post  );
   app.get( '/api/temperature/device/:id', temperature.deviceMostRecent );
+  app.get( '/api/temperature/device/week/:id', temperature.deviceHistoryWeek );
   app.get( '/api/temperature/device/all/:id', temperature.deviceHistory );
   app.delete( '/api/temperature/tempid', temperature.deleteByTempId );
   app.delete( '/api/temperature/device', temperature.deleteAllByDeviceId );

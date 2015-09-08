@@ -106,6 +106,18 @@ module.exports = {
             res.json( Response.code( err, temps ), Response.data( err, temps ) );
         });
     },
+    deviceHistoryWeek: function( req, res ){
+        var deviceid = decodeURIComponent( req.params.id ),
+            start = new Date();
+
+        start.setHours(0,0,0,0);
+        start.setDate(start.getDate() - 7);
+        console.log(start);
+
+        Temp.find( { "device.id": deviceid, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
+            res.json( Response.code( err, temps ), Response.data( err, temps ) );
+        });
+    },
     deviceHistory: function( req, res ){
         var deviceid = decodeURIComponent( req.params.id );
         Temp.find( { "device.id": deviceid } ).exec( function( err, temps ){

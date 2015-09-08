@@ -55,7 +55,7 @@ module.exports = {
                         temperaturedata.temperatures['hourly'][hour][interval]['pressure'] = req.body.pressure;
                     }
                     var temperature = new Temp(temperaturedata);
-                    //temperature.save();
+                    temperature.save();
                     //res.send(temperaturedata);
                     console.log(temperature);
                     res.json(Response.code(err, temperaturedata), Response.data(err, temperaturedata));
@@ -86,10 +86,10 @@ module.exports = {
                     tmpdata.metadata = {};
                     tmpdata.metadata = temperaturedata.metadata;
                     tmpdata.metadata.last_updated = current;
-                    // Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
-                    //     console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
-                    //     console.log('error: ' + error);
-                    // });
+                    Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
+                        console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
+                        console.log('error: ' + error);
+                    });
                     res.send(tmpdata);
                 }
             }else{

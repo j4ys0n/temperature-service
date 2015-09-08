@@ -12,14 +12,11 @@ module.exports = {
         var current = new Date(req.body.date.time*1000),
             start = new Date(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate(), current.getUTCHours(), current.getUTCMinutes(), current.getUTCSeconds() ),
             temperaturedata;
-        console.log('*********************');
-        console.log('server date: '+current);
-        console.log('server utc: '+start);
         start.setHours(0,0,0,0);
-        console.log('server date: '+start);
-        console.log('device hour: '+req.body.hour);
-        console.log('device interval: '+req.body.interval);
+        console.log('*********** START **********');
+        console.log('device date: '+current);
         console.log(req.body);
+        console.log('*********** END **********');
         Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             var hour = req.body.hour,
                 interval = req.body.interval,
@@ -57,10 +54,9 @@ module.exports = {
                     var temperature = new Temp(temperaturedata);
                     temperature.save();
                     //res.send(temperaturedata);
-                    console.log(temperature);
                     res.json(Response.code(err, temperaturedata), Response.data(err, temperaturedata));
                 }else{
-                    console.log('document found');
+                    console.log('document found, updating');
                     temperaturedata = temps[0];
                     var tmpid = temperaturedata._id;
                     //delete temperaturedata._id;

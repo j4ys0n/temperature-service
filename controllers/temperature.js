@@ -20,6 +20,8 @@ module.exports = {
         console.log('device hour: '+req.body.hour);
         console.log('device interval: '+req.body.interval);
         console.log(req.body);
+        var deviceDate = new Date(req.body.date.time);
+        console.log(deviceDate);
         Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
             var hour = req.body.hour,
                 interval = req.body.interval,

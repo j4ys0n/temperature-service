@@ -57,6 +57,7 @@ module.exports = {
                     var temperature = new Temp(temperaturedata);
                     //temperature.save();
                     //res.send(temperaturedata);
+                    console.log(temperature);
                     res.json(Response.code(err, temperaturedata), Response.data(err, temperaturedata));
                 }else{
                     console.log('document found');

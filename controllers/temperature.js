@@ -36,6 +36,9 @@ module.exports = {
                         },
                         account: {
                             //id: req.body.account.id
+                        },
+                        metadata: {
+                            date: current
                         }
                     };
                     temperaturedata.temperatures = {};
@@ -74,14 +77,14 @@ module.exports = {
                         i = parseInt(interval, 10);
                     tmpdata.temperatures.average = ((h*4+i) * average + temperature)/(h*4+i+1);
                     tmpdata.temperatures['hourly'][hour][interval]['value'] = temperature;
-                    tmpdata.temperatures['hourly'][hour][interval]['time'] = new Date();
+                    tmpdata.temperatures['hourly'][hour][interval]['time'] = current;
                     if(req.body.humidity !== undefined){
                         tmpdata.temperatures['hourly'][hour][interval]['humid'] = req.body.humidity;
                         tmpdata.temperatures['hourly'][hour][interval]['pressure'] = req.body.pressure;
                     }
                     tmpdata.metadata = {};
                     tmpdata.metadata = temperaturedata.metadata;
-                    tmpdata.metadata.last_updated = new Date();
+                    tmpdata.metadata.last_updated = current;
                     // Temp.update({ '_id': tmpid }, { '$set': tmpdata }, function(error, doc){
                     //     console.log('updated: ' + temperaturedata._id + ' status: ' + doc);
                     //     console.log('error: ' + error);

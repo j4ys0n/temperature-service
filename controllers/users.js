@@ -10,17 +10,17 @@ module.exports = {
 
     renderUsersPage: function( req, res ){
         User.find().exec( function( err, users ){
-            res.render( 'index', { data: { page: 'users', users: users } } );
+            res.render( 'admin', { data: { page: 'users', users: users } } );
         });
     },
     renderUserDetails: function( req, res ){
         var id = decodeURIComponent( req.params.id );
         User.findOne( { _id: id } ).exec( function( err, user ){
-            res.render( 'index', { data: { page: 'user-detail', user: user } } );
+            res.render( 'admin', { data: { page: 'user-detail', user: user } } );
         });
     },
     renderUserAdd: function( req, res ){
-        res.render( 'index', { data: { page: 'user-new' } } );
+        res.render( 'admin', { data: { page: 'user-new' } } );
     },
 
     /**

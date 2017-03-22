@@ -6,48 +6,10 @@
 	<body>
 		<div class="outer">
 			<div class="wrapper">
-				<% if (data.page != 'home') {%>
 				<%- include _partials/nav.ejs %>
-				<% } %>
 				<section class="col lg-twelve-col med-nine-col">
 					<% if (data.page == 'default') { %>
 						<%- include _pages/default.ejs %>
-
-<% //------------ ACCOUNTS ------------ %>
-
-					<% } else if (data.page == 'accounts') { %>
-						<%- include _pages/account/accounts.ejs %>
-					<% } else if (data.page == 'account-new') { %>
-						<%- include _pages/account/account-new.ejs %>
-					<% } else if (data.page == 'account-detail') { %>
-						<%- include _pages/account/account-detail.ejs %>
-
-<% //------------ LOCATIONS ------------ %>
-
-					<% } else if (data.page == 'locations') { %>
-						<%- include _pages/location/locations.ejs %>
-					<% } else if (data.page == 'location-new') { %>
-						<%- include _pages/location/location-new.ejs %>
-					<% } else if (data.page == 'location-detail') { %>
-						<%- include _pages/location/location-detail.ejs %>
-
-<% //------------ DEVICES ------------ %>
-
-					<% } else if (data.page == 'devices') { %>
-						<%- include _pages/device/devices.ejs %>
-					<% } else if (data.page == 'device-new') { %>
-						<%- include _pages/device/device-new.ejs %>
-					<% } else if (data.page == 'device-detail') { %>
-						<%- include _pages/device/device-detail.ejs %>
-
-<% //------------ USERS ------------ %>
-
-					<% } else if (data.page == 'users') { %>
-						<%- include _pages/user/users.ejs %>
-					<% } else if (data.page == 'user-new') { %>
-						<%- include _pages/user/user-new.ejs %>
-					<% } else if (data.page == 'user-detail') { %>
-						<%- include _pages/user/user-detail.ejs %>
 					<% } %>
 
 <% //------------ SITE ------------ %>

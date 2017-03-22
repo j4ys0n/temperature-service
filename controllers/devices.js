@@ -10,17 +10,17 @@ module.exports = {
 
     renderDevicesPage: function( req, res ){
         Device.find().exec( function( err, devices ){
-            res.render( 'index', { data: { page: 'devices', devices: devices } } );
+            res.render( 'admin', { data: { page: 'devices', devices: devices } } );
         });
     },
     renderDeviceDetails: function( req, res ){
         var id = decodeURIComponent( req.params.id );
         Device.findOne( { _id: id } ).exec( function( err, device ){
-            res.render( 'index', { data: { page: 'device-detail', device: device } } );
+            res.render( 'admin', { data: { page: 'device-detail', device: device } } );
         });
     },
     renderDeviceAdd: function( req, res ){
-        res.render( 'index', { data: { page: 'device-new' } } );
+        res.render( 'admin', { data: { page: 'device-new' } } );
     },
 
     /**

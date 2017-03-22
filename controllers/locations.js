@@ -10,17 +10,17 @@ module.exports = {
 
     renderLocationsPage: function( req, res ){
         Location.find().exec( function( err, locations ){
-            res.render( 'index', { data: { page: 'locations', locations: locations } } );
+            res.render( 'admin', { data: { page: 'locations', locations: locations } } );
         });
     },
     renderLocationDetails: function( req, res ){
         var id = decodeURIComponent( req.params.id );
         Location.findOne( { _id: id } ).exec( function( err, location ){
-            res.render( 'index', { data: { page: 'location-detail', location: location } } );
+            res.render( 'admin', { data: { page: 'location-detail', location: location } } );
         });
     },
     renderLocationAdd: function( req, res ){
-        res.render( 'index', { data: { page: 'location-new' } } );
+        res.render( 'admin', { data: { page: 'location-new' } } );
     },
 
     /**

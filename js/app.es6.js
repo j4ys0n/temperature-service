@@ -11,6 +11,8 @@ import AddAccount from './modules/AddAccount.es6';
 import AddLocation from './modules/AddLocation.es6';
 import AddUser from './modules/AddUser.es6';
 import TemperatureChart from './modules/TemperatureChart.es6';
+import HumidityChart from './modules/HumidityChart.es6';
+import IRChart from './modules/IRChart.es6';
 import Map from './modules/Map.es6';
 import Home from './modules/Home.es6';
 
@@ -25,6 +27,8 @@ let app = new Main($, [
 	AddLocation,
 	AddUser,
 	TemperatureChart,
+	HumidityChart,
+	IRChart,
 	Map,
 	Home
 ], $('[data-module]'), Utils);

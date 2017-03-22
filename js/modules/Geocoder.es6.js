@@ -2,7 +2,8 @@ class Geocoder {
 	constructor() {
 		let GoogleMapsLoader = require('google-maps'),
 			geocoder;
-
+		GoogleMapsLoader.KEY = 'AIzaSyA9ticVuPkuZyCrEQcJ_H5Y60EpNoai8DM';
+		
 		this.geocode = function(address, callback) {
 			geocoder.geocode({address: address}, callback);
 		};

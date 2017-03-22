@@ -8,6 +8,7 @@ class Map {
 			coords,
 			names,
 			map;
+		GoogleMapsLoader.KEY = 'AIzaSyA9ticVuPkuZyCrEQcJ_H5Y60EpNoai8DM';
 
 		let selectors = {
 			map: '.map-canvas'

@@ -12,5 +12,17 @@ module.exports = {
         User.findOne( { user_name: username } ).exec( function( err, user ){
             res.render( 'index', { data: { page: 'home', user: user } } );
         });
+	},
+	crops: function( req, res ){
+
+	},
+	cycles: function( req, res ){
+
+	},
+	stats: function( req, res ){
+
+	},
+	settings: function( req, res ){
+		
 	}
 }

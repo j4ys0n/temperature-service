@@ -7,6 +7,7 @@ var accounts = require( __dirname + '/../controllers/accounts' );
 var locations = require( __dirname + '/../controllers/locations' );
 var temperature = require( __dirname + '/../controllers/temperature' );
 var site = require( __dirname + '/../controllers/site' );
+var cycles = require( __dirname + '/../controllers/cycles' ); 
 
 //routes
 
@@ -16,10 +17,17 @@ module.exports = function(app) {
 
   //production routes
   app.get( '/login', site.login );
-  app.get( '/home/:user', site.home );
+  app.get( '/dashboard/:user', site.home );
+  app.get( '/crops', site.crops );
+  app.get( '/cycles', site.cycles );
+  app.get( '/stats', site.stats );
+  app.get( '/settings', site.settings );
+
+  //crops
+  app.get( '/cycles/new', cycles.new );
 
 
-  //for dev
+  //for admin & dev
   //accounts
   app.get( '/accounts', accounts.renderAccountPage );
   app.get( '/accounts/new', accounts.renderAccountAdd );

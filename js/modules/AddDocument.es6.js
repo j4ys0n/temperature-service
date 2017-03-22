@@ -41,7 +41,7 @@ class AddDocument {
 
 		let geocodeResponseHandler = function(res, status){
 			if(status === 'OK') {
-				postData.address.coords = [res[0].geometry.location.K, res[0].geometry.location.G];
+				postData.address.coords = [res[0].geometry.location.lng(), res[0].geometry.location.lat()];
 				storeDoc();
 			}
 		};

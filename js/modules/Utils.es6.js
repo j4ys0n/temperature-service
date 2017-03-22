@@ -23,7 +23,7 @@ class Utils {
                         reject(Error(req.statusText));
                     }
                 };
-                req.onerror = function(){
+                req.onerror = function(x){
                     reject(Error('Network Error'));
                 };
                 req.send(params);

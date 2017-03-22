@@ -10,17 +10,17 @@ module.exports = {
 
     renderAccountPage: function( req, res ){
         Account.find().exec( function( err, accounts ){
-            res.render( 'index', { data: { page: 'accounts', accounts: accounts } } );
+            res.render( 'admin', { data: { page: 'accounts', accounts: accounts } } );
         });
     },
     renderAccountDetails: function( req, res ){
         var id = decodeURIComponent( req.params.id );
         Account.findOne( { _id: id } ).exec( function( err, account ){
-            res.render( 'index', { data: { page: 'account-detail', account: account } } );
+            res.render( 'admin', { data: { page: 'account-detail', account: account } } );
         });
     },
     renderAccountAdd: function( req, res ){
-        res.render( 'index', { data: { page: 'account-new' } } );
+        res.render( 'admin', { data: { page: 'account-new' } } );
     },
 
     /**

@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var env = process.env.NODE_ENV || 'dev';
 var config = require(__dirname + '/config/app')[env];
 
+mongoose.Promise = require('bluebird');
 
 /** MONGO */
 // connect to mongodb

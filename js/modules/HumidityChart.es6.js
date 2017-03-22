@@ -1,4 +1,4 @@
-class TemperatureChart {
+class HumidityChart {
 	constructor($, Utils) {
 		let utils = new Utils();
 		window.jQuery = $;
@@ -8,7 +8,7 @@ class TemperatureChart {
 		};
 
 		let selectors = {
-			wrapper: '.chart-container.temp',
+			wrapper: '.chart-container.humid',
 			chart: '#chart',
 			legend: '#legend',
 			yaxis: '#y_axis',
@@ -31,10 +31,10 @@ class TemperatureChart {
 			moment = require('moment'),
 			id = objects.wrapper.data('ids'),
 			chartSeries = [],
-			colors = ['#f1880d', '#ecb714'],
+			colors = ['#184aed', '#2c18ed'],
 			currentColor = 0,
 			low = 0,
-			high = 120,
+			high = 100,
 			rangePadding = 10;
 
 		let rickshawChart = function() {
@@ -111,7 +111,7 @@ class TemperatureChart {
 					color: colors[currentColor],
 					data: [],
 					id: '',
-					name: 'Temperature'
+					name: 'Humidity'
 				};
 				currentColor++;
 			for( var i = 0; i < data.length; i++ ){
@@ -119,43 +119,17 @@ class TemperatureChart {
 					temps = doc.temperatures.readings;
 				series.id = doc.device.id;
 
-				//stats
-				if(i === 0){
-					objects.stats.find('.hi').text(data[i].temperatures.high);
-					objects.stats.find('.lo').text(data[i].temperatures.low);
-					objects.stats.find('.avg').text(data[i].temperatures.average);
-				}else{
-
-				}
-
 				for( var i = 0; i < temps.length; i++ ) {
 					var tmp = temps[i];
 					if(tmp.time != ''){
-						tmp.temp = parseFloat(tmp.temp);
+						tmp.humid = parseFloat(tmp.humid);
 						var dt = dateFormatter(new Date(tmp.time));
 						var localDate = new Date();
 						var tzOffset = localDate.getTimezoneOffset() * 60000;
-						//dt += tzOffset;
-						//dt = dt/1000;
 
 						localDate.setDate(localDate.getDate()-2);
 						dt = dt/1000;
-						//console.log(dt, ldt);
-						//if(dt > ldt){
-							//var dt = d3.time.format("%c")(new Date(temps[hour][interval].time))
-							//chartData.push({date: dt, value: temps[hour][interval].value });
-							series.data.push({x: dt, y: tmp.temp });
-							if(series.data.length === 1){
-								high = tmp.temp;
-								low = tmp.temp;
-							}
-							if( tmp.temp > high ){
-								high = tmp.temp;
-							}
-							if( tmp.temp < low ){
-								low = tmp.temp;
-							}
-						//}
+						series.data.push({x: dt, y: tmp.humid });
 					}
 				}
 			}
@@ -192,11 +166,11 @@ class TemperatureChart {
 	}
 
 	name() {
-		return "TemperatureChart";
+		return "HumidityChart";
 	}
 
 	init() {
 		this.firstRun();
 	}
 }
-export default TemperatureChart;
+export default HumidityChart;

@@ -4,12 +4,15 @@ var Response = require( __dirname + '/../lib/Response' );
 
 module.exports = {
     default: function( req, res ){
-        res.render( 'index', { data: { page: 'default' } } );
+        res.render( 'admin', { data: { page: 'default' } } );
     },
 
     /* -------- inserts/updates -------- */
+	post1: function( req, res ){
+		console.log(req.body);
+	},
     post: function( req, res ){
-        var current = new Date(req.body.date.time*1000),
+        var current = new Date(),
             start = new Date(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate(), current.getUTCHours(), current.getUTCMinutes(), current.getUTCSeconds() ),
             temperaturedata;
         start.setHours(0,0,0,0);
@@ -17,9 +20,9 @@ module.exports = {
         console.log('device date: '+current);
         console.log(req.body);
         console.log('*********** END **********');
-        Temp.find( { "device.id": req.body.device.id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
-            var hour = req.body.hour,
-                interval = req.body.interval,
+        Temp.find( { "device.id": req.body.device_id, "metadata.date": { $gt: start } } ).exec( function( err, temps ){
+            var //hour = req.body.hour,
+                //interval = req.body.interval,
                 temperature = req.body.temperature,
                 average;
 
@@ -28,8 +31,8 @@ module.exports = {
                     console.log('no documents today, create one');
                     temperaturedata = {
                         device: {
-                            id: req.body.device.id,
-                            battery: req.body.device.battery
+                            id: req.body.device_id,
+                            //battery: req.body.device.battery
                         },
                         account: {
                             //id: req.body.account.id
@@ -41,16 +44,24 @@ module.exports = {
                     temperaturedata.temperatures = {};
                     temperaturedata.temperatures['high'] = temperature;
                     temperaturedata.temperatures['low'] = temperature;
-                    temperaturedata.temperatures['average'] = temperature;
-                    temperaturedata.temperatures['hourly'] = {};
-                    temperaturedata.temperatures['hourly'][hour] = {};
-                    temperaturedata.temperatures['hourly'][hour][interval] = {};
-                    temperaturedata.temperatures['hourly'][hour][interval]['value'] = temperature;
-                    temperaturedata.temperatures['hourly'][hour][interval]['time'] = new Date();
-                    if(req.body.humidity !== undefined){
-                        temperaturedata.temperatures['hourly'][hour][interval]['humid'] = req.body.humidity;
-                        temperaturedata.temperatures['hourly'][hour][interval]['pressure'] = req.body.pressure;
-                    }
+                    //temperaturedata.readings['average'] = temperature;
+					temperaturedata.temperatures['readings'] = [];
+					temperaturedata.temperatures['readings'].push({
+						'temp': temperature,
+						'humid': req.body.humidity,
+						'vis': req.body.visible,
+						'ir': req.body.ir,
+						'time': new Date()
+					});
+                    //temperaturedata.temperatures['hourly'] = {};
+                    //temperaturedata.temperatures['hourly'][hour] = {};
+                    //temperaturedata.temperatures['hourly'][hour][interval] = {};
+                    //temperaturedata.temperatures['hourly'][hour][interval]['value'] = temperature;
+                    //temperaturedata.temperatures['hourly'][hour][interval]['time'] = new Date();
+                    // if(req.body.humidity !== undefined){
+                    //     temperaturedata.temperatures['hourly'][hour][interval]['humid'] = req.body.humidity;
+                    //     temperaturedata.temperatures['hourly'][hour][interval]['pressure'] = req.body.pressure;
+                    // }
                     var temperature = new Temp(temperaturedata);
                     temperature.save();
                     //res.send(temperaturedata);
@@ -61,6 +72,7 @@ module.exports = {
                     var tmpid = temperaturedata._id;
                     //delete temperaturedata._id;
                     var tmpdata = {}
+					//console.log(temperaturedata);
                     tmpdata.temperatures = {};
                     tmpdata.temperatures = temperaturedata.temperatures;
                     if(temperature > temperaturedata.temperatures.high){
@@ -69,16 +81,23 @@ module.exports = {
                     if(temperature < temperaturedata.temperatures.low){
                         tmpdata.temperatures.low = temperature;
                     }
-                    average = temperaturedata.temperatures.average;
-                    var h = parseInt(hour,10),
-                        i = parseInt(interval, 10);
-                    tmpdata.temperatures.average = ((h*4+i) * average + temperature)/(h*4+i+1);
-                    tmpdata.temperatures['hourly'][hour][interval]['value'] = temperature;
-                    tmpdata.temperatures['hourly'][hour][interval]['time'] = current;
-                    if(req.body.humidity !== undefined){
-                        tmpdata.temperatures['hourly'][hour][interval]['humid'] = req.body.humidity;
-                        tmpdata.temperatures['hourly'][hour][interval]['pressure'] = req.body.pressure;
-                    }
+                    // average = temperaturedata.readings.average;
+                    // var h = parseInt(hour,10),
+                    //     i = parseInt(interval, 10);
+                    //tmpdata.readings.average = ((h*4+i) * average + temperature)/(h*4+i+1);
+                    // tmpdata.readings['hourly'][hour][interval]['value'] = temperature;
+                    // tmpdata.readings['hourly'][hour][interval]['time'] = current;
+                    // if(req.body.humidity !== undefined){
+                    //     tmpdata.readings['hourly'][hour][interval]['humid'] = req.body.humidity;
+                    //     tmpdata.readings['hourly'][hour][interval]['pressure'] = req.body.pressure;
+                    // }
+					tmpdata.temperatures.readings.push({
+						'temp': temperature,
+						'humid': req.body.humidity,
+						'vis': req.body.visible,
+						'ir': req.body.ir,
+						'time': new Date()
+					});
                     tmpdata.metadata = {};
                     tmpdata.metadata = temperaturedata.metadata;
                     tmpdata.metadata.last_updated = current;
